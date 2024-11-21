@@ -1,28 +1,29 @@
-package org.proyect.common.model;
+package org.project.salesystem.admin.model;
 
 import java.io.Serializable;
 
 public class Category implements Serializable {
-    private int id;
+    private int categoryId;
     private String name;
     private String description;
 
     public Category() {
     }
 
-    public Category(int id, String name, String description) {
-        this.id = id;
+    public Category(int categoryId, String name, String description) {
+        this.categoryId = categoryId;
         this.name = name;
         this.description = description;
     }
 
-    public int getId() { return id; }
+    public int getId() { return categoryId; }
+
     public String getName() { return name; }
+
     public String getDescription() { return description; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
+    public void setId(int categoryId) { this.categoryId = categoryId; }
 
     public void setName(String name) {
         this.name = name;

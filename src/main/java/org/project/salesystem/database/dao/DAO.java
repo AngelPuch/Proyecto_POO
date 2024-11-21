@@ -1,4 +1,4 @@
-package org.proyect.common.dao;
+package org.project.salesystem.database.dao;
 
 import java.util.List;
 

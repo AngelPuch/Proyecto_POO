@@ -1,4 +1,4 @@
-package org.proyect.common.database;
+package org.project.salesystem.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static DatabaseConnection instance;
     private Connection connection;
-    private final String URL = "jdbc:mysql://localhost/ ?";
+    private final String URL = "jdbc:mysql://localhost/videogamestore";
     private final String USERNAME = "root";
     private final String PASSWORD = "12345678";
 

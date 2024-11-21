@@ -1,30 +1,29 @@
-package org.proyect.administration.model;
+package org.project.salesystem.admin.model;
 
 import java.io.Serializable;
 
 public class Admin implements Serializable {
-    private int id;
+    private int adminId;
     private String username;
     private String password;
 
     public Admin() {
     }
 
-    public Admin(int id, String username, String password) {
-        this.id = id;
+    public Admin(int adminId, String username, String password) {
+        this.adminId = adminId;
         this.username = username;
         this.password = password;
     }
 
+    public int getId() { return adminId; }
 
-    public int getId() { return id; }
     public String getUsername() { return username; }
+
     public String getPassword() { return password; }
 
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int adminId) { this.adminId = adminId; }
 
     public void setUsername(String username) {
         this.username = username;

@@ -1,9 +1,9 @@
-package org.proyect.common.model;
+package org.project.salesystem.admin.model;
 
 import java.io.Serializable;
 
 public class Product implements Serializable {
-    private int id;
+    private int productId;
     private String name;
     private double price;
     private int stock;
@@ -13,8 +13,8 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(int id, String name, double price, int stock, Category category, Supplier supplier) {
-        this.id = id;
+    public Product(int productId, String name, double price, int stock, Category category, Supplier supplier) {
+        this.productId = productId;
         this.name = name;
         this.price = price;
         this.stock = stock;
@@ -22,16 +22,20 @@ public class Product implements Serializable {
         this.supplier = supplier;
     }
 
-    public int getId() { return id; }
+    public int getId() { return productId; }
+
     public String getName() { return name; }
+
     public double getPrice() { return price; }
+
     public int getStock() { return stock; }
+
     public Category getCategory() { return category; }
+
     public Supplier getSupplier() { return supplier; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
+    public void setId(int productId) { this.productId = productId; }
 
     public void setName(String name) {
         this.name = name;
