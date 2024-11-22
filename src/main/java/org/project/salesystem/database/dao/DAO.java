@@ -2,10 +2,10 @@ package org.project.salesystem.database.dao;
 
 import java.util.List;
 
-public interface DAO <T, K>{
+public interface DAO <T>{
     void create(T t);
-    T read(K id);
+    T read(Integer id);
     void update(T t);
-    void delete(K id);
+    void delete(Integer id);
     List<T> readAll();
 }
