@@ -22,7 +22,7 @@ public class SupplierDAOImpl implements DAO<Supplier> {
             ps.setString(2, supplier.getPhone());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al insetar el nuevo proveedor", e);
+            throw new RuntimeException("Error al insertar el nuevo proveedor", e);
         }
     }
 

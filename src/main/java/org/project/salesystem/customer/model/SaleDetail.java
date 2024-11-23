@@ -5,7 +5,7 @@ import org.project.salesystem.admin.model.Product;
 import java.io.Serializable;
 
 public class SaleDetail implements Serializable {
-    private int SaleDetalId;
+    private int SaleDetailId;
     private int quantity;
     private double productTotal;
     private Sale sale;
@@ -14,15 +14,15 @@ public class SaleDetail implements Serializable {
     public SaleDetail() {
     }
 
-    public SaleDetail(int saleDetalId, int quantity, double productTotal, Sale sale, Product product) {
-        SaleDetalId = saleDetalId;
+    public SaleDetail(int SaleDetailId, int quantity, double productTotal, Sale sale, Product product) {
+        this.SaleDetailId = SaleDetailId;
         this.quantity = quantity;
         this.productTotal = productTotal;
         this.sale = sale;
         this.product = product;
     }
 
-    public int getSaleDetalId() { return SaleDetalId; }
+    public int getSaleDetailId() { return SaleDetailId; }
 
     public int getQuantity() { return quantity; }
 
@@ -33,8 +33,8 @@ public class SaleDetail implements Serializable {
     public Product getProduct() { return product; }
 
 
-    public void setSaleDetalId(int saleDetalId) {
-        SaleDetalId = saleDetalId;
+    public void setSaleDetailId(int SaleDetailId) {
+        this.SaleDetailId = SaleDetailId;
     }
 
     public void setQuantity(int quantity) {

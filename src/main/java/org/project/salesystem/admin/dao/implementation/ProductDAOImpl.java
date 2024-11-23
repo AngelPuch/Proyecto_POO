@@ -43,7 +43,6 @@ public class ProductDAOImpl implements DAO<Product> {
             ps.setInt(1, id);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    product = new Product();
                     product = convertToProduct(rs);
                 }
             }
@@ -77,9 +76,8 @@ public class ProductDAOImpl implements DAO<Product> {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar la categoria con ID: " + id, e);
+            throw new RuntimeException("Error al eliminar el producto con el ID: " + id, e);
         }
-
     }
 
     @Override
