@@ -1,4 +1,4 @@
-package org.project.salesystem.admin.dao;
+package org.project.salesystem.admin.dao.implementation;
 
 import org.project.salesystem.admin.model.Category;
 import org.project.salesystem.database.DatabaseConnection;
@@ -18,11 +18,10 @@ public class CategoryDAOImpl implements DAO<Category> {
         String query = "INSERT INTO category VALUES (null, ?, ? )";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)){
+            PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, category.getName());
             ps.setString(2, category.getDescription());
             ps.executeUpdate();
-
         } catch (SQLException e) {
             throw new RuntimeException("Error al insertar la nueva categoria", e);
         }
@@ -34,10 +33,10 @@ public class CategoryDAOImpl implements DAO<Category> {
         String query = "SELECT * FROM category WHERE category_id = ?";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)){
+            PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
-            try(ResultSet rs = ps.executeQuery()){
-                if (rs.next()){
+            try(ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                     category = new Category();
                     category.setId(rs.getInt("category_id"));
                     category.setName(rs.getString("name"));
@@ -55,7 +54,7 @@ public class CategoryDAOImpl implements DAO<Category> {
         String query = "UPDATE category SET name = ?, description = ? WHERE category_id = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)){
+            PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, category.getName());
             ps.setString(2, category.getDescription());
             ps.setInt(3, category.getId());
@@ -68,8 +67,9 @@ public class CategoryDAOImpl implements DAO<Category> {
     @Override
     public void delete(Integer id) {
         String query = "DELETE FROM category WHERE category_id = ?";
+
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)){
+            PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -84,8 +84,8 @@ public class CategoryDAOImpl implements DAO<Category> {
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery()){
-            while (rs.next()){
+            ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
                 categoryList.add(new Category(
                         rs.getInt("category_id"),
                         rs.getString("name"),
