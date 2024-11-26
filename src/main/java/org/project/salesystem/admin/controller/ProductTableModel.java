@@ -1,32 +1,32 @@
-package org.project.salesystem.admin.gui;
+package org.project.salesystem.admin.controller;
 
-import org.project.salesystem.admin.dao.implementation.CategoryDAOImpl;
 import org.project.salesystem.admin.dao.implementation.ProductDAOImpl;
-import org.project.salesystem.admin.dao.implementation.SupplierDAOImpl;
 import org.project.salesystem.admin.model.Category;
 import org.project.salesystem.admin.model.Product;
 import org.project.salesystem.admin.model.Supplier;
-
+import static org.project.salesystem.admin.gui.FillComboBox.*;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class ProductTableModel extends AbstractTableModel {
     private final String[] columnNames = {"Nombre", "Precio", "Stock", "Proveedor", "Categoría"};
-    ProductDAOImpl productDAO;
-    List<Product> productList;
-    JComboBox<Supplier> comboTypeSupplier;
-    JComboBox<Category> comboTypeCategory;
+    private ProductDAOImpl productDAO;
+    private List<Product> productList;
+    private JComboBox<Supplier> comboTypeSupplier;
+    private JComboBox<Category> comboTypeCategory;
 
     public ProductTableModel() {
         this.productDAO = new ProductDAOImpl();
         productList = productDAO.readAll();
         comboTypeSupplier = new JComboBox<>();
         comboTypeCategory = new JComboBox<>();
-        fillComboBoxSupplier();
-        fillComboBoxCategory();
+        fillComboBoxSupplier(comboTypeSupplier);
+        fillComboBoxCategory(comboTypeCategory);
     }
 
+    public JComboBox<Supplier> getComboTypeSupplier() { return comboTypeSupplier; }
+    public JComboBox<Category> getComboTypeCategory() { return comboTypeCategory; }
 
     @Override
     public int getRowCount() {
@@ -82,7 +82,6 @@ public class ProductTableModel extends AbstractTableModel {
                 break;
         }
         productDAO.update(product);
-
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
@@ -106,21 +105,4 @@ public class ProductTableModel extends AbstractTableModel {
         productList = productDAO.readAll();
     }
 
-    private void fillComboBoxSupplier() {
-        SupplierDAOImpl supplierDAO = new SupplierDAOImpl();
-        java.util.List<Supplier> supplierList;
-        supplierList = supplierDAO.readAll();
-        for (Supplier supplier: supplierList){
-            comboTypeSupplier.addItem(supplier);
-        }
-    }
-
-    private void fillComboBoxCategory() {
-        CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
-        List<Category> categoryList;
-        categoryList = categoryDAO.readAll();
-        for (Category category: categoryList){
-            comboTypeCategory.addItem(category);
-        }
-    }
 }
