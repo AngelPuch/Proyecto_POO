@@ -101,6 +101,16 @@ public class ProductTableModel extends AbstractTableModel {
         return productList.get(rowIndex);
     }
 
+    public void showFilteredList(List<Product> productListFilter){
+        if (productListFilter.isEmpty()){
+            refreshProductList();
+        }else{
+            productList = productListFilter;
+            fireTableDataChanged();
+        }
+    }
+
+
     private void refreshProductList() {
         productList = productDAO.readAll();
     }
