@@ -23,6 +23,11 @@ public class Customer implements Serializable {
         this.address = address;
     }
 
+    public Customer(int customerId) {
+        this.customerId = customerId;
+    }
+
+
     public int getCustomerId() { return customerId; }
 
     public String getName() { return name; }
