@@ -3,7 +3,7 @@ package org.project.salesystem.customer.dao.implementation;
 import org.project.salesystem.customer.dao.CustomerDAO;
 import org.project.salesystem.customer.model.Address;
 import org.project.salesystem.customer.model.Customer;
-import org.project.salesystem.database.dao.DatabaseConnection;
+import org.project.salesystem.database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
