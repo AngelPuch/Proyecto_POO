@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static DatabaseConnection instance;
     private Connection connection;
-    private final String URL = "jdbc:mysql://localhost/videogamestore";
+    private final String URL = "jdbc:mysql://localhost:3306/videogamestore";
     private final String USERNAME = "root";
-    private final String PASSWORD = "12345678";
+    private final String PASSWORD = "$JLSG10$sg";
 
     private DatabaseConnection() throws SQLException {
         connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);

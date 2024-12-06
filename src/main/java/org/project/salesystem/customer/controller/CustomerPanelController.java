@@ -8,7 +8,7 @@ import org.project.salesystem.customer.dao.implementation.CartDAOImpl;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class CustomerPanelController(){
+public class CustomerPanelController{
     private CustomerPanel customerPanel;
     private CustomerProductTableModel customerProductTableModel;
     private JTable table;
@@ -20,7 +20,7 @@ public class CustomerPanelController(){
         this.table = table;
         this.cartDAO = cartDAO;
     }
-
+/*
     public void addProductToCart() {
         int selectedRow = productTable.getSelectedRow();
         if (selectedRow != -1){
@@ -30,4 +30,6 @@ public class CustomerPanelController(){
             JOptionPane.showMessageDialog(this, "Selecciona un producto para agregar al carrito");
         }
     }
+
+ */
 }

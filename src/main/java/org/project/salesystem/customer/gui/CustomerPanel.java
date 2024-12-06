@@ -34,4 +34,6 @@ public class CustomerPanel extends JPanel {
         buttonPanel.add(textField);
         buttonPanel.add(btnAddToCart);
     }
+
+
 }
