@@ -1,4 +1,4 @@
-package org.project.salesystem.customer.model;
+package org.project.salesystem.customer;
 
 import org.project.salesystem.customer.gui.MainCustomerWindow;
 
