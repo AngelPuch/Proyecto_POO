@@ -55,5 +55,5 @@ Thumbs.db
 *.log
 config.properties
 
-org/project/salesystem/database/DatabaseConnection.java
+src/main/java/org/project/salesystem/database/DatabaseConnection.java
 
