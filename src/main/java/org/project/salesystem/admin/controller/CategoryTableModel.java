@@ -73,19 +73,6 @@ public class CategoryTableModel extends AbstractTableModel {
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    public Category getCategoryAt(int rowIndex) {
-        return categoryList.get(rowIndex);
-    }
-
-    public void showFilteredList(List<Category> filteredCategoryList){
-        if (filteredCategoryList.isEmpty()){
-            refreshCategoryList();
-        }else{
-            categoryList = filteredCategoryList;
-            fireTableDataChanged();
-        }
-    }
-
     private void refreshCategoryList() {
         categoryList = categoryDAO.readAll();
     }

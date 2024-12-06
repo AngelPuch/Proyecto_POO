@@ -11,9 +11,9 @@ public class SalePanel extends JPanel {
     private JTable table;
     private JPanel inputPanel;
     private JTextField searchField;
+    private JLabel messageLabel;
     private JButton printDetailButton;
     private SalePanelController controller;
-    private JLabel messageLabel;
 
     public SalePanel() {
         initComponents();

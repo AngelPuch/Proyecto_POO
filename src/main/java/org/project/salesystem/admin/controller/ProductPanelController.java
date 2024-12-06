@@ -41,14 +41,21 @@ public class ProductPanelController {
     }
 
     public void filterProductListAction(){
-        String searchText = inventarioPanel.getSearchField().getText();
+        String searchText = inventarioPanel.getSearchField().getText().trim();
         List<Product> filteredProductList = new ArrayList<>();
         for (Product product: productDAO.readAll()){
-            if (product.getName().contains(searchText)){
+            if (product.getName().toLowerCase().contains(searchText.toLowerCase())){
                 filteredProductList.add(product);
             }
         }
-        productTableModel.showFilteredList(filteredProductList);
+
+        if (filteredProductList.isEmpty()) {
+            inventarioPanel.setMessage("No se encontraron coincidencias");
+            productTableModel.showFilteredList(new ArrayList<>());
+        }else {
+            inventarioPanel.setMessage("");
+            productTableModel.showFilteredList(filteredProductList);
+        }
     }
 
     private boolean validateNonEmptyField(){
