@@ -25,8 +25,9 @@ public class TabbedPaneManager {
 
         tabbedPane.addTab("Productos", new ProductPanel());
         tabbedPane.addTab("Proveedores", new SupplierPanel());
-        tabbedPane.addTab("Ventas", new CategoryPanel());
-        tabbedPane.addTab("Acerca de", null);
+        tabbedPane.addTab("Categorías", new CategoryPanel());
+        tabbedPane.addTab("Ventas", new SalePanel());
+        tabbedPane.addTab("Acerca de", new InformationPanel());
         return tabbedPane;
     }
 }

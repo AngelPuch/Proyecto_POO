@@ -1,5 +1,6 @@
 package org.project.salesystem.customer.dao.implementation;
 
+import org.project.salesystem.customer.model.Customer;
 import org.project.salesystem.customer.model.Sale;
 import org.project.salesystem.database.DatabaseConnection;
 import org.project.salesystem.database.dao.DAO;
@@ -31,7 +32,8 @@ public class SaleDAOImpl implements DAO<Sale> {
     @Override
     public Sale read(Integer id) {
         Sale sale = null;
-        String query = "select sale_id, date, total from sale WHERE sale_id = ?";
+        String query = "SELECT name, date, total FROM sale INNER JOIN customer " +
+                "WHERE sale.customer_id = customer.customer_id AND sale_id = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -39,9 +41,11 @@ public class SaleDAOImpl implements DAO<Sale> {
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     sale = new Sale();
-                    sale.setSaleId(rs.getInt("sale_id"));
+                    Customer customer = new Customer();
                     sale.setDateOfSale(rs.getDate("date"));
                     sale.setTotal(rs.getDouble("total"));
+                    customer.setName(rs.getString("name"));
+                    sale.setCustomer(customer);
                 }
             }
         } catch (SQLException e) {
@@ -80,16 +84,19 @@ public class SaleDAOImpl implements DAO<Sale> {
     @Override
     public List<Sale> readAll() {
         List<Sale> saleList = new ArrayList<>();
-        String query = "select sale_id, date, total from sale";
+        String query = "SELECT name, date, total FROM sale INNER JOIN customer " +
+                "WHERE sale.customer_id = customer.customer_id";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Sale sale = new Sale();
-                sale.setSaleId(rs.getInt("sale_id"));
+                Customer customer = new Customer();
                 sale.setDateOfSale(rs.getDate("date"));
                 sale.setTotal(rs.getDouble("total"));
+                customer.setName(rs.getString("name"));
+                sale.setCustomer(customer);
                 saleList.add(sale);
             }
         } catch (SQLException e) {
