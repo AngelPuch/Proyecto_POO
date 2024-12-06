@@ -1,4 +1,3 @@
-/*
 package org.project.salesystem.customer.controller;
 
 import org.project.salesystem.admin.model.Product;
@@ -32,4 +31,3 @@ public class CustomerPanelController(){
         }
     }
 }
-*/
