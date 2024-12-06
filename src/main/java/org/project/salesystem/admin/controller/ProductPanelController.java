@@ -1,7 +1,7 @@
 package org.project.salesystem.admin.controller;
 
 import org.project.salesystem.admin.dao.implementation.ProductDAOImpl;
-import org.project.salesystem.admin.gui.InventoryPanel;
+import org.project.salesystem.admin.gui.ProductPanel;
 import org.project.salesystem.admin.model.Category;
 import org.project.salesystem.admin.model.Product;
 import org.project.salesystem.admin.model.Supplier;
@@ -10,20 +10,18 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryPanelController {
-    private InventoryPanel inventarioPanel;
+public class ProductPanelController {
+    private ProductPanel inventarioPanel;
     private ProductTableModel productTableModel;
-    private JTable table;
     private ProductDAOImpl productDAO;
 
-    public InventoryPanelController(InventoryPanel inventarioPanel, ProductTableModel productTableModel, JTable table) {
+    public ProductPanelController(ProductPanel inventarioPanel, ProductTableModel productTableModel) {
         this.inventarioPanel = inventarioPanel;
         this.productTableModel = productTableModel;
-        this.table = table;
         productDAO = new ProductDAOImpl();
     }
 
-    public void actionAddProduct(){
+    public void addProductAction(){
         if (validateNonEmptyField()){
             Product product = createProduct();
             productTableModel.addProduct(product);
@@ -33,24 +31,24 @@ public class InventoryPanelController {
         }
     }
 
-    public void actionDeleteProduct() {
-        int selectedRow = table.getSelectedRow();
+    public void deleteProductAction() {
+        int selectedRow = inventarioPanel.getTable().getSelectedRow();
         if (selectedRow != -1){
-            productTableModel.removeProducto(selectedRow);
+            productTableModel.removeProduct(selectedRow);
         }else{
             JOptionPane.showMessageDialog(inventarioPanel, "Selecciona una fila para eliminar");
         }
     }
 
-    public void actionFilterProductList(){
+    public void filterProductListAction(){
         String searchText = inventarioPanel.getSearchField().getText();
-        List<Product> productListFilter = new ArrayList<>();
+        List<Product> filteredProductList = new ArrayList<>();
         for (Product product: productDAO.readAll()){
             if (product.getName().contains(searchText)){
-                productListFilter.add(product);
+                filteredProductList.add(product);
             }
         }
-        productTableModel.showFilteredList(productListFilter);
+        productTableModel.showFilteredList(filteredProductList);
     }
 
     private boolean validateNonEmptyField(){

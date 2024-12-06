@@ -1,4 +1,4 @@
-package org.project.salesystem.admin.gui;
+package org.project.salesystem.admin.controller;
 
 import org.project.salesystem.admin.dao.implementation.CategoryDAOImpl;
 import org.project.salesystem.admin.dao.implementation.SupplierDAOImpl;

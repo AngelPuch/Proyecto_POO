@@ -1,37 +1,34 @@
 package org.project.salesystem.admin.gui;
 
-import org.project.salesystem.admin.controller.InventoryPanelController;
+import org.project.salesystem.admin.controller.ProductPanelController;
 import org.project.salesystem.admin.controller.ProductTableModel;
 import org.project.salesystem.admin.model.Category;
 import org.project.salesystem.admin.model.Supplier;
-import static org.project.salesystem.admin.gui.FillComboBox.*;
+import static org.project.salesystem.admin.controller.FillComboBox.*;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 
-public class InventoryPanel extends JPanel {
+public class ProductPanel extends JPanel {
     private ProductTableModel productTableModel;
     private JTable table;
     private JPanel inputPanel;
-
     private JTextField nameField;
     private JTextField priceField;
     private JTextField stockField;
     private JTextField searchField;
     private JComboBox<Supplier> comboTypeSupplier;
     private JComboBox<Category> comboTypeCategory;
-    private InventoryPanelController controller;
+    private ProductPanelController controller;
 
-    public InventoryPanel() {
-        setLayout(new BorderLayout());
-        init();
-        this.controller = new InventoryPanelController(this, productTableModel,table);
-        add(inputPanel, BorderLayout.NORTH);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+    public ProductPanel() {
+        initComponents();
+        this.controller = new ProductPanelController(this, productTableModel);
         setVisible(true);
     }
 
+    public JTable getTable() { return table; }
     public JTextField getNameField() { return nameField; }
     public JTextField getPriceField() { return priceField; }
     public JTextField getStockField() { return stockField; }
@@ -39,7 +36,7 @@ public class InventoryPanel extends JPanel {
     public JComboBox<Supplier> getComboTypeSupplier() { return comboTypeSupplier; }
     public JComboBox<Category> getComboTypeCategory() { return comboTypeCategory; }
 
-    private void init() {
+    private void initComponents() {
         productTableModel = new ProductTableModel();
         table = new JTable(productTableModel);
 
@@ -54,6 +51,7 @@ public class InventoryPanel extends JPanel {
         priceField = new JTextField(8);
         stockField = new JTextField(8);
         searchField = new JTextField(8);
+
         JButton addButton = new JButton("Agregar");
         JButton deleteButton = new JButton("Eliminar");
 
@@ -78,10 +76,13 @@ public class InventoryPanel extends JPanel {
         inputPanel.add(searchField);
 
 
-        addButton.addActionListener(e -> controller.actionAddProduct());
-        deleteButton.addActionListener(e -> controller.actionDeleteProduct());
-        searchField.addActionListener(e ->controller.actionFilterProductList());
+        addButton.addActionListener(e -> controller.addProductAction());
+        deleteButton.addActionListener(e -> controller.deleteProductAction());
+        searchField.addActionListener(e ->controller.filterProductListAction());
 
+        setLayout(new BorderLayout());
+        add(inputPanel, BorderLayout.NORTH);
+        add(new JScrollPane(table), BorderLayout.CENTER);
 
     }
 }

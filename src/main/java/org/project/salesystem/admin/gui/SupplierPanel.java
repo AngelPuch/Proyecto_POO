@@ -15,18 +15,16 @@ public class SupplierPanel extends JPanel {
     private SupplierPanelController controller;
 
     public SupplierPanel (){
-        setLayout(new BorderLayout());
-        init();
-        this.controller = new SupplierPanelController(this, supplierTableModel, table);
-        add(inputPanel, BorderLayout.NORTH);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        initComponents();
+        this.controller = new SupplierPanelController(this, supplierTableModel);
         setVisible(true);
     }
 
     public JTextField getNameField() { return nameField; }
     public JTextField getNumberField() { return numberField; }
+    public JTable getTable() { return table; }
 
-    private void init() {
+    private void initComponents() {
         supplierTableModel = new SupplierTableModel();
         table = new JTable(supplierTableModel);
 
@@ -44,8 +42,11 @@ public class SupplierPanel extends JPanel {
         inputPanel.add(addButton);
         inputPanel.add(deleteButton);
 
-        addButton.addActionListener(e -> controller.actionAddSupplier());
-        deleteButton.addActionListener(e -> controller.actionDeleteSupplier());
+        addButton.addActionListener(e -> controller.addSupplierAction());
+        deleteButton.addActionListener(e -> controller.deleteSupplierAction());
 
+        setLayout(new BorderLayout());
+        add(inputPanel, BorderLayout.NORTH);
+        add(new JScrollPane(table), BorderLayout.CENTER);
     }
 }

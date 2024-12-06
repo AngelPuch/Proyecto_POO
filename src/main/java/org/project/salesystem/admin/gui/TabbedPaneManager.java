@@ -23,9 +23,9 @@ public class TabbedPaneManager {
     private static JTabbedPane createTabbedPane(){
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("Productos", new InventoryPanel());
+        tabbedPane.addTab("Productos", new ProductPanel());
         tabbedPane.addTab("Proveedores", new SupplierPanel());
-        tabbedPane.addTab("Ventas", null);
+        tabbedPane.addTab("Ventas", new CategoryPanel());
         tabbedPane.addTab("Acerca de", null);
         return tabbedPane;
     }

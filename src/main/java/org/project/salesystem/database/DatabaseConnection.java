@@ -11,7 +11,7 @@ public class DatabaseConnection {
     private final String USERNAME = "root";
     private final String PASSWORD = "12345678";
 
-    public DatabaseConnection() throws SQLException {
+    private DatabaseConnection() throws SQLException {
         connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
@@ -25,5 +25,4 @@ public class DatabaseConnection {
     public Connection getConnection() {
         return connection;
     }
-
 }

@@ -4,7 +4,7 @@ import org.project.salesystem.admin.dao.implementation.ProductDAOImpl;
 import org.project.salesystem.admin.model.Category;
 import org.project.salesystem.admin.model.Product;
 import org.project.salesystem.admin.model.Supplier;
-import static org.project.salesystem.admin.gui.FillComboBox.*;
+import static org.project.salesystem.admin.controller.FillComboBox.*;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
@@ -85,31 +85,30 @@ public class ProductTableModel extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
-    public void addProduct(Product producto) {
-        productDAO.create(producto);
+    public void addProduct(Product product) {
+        productDAO.create(product);
         refreshProductList();
         fireTableRowsInserted(productList.size() - 1, productList.size() - 1);
     }
 
-    public void removeProducto(int rowIndex) {
+    public void removeProduct(int rowIndex) {
         productDAO.delete(productList.get(rowIndex).getId());
         refreshProductList();
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    public Product getProductoAt(int rowIndex) {
+    public Product getProductAt(int rowIndex) {
         return productList.get(rowIndex);
     }
 
-    public void showFilteredList(List<Product> productListFilter){
-        if (productListFilter.isEmpty()){
+    public void showFilteredList(List<Product> filteredProductList){
+        if (filteredProductList.isEmpty()){
             refreshProductList();
         }else{
-            productList = productListFilter;
+            productList = filteredProductList;
             fireTableDataChanged();
         }
     }
-
 
     private void refreshProductList() {
         productList = productDAO.readAll();

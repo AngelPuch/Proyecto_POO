@@ -16,7 +16,6 @@ public class SupplierTableModel extends AbstractTableModel {
         supplierList = supplierDAO.readAll();
     }
 
-
     @Override
     public int getRowCount() {
         return supplierList.size();
@@ -78,11 +77,11 @@ public class SupplierTableModel extends AbstractTableModel {
         return supplierList.get(rowIndex);
     }
 
-    public void showFilteredList(List<Supplier> supplierListFilter){
-        if (supplierListFilter.isEmpty()){
+    public void showFilteredList(List<Supplier> filteredSupplierList){
+        if (filteredSupplierList.isEmpty()){
             refreshSupplierList();
         }else{
-            supplierList = supplierListFilter;
+            supplierList = filteredSupplierList;
             fireTableDataChanged();
         }
     }

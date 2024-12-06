@@ -1,7 +1,5 @@
 package org.project.salesystem.customer.gui;
 
-import org.project.salesystem.admin.gui.InventoryPanel;
-
 import javax.swing.*;
 
 public class TabbedPaneCustomer{
