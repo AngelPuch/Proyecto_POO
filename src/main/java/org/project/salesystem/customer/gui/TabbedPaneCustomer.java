@@ -22,8 +22,9 @@ public class TabbedPaneCustomer{
     private static JTabbedPane createTabbedPane(){
         JTabbedPane tabbedPane = new JTabbedPane();
         CustomerPanel customerPanel = new CustomerPanel();
+        CartPanel cartPanel = new CartPanel();
         tabbedPane.addTab("Productos", customerPanel);
-        tabbedPane.addTab("Carrito de compras", null);
+        tabbedPane.addTab("Carrito de compras", cartPanel);
         return tabbedPane;
     }
 }

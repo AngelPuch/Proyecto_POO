@@ -51,4 +51,12 @@ public class CustomerProductTableModel extends AbstractTableModel{
     public Product getProductAt(int rowIndex) {
         return productList.get(rowIndex);
     }
+
+    public void updateProductAt(int rowIndex, Product updatedProduct) {
+        // Reemplaza el producto en la lista
+        productList.set(rowIndex, updatedProduct);
+
+        // Notifica que los datos han cambiado para actualizar la vista
+        fireTableRowsUpdated(rowIndex, rowIndex);
+    }
 }

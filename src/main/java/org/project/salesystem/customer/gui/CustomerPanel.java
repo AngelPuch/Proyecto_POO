@@ -1,5 +1,7 @@
 package org.project.salesystem.customer.gui;
 
+import org.project.salesystem.customer.controller.CustomerPanelController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,16 +12,28 @@ public class CustomerPanel extends JPanel {
     private JPanel buttonPanel;
     private JTextField textField;
     private JLabel label;
+    private CustomerPanelController controller;
 
     public CustomerPanel(){
         setLayout(new BorderLayout());
         init();
-        add(buttonPanel, BorderLayout.NORTH);
+        controller = new CustomerPanelController(this);
+        add(buttonPanel, BorderLayout.SOUTH);
         add(new JScrollPane(productTable), BorderLayout.CENTER);
         setVisible(true);
     }
 
+    public JTable getProductTable() {
+        return productTable;
+    }
 
+    public JTextField getTextField() {
+        return textField;
+    }
+
+    public CustomerProductTableModel getTableModel() {
+        return tableModel;
+    }
 
     private void init(){
         tableModel = new CustomerProductTableModel();
@@ -29,7 +43,7 @@ public class CustomerPanel extends JPanel {
         label = new JLabel("Cantidad de productos: ");
 
         btnAddToCart = new JButton("Agregar al carrito");
-        //btnAddToCart.addActionListener(e -> addToCartAction());
+        btnAddToCart.addActionListener(e -> controller.addToCartAction());
         buttonPanel.add(label);
         buttonPanel.add(textField);
         buttonPanel.add(btnAddToCart);

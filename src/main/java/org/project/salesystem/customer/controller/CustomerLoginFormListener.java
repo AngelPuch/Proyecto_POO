@@ -3,6 +3,9 @@ package org.project.salesystem.customer.controller;
 import org.project.salesystem.customer.dao.CustomerDAO;
 import org.project.salesystem.customer.dao.implementation.CustomerDAOImpl;
 import org.project.salesystem.customer.gui.CustomerLoginForm;
+import org.project.salesystem.customer.model.Customer;
+import org.project.salesystem.customer.session.Session;
+
 import static org.project.salesystem.customer.gui.TabbedPaneCustomer.openTabbedPane;
 
 import javax.swing.*;
@@ -23,6 +26,9 @@ public class CustomerLoginFormListener implements ActionListener {
 
         if (authenticate(username, password)) {
             JOptionPane.showMessageDialog(customerLoginForm, "Bienvenido, " + username);
+            CustomerDAO customerDAO = new CustomerDAOImpl();
+            Customer customer = customerDAO.findCustomerByUsernameAndPassword(username, new String(password));
+            Session.setCurrentCustomer(customer);
             customerLoginForm.dispose();
             openTabbedPane();
         } else {

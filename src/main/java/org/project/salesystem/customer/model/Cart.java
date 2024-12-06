@@ -9,9 +9,16 @@ public class Cart implements Serializable{
     public Cart(){
     }
 
+    public Cart(Customer customer) {
+        this.customer = customer;
+    }
+
     public Cart(int cartId, Customer customer) {
         this.cartId = cartId;
         this.customer = customer;
+    }
+
+    public Cart(int cartId, Integer customerId) {
     }
 
     public int getCartId() {
