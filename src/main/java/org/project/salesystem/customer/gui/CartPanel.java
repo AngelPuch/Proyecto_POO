@@ -28,10 +28,10 @@ public class CartPanel extends JPanel {
         CartDAOImpl cartDAO = new CartDAOImpl();
         currentCart = cartDAO.getCartByCustomerId(Session.getCurrentCustomer());
 
-        if (currentCart == null) {
-            JOptionPane.showMessageDialog(this, "No tienes un carrito de compras. Crea uno primero.");
-            return;
+        if (this.currentCart == null) {
+            this.currentCart = new Cart();  // Crea un nuevo carrito si no existe
         }
+
 
         // Crear el modelo de la tabla con los productos del carrito
         CartItemDAOImpl cartItemDAO = new CartItemDAOImpl();
