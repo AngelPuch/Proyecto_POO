@@ -1,17 +1,22 @@
 package org.project.salesystem.admin.controller;
 
+import org.project.salesystem.admin.dao.implementation.SupplierDAOImpl;
 import org.project.salesystem.admin.gui.SupplierPanel;
 import org.project.salesystem.admin.model.Supplier;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SupplierPanelController {
     private SupplierPanel supplierPanel;
     private SupplierTableModel supplierTableModel;
+    private SupplierDAOImpl supplierDAO;
 
     public SupplierPanelController(SupplierPanel supplierPanel, SupplierTableModel supplierTableModel) {
         this.supplierPanel = supplierPanel;
         this.supplierTableModel = supplierTableModel;
+        this.supplierDAO = new SupplierDAOImpl();
     }
 
     public void addSupplierAction() {
@@ -32,6 +37,24 @@ public class SupplierPanelController {
             supplierTableModel.removeSupplier(selectedRow);
         }else{
             JOptionPane.showMessageDialog(supplierPanel, "Selecciona una fila para eliminar");
+        }
+    }
+
+    public void filterSupplierListAction() {
+        String searchText = supplierPanel.getSearchField().getText().trim();
+        List<Supplier> filteredSupplierList = new ArrayList<>();
+        for (Supplier supplier: supplierDAO.readAll()) {
+            if (supplier.getName().toLowerCase().contains(searchText.toLowerCase())) {
+                filteredSupplierList.add(supplier);
+            }
+        }
+
+        if (filteredSupplierList.isEmpty()) {
+            supplierPanel.setMessage("No se encontraron coincidencias");
+            supplierTableModel.showFilteredList(new ArrayList<>());
+        }else {
+            supplierPanel.setMessage("");
+            supplierTableModel.showFilteredList(filteredSupplierList);
         }
     }
 

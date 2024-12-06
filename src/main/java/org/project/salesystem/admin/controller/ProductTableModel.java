@@ -102,12 +102,9 @@ public class ProductTableModel extends AbstractTableModel {
     }
 
     public void showFilteredList(List<Product> filteredProductList){
-        if (filteredProductList.isEmpty()){
-            refreshProductList();
-        }else{
-            productList = filteredProductList;
-            fireTableDataChanged();
-        }
+        productList = filteredProductList;
+        fireTableDataChanged();
+
     }
 
     private void refreshProductList() {

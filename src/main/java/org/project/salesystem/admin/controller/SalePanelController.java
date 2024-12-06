@@ -30,12 +30,12 @@ public class SalePanelController {
                 filteredSaleList.add(sale);
             }
         }
-        salePanel.setMessage("");
 
         if (filteredSaleList.isEmpty()){
             salePanel.setMessage("No se encontraron coincidencias");
             saleTableModel.showFilteredList(new ArrayList<>());
         }else{
+            salePanel.setMessage("");
             saleTableModel.showFilteredList(filteredSaleList);
         }
     }

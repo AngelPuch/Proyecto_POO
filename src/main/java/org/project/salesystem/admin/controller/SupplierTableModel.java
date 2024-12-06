@@ -78,12 +78,9 @@ public class SupplierTableModel extends AbstractTableModel {
     }
 
     public void showFilteredList(List<Supplier> filteredSupplierList){
-        if (filteredSupplierList.isEmpty()){
-            refreshSupplierList();
-        }else{
-            supplierList = filteredSupplierList;
-            fireTableDataChanged();
-        }
+        supplierList = filteredSupplierList;
+        fireTableDataChanged();
+
     }
 
     private void refreshSupplierList() {

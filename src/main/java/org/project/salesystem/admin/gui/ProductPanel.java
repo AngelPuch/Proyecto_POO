@@ -18,6 +18,7 @@ public class ProductPanel extends JPanel {
     private JTextField priceField;
     private JTextField stockField;
     private JTextField searchField;
+    private JLabel messageLabel;
     private JComboBox<Supplier> comboTypeSupplier;
     private JComboBox<Category> comboTypeCategory;
     private ProductPanelController controller;
@@ -33,6 +34,9 @@ public class ProductPanel extends JPanel {
     public JTextField getPriceField() { return priceField; }
     public JTextField getStockField() { return stockField; }
     public JTextField getSearchField() { return searchField; }
+    public void setMessage(String message) {
+        this.messageLabel.setText(message);
+    }
     public JComboBox<Supplier> getComboTypeSupplier() { return comboTypeSupplier; }
     public JComboBox<Category> getComboTypeCategory() { return comboTypeCategory; }
 
@@ -51,6 +55,8 @@ public class ProductPanel extends JPanel {
         priceField = new JTextField(8);
         stockField = new JTextField(8);
         searchField = new JTextField(8);
+        messageLabel = new JLabel("", SwingConstants.CENTER);
+        messageLabel.setForeground(Color.red);
 
         JButton addButton = new JButton("Agregar");
         JButton deleteButton = new JButton("Eliminar");
@@ -81,6 +87,7 @@ public class ProductPanel extends JPanel {
         searchField.addActionListener(e ->controller.filterProductListAction());
 
         setLayout(new BorderLayout());
+        add(messageLabel, BorderLayout.SOUTH);
         add(inputPanel, BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
 
