@@ -2,7 +2,7 @@ package org.project.salesystem.customer.dao.implementation;
 
 import org.project.salesystem.customer.dao.CartItemDAO;
 import org.project.salesystem.customer.model.CartItem;
-import org.project.salesystem.database.DatabaseConnection;
+import org.project.salesystem.database.dao.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

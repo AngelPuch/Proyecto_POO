@@ -2,7 +2,7 @@ package org.project.salesystem.admin.dao.implementation;
 
 import org.project.salesystem.admin.dao.AdminDAO;
 import org.project.salesystem.admin.model.Admin;
-import org.project.salesystem.database.DatabaseConnection;
+import org.project.salesystem.database.dao.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

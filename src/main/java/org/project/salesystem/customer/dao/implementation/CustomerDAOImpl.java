@@ -3,7 +3,7 @@ package org.project.salesystem.customer.dao.implementation;
 import org.project.salesystem.customer.dao.CustomerDAO;
 import org.project.salesystem.customer.model.Address;
 import org.project.salesystem.customer.model.Customer;
-import org.project.salesystem.database.DatabaseConnection;
+import org.project.salesystem.database.dao.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,16 +36,12 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void create(Customer customer) {
-        String query = "INSERT INTO customer VALUES (null, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO customer(customer_id,name,phone_number,username,password) VALUES (null, ?, ?, ?, ?)";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
 
-            if (customer.getAddress() != null) {
-                ps.setInt(5, customer.getAddress().getAddressId());
-            } else {
-                ps.setNull(5, Types.INTEGER);
-            }
+
             ps.setString(1, customer.getName());
             ps.setString(2, customer.getPhoneNumber());
             ps.setString(3, customer.getUsername());

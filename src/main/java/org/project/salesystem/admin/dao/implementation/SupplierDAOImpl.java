@@ -1,7 +1,7 @@
 package org.project.salesystem.admin.dao.implementation;
 
 import org.project.salesystem.admin.model.Supplier;
-import org.project.salesystem.database.DatabaseConnection;
+import org.project.salesystem.database.dao.DatabaseConnection;
 import org.project.salesystem.database.dao.DAO;
 
 import java.sql.Connection;
