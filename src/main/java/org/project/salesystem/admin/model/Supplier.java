@@ -2,9 +2,20 @@ package org.project.salesystem.admin.model;
 
 import java.io.Serializable;
 
+/**
+ * Represents a supplier in the system
+ * This class contains information about the supplier such as its name and phone number
+ */
+
 public class Supplier implements Serializable {
+
+    /** The unique identifier for the supplier */
     private int supplierId;
+
+    /** The name of the supplier */
     private String name;
+
+    /** The phone number of the supplier */
     private String phone;
 
     public Supplier() {
@@ -23,7 +34,9 @@ public class Supplier implements Serializable {
     public String getPhone() { return phone; }
 
 
-    public void setId(int supplierId) { this.supplierId = supplierId; }
+    public void setId(int supplierId) {
+        this.supplierId = supplierId;
+    }
 
     public void setName(String name) {
         this.name = name;

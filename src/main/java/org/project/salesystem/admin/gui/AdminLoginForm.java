@@ -5,6 +5,10 @@ import org.project.salesystem.admin.controller.AdminLoginFormListener;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the login form for administrators.
+ * Provides fields for entering username and password and a button to submit the login.
+ */
 public class AdminLoginForm extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -18,18 +22,17 @@ public class AdminLoginForm extends JFrame {
         initComponents();
     }
 
-    public String getUsernameText() {
-        return usernameField.getText();
-    }
+    public String getUsernameText() { return usernameField.getText(); }
 
-    public char[] getPasswordText() {
-        return passwordField.getPassword();
-    }
+    public char[] getPasswordText() { return passwordField.getPassword(); }
 
     public void showMessage(String message) {
         messageLabel.setText(message);
     }
 
+    /**
+     * Initializes and arranges the components of the login form.
+     */
     private void initComponents (){
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 1, 15, 15));

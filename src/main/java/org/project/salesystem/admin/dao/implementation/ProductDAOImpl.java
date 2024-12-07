@@ -13,7 +13,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the {@link DAO} interface for managing {@link Product} entities
+ * Provides CRUD operations for interacting with the database to handle products
+ */
+
 public class ProductDAOImpl implements DAO<Product> {
+
+    /**
+     * Inserts a new product record into the database
+     * @param product the {@link Product} object containing the data to be inserted
+     */
     @Override
     public void create(Product product) {
         String query = "INSERT INTO product VALUES(null, ?, ?, ?, ?, ?)";
@@ -27,6 +37,11 @@ public class ProductDAOImpl implements DAO<Product> {
         }
     }
 
+    /**
+     * Retrieves a product record by its ID
+     * @param id the unique identifier of the product to retrieve
+     * @return The {@link Product} object with the specified ID, or {@code null} if not found
+     */
     @Override
     public Product read(Integer id) {
         Product product = null;
@@ -52,6 +67,10 @@ public class ProductDAOImpl implements DAO<Product> {
         return product;
     }
 
+    /**
+     * Updates an existing product record in the database
+     * @param product the {@link Product} object containing the updated data
+     */
     @Override
     public void update(Product product) {
         String query = "UPDATE product SET name = ?, price = ?, stock = ?, supplier_id = ?, " +
@@ -67,6 +86,10 @@ public class ProductDAOImpl implements DAO<Product> {
         }
     }
 
+    /**
+     * Deletes a product record from the database by its ID
+     * @param id the unique identifier of the product to delete
+     */
     @Override
     public void delete(Integer id) {
         String query = "DELETE FROM product WHERE product_id = ?";
@@ -80,6 +103,10 @@ public class ProductDAOImpl implements DAO<Product> {
         }
     }
 
+    /**
+     * Retrieves all product records from the database
+     * @return a {@link List} of {@link Product} objects representing all the products in the database
+     */
     @Override
     public List<Product> readAll() {
         List<Product> productList = new ArrayList<>();
@@ -103,6 +130,12 @@ public class ProductDAOImpl implements DAO<Product> {
         return productList;
     }
 
+    /**
+     * Sets the values of a {@link Product} object in a {@link PreparedStatement}
+     * @param product the {@link Product} object containing the data
+     * @param ps the {@link PreparedStatement} to populate with the product's data
+     * @throws SQLException if an error occurs during the process
+     */
     private void setProductValues(Product product, PreparedStatement ps) throws SQLException {
         ps.setString(1, product.getName());
         ps.setDouble(2, product.getPrice());
@@ -111,6 +144,12 @@ public class ProductDAOImpl implements DAO<Product> {
         ps.setInt(5, product.getCategory().getId());
     }
 
+    /**
+     * Converts a {@link ResultSet} into a {@link Product} object
+     * @param rs the {@link ResultSet} containing the product data
+     * @return the corresponding {@link Product} object
+     * @throws SQLException if an error occurs during the process
+     */
     private Product convertToProduct(ResultSet rs) throws SQLException {
         Product product = new Product(
                 rs.getInt("product_id"),

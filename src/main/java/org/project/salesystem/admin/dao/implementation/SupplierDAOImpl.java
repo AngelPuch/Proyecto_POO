@@ -11,7 +11,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the {@link DAO} interface for managing {@link Supplier} entities
+ * Provides CRUD operations for interacting with the database to handle suppliers
+ */
+
 public class SupplierDAOImpl implements DAO<Supplier> {
+
+    /**
+     * Inserts a new supplier into the database
+     * @param supplier the {@link Supplier} to be inserted
+     */
     @Override
     public void create(Supplier supplier) {
         String query = "INSERT INTO supplier VALUES (null, ?, ?)";
@@ -26,6 +36,11 @@ public class SupplierDAOImpl implements DAO<Supplier> {
         }
     }
 
+    /**
+     * Retrieves a supplier from the database by its ID
+     * @param id the identifier of the {@link Supplier} to retrieve
+     * @return the {@link Supplier} object, or {@code null} if not found
+     */
     @Override
     public Supplier read(Integer id) {
         Supplier supplier = null;
@@ -48,6 +63,10 @@ public class SupplierDAOImpl implements DAO<Supplier> {
         return supplier;
     }
 
+    /**
+     * Updates the details of an existing supplier in the Database
+     * @param supplier the {@link Supplier} object containing updated data
+     */
     @Override
     public void update(Supplier supplier) {
         String query = "UPDATE supplier SET name = ?, phone_number = ? WHERE supplier_id = ?";
@@ -63,6 +82,10 @@ public class SupplierDAOImpl implements DAO<Supplier> {
         }
     }
 
+    /**
+     * Deletes a supplier from the database by its ID
+     * @param id the identifier of the {@link Supplier} to delete
+     */
     @Override
     public void delete(Integer id) {
         String query = "DELETE FROM supplier WHERE supplier_id = ?";
@@ -76,6 +99,10 @@ public class SupplierDAOImpl implements DAO<Supplier> {
         }
     }
 
+    /**
+     * Retrieves all supplier records from the database
+     * @return a {@link List} of {@link Supplier} objects
+     */
     @Override
     public List<Supplier> readAll() {
         List<Supplier> supplierList = new ArrayList<>();

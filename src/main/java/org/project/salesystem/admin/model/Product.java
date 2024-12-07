@@ -2,12 +2,30 @@ package org.project.salesystem.admin.model;
 
 import java.io.Serializable;
 
+/**
+ * Represents a product in the system
+ * This class contains information about the product such as its name, price,
+ * stock, category ans supplier
+ */
+
 public class Product implements Serializable {
+
+    /** The unique identifier for the product*/
     private int productId;
+
+    /** The name of the product */
     private String name;
+
+    /** The price of the product */
     private double price;
+
+    /** The stock quantity of the product */
     private int stock;
+
+    /** The category to which the product belongs */
     private Category category;
+
+    /** The supplier of the product */
     private Supplier supplier;
 
     public Product() {

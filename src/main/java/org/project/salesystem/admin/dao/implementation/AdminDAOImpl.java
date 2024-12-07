@@ -11,7 +11,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements the {@link AdminDAO} interface to provide CRUD operations for the {@link Admin} entity
+ * This class handles the interaction with the database, allowing the creation, reading updating,
+ * and deletion of administrator records. It also includes a method for authenticating and admin
+ * based on username and password
+ */
+
 public class AdminDAOImpl implements AdminDAO {
+
+    /**
+     * Creates a new admin record in the database
+     * @param admin the {@link Admin} object containing the information to be saved
+     */
     @Override
     public void create(Admin admin) {
         String query = "INSERT INTO admin VALUES (null, ?, ?)";
@@ -26,6 +38,11 @@ public class AdminDAOImpl implements AdminDAO {
         }
     }
 
+    /**
+     * Reads the admin record from de database with the given ID
+     * @param id the ID of the admin to be read
+     * @return an {@link Admin} object containing the admin's details, or {@code null} if not found
+     */
     @Override
     public Admin read(Integer id) {
         Admin admin = null;
@@ -48,6 +65,10 @@ public class AdminDAOImpl implements AdminDAO {
         return admin;
     }
 
+    /**
+     * Updates an existing admin record in the database
+     * @param admin the {@link Admin} object containing the updated details
+     */
     @Override
     public void update(Admin admin) {
         String query = "UPDATE admin SET username = ?, password = ? WHERE admin_id = ?";
@@ -64,6 +85,10 @@ public class AdminDAOImpl implements AdminDAO {
 
     }
 
+    /**
+     * Deletes an admin record from the database
+     * @param id the ID of the admin to be deleted
+     */
     @Override
     public void delete(Integer id) {
         String query = "DELETE FROM admin WHERE admin_id = ?";
@@ -77,6 +102,10 @@ public class AdminDAOImpl implements AdminDAO {
         }
     }
 
+    /**
+     * Retrieves all admin records from the database
+     * @return a {@link List} of all {@link Admin} objects
+     */
     @Override
     public List<Admin> readAll() {
         List<Admin> adminList = new ArrayList<>();
@@ -98,6 +127,12 @@ public class AdminDAOImpl implements AdminDAO {
         return adminList;
     }
 
+    /**
+     * Finds an admin by username and password fot authentication
+     * @param username the username of the admin
+     * @param password the password of the admin
+     * @return an {@link Admin} object if credentials match, otherwise null
+     */
     @Override
     public Admin findAdminByUsernameAndPassword(String username, String password) {
         Admin admin = null;
