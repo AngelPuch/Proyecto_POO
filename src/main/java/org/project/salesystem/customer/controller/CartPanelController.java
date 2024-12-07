@@ -8,9 +8,13 @@ import org.project.salesystem.customer.model.Sale;
 import org.project.salesystem.customer.model.SaleDetail;
 import org.project.salesystem.customer.session.Session;
 import org.project.salesystem.customer.gui.CartPanel;
+import org.project.salesystem.database.DatabaseConnection;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +78,8 @@ public class CartPanelController {
             saleDetail.setQuantity(item.getQuantity());
             saleDetail.setProductTotal(item.getQuantity() * item.getProduct().getPrice());
             saleDetailDAO.create(saleDetail);
+
+            updateProductStock(item.getProduct().getId(), item.getQuantity());
         }
 
         JOptionPane.showMessageDialog(cartPanel, "Compra generada correctamente.");
@@ -84,6 +90,20 @@ public class CartPanelController {
         Window window = SwingUtilities.getWindowAncestor(cartPanel);
         SaleDetailDialog saleDetailDialog = new SaleDetailDialog((Frame) window, saleDetails);
         saleDetailDialog.setVisible(true);
+    }
+
+    private void updateProductStock(int productId, int quantitySold) {
+        String query = "UPDATE product SET stock = stock - ? WHERE product_id = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, quantitySold);
+            ps.setInt(2, productId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

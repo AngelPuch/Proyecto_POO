@@ -59,34 +59,23 @@ public class CustomerPanelController{
         if (quantity > product.getStock()) {
             JOptionPane.showMessageDialog(customerPanel, "No hay suficiente stock para la cantidad solicitada.");
         } else {
-            product.setStock(product.getStock() - quantity);
-            customerPanel.getTableModel().updateProductAt(selectedRow, product);
             Customer currentCustomer = Session.getCurrentCustomer();
             CartDAOImpl cartDAO = new CartDAOImpl();
             Cart cart = cartDAO.getCartByCustomerId(currentCustomer);
-            ProductDAOImpl productDAO = new ProductDAOImpl();
-            boolean stockUpdated = productDAO.updateStock(product.getId(), product.getStock());
-            if (!stockUpdated) {
-                JOptionPane.showMessageDialog(customerPanel, "Error al actualizar el stock en la base de datos.");
-                return;
-            }
 
             if (cart == null) {
                 // Si no se encuentra el carrito, lo creamos
                 cart = new Cart(currentCustomer);  // Creamos un nuevo carrito para el cliente
                 cartDAO.create(cart);  // Guardamos el carrito en la base de datos
             }
-            CartItem cartItem = new CartItem(quantity,cart,product);
+            CartItem cartItem = new CartItem(quantity, cart, product);
             CartItemDAOImpl cartItemDAO = new CartItemDAOImpl();
             cartItemDAO.addCartItem(cartItem);
 
-
             JOptionPane.showMessageDialog(customerPanel, "Producto añadido al carrito.");
-
-
-
         }
     }
 
 }
+
 
