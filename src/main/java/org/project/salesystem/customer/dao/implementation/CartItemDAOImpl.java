@@ -41,7 +41,7 @@ public class CartItemDAOImpl implements CartItemDAO {
     public List<CartItem> getCartItems(int cartId) {
         System.out.println("Entrando al método getCartItems con cartId: " + cartId);
         List<CartItem> cartItems = new ArrayList<>();
-        String query = "SELECT * FROM cart_item WHERE cart_id = ?";
+        String query = "SELECT c.product_id, quantity, name, price, stock  FROM cart_item c INNER JOIN product p WHERE c.product_id = p.product_id AND cart_id = ?";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -50,15 +50,12 @@ public class CartItemDAOImpl implements CartItemDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    Product product = new Product();
                     int productId = rs.getInt("product_id");
                     int quantity = rs.getInt("quantity");
-                    System.out.println("Leyendo fila del ResultSet: product_id = " + productId + ", quantity = " + quantity);
-
-                    // Cargar el producto asociado
-                    ProductDAOImpl productDAO = new ProductDAOImpl();
-                    Product product = productDAO.readInItemCart(productId);
-
-                    // Crear el objeto CartItem
+                    product.setName(rs.getString("name"));
+                    product.setPrice(rs.getDouble("price"));
+                    product.setStock(rs.getInt("stock"));
                     CartItem cartItem = new CartItem(quantity, new Cart(cartId), product);
                     cartItems.add(cartItem);
                 }
