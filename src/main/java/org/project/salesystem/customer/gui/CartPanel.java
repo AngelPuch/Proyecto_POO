@@ -24,19 +24,34 @@ public class CartPanel extends JPanel {
     }
 
     private void initComponents() {
+        // Obtener el carrito asociado al cliente actual
         int customerId = Session.getCurrentCustomer().getCustomerId();
+        System.out.println("Customer ID obtenido: " + customerId);
+
         CartDAOImpl cartDAO = new CartDAOImpl();
         currentCart = cartDAO.getCartByCustomerId(Session.getCurrentCustomer());
 
         if (currentCart == null) {
-            JOptionPane.showMessageDialog(this, "No tienes un carrito de compras. Crea uno primero.");
-            return;
+            currentCart = new Cart(Session.getCurrentCustomer());  // Crea un nuevo carrito si no existe
+            cartDAO.create(currentCart);  // Guarda el nuevo carrito en la base de datos
+            System.out.println("Nuevo carrito creado para el cliente.");
+        } else {
+            System.out.println("Carrito existente cargado: " + currentCart.getCartId());
         }
 
-        // Crear el modelo de la tabla con los productos del carrito
+        System.out.println("Cart ID obtenido: " + currentCart.getCartId());
+
+        // Obtener los productos del carrito
         CartItemDAOImpl cartItemDAO = new CartItemDAOImpl();
         List<CartItem> cartItems = cartItemDAO.getCartItems(currentCart.getCartId());
 
+        if (cartItems.isEmpty()) {
+            System.out.println("El carrito está vacío.");
+        } else {
+            System.out.println("Items encontrados en el carrito: " + cartItems.size());
+        }
+
+        // Crear el modelo de tabla y componentes
         tableModel = new CartProductTableModel(cartItems);
         cartTable = new JTable(tableModel);
 

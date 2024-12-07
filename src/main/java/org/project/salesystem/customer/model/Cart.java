@@ -13,6 +13,10 @@ public class Cart implements Serializable{
         this.customer = customer;
     }
 
+    public Cart(int cartId) {
+        this.cartId = cartId;
+    }
+
     public Cart(int cartId, Customer customer) {
         this.cartId = cartId;
         this.customer = customer;

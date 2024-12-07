@@ -1,8 +1,10 @@
 package org.project.salesystem.customer.controller;
 
 import org.project.salesystem.customer.dao.CustomerDAO;
+import org.project.salesystem.customer.dao.implementation.CartDAOImpl;
 import org.project.salesystem.customer.dao.implementation.CustomerDAOImpl;
 import org.project.salesystem.customer.gui.CustomerLoginForm;
+import org.project.salesystem.customer.model.Cart;
 import org.project.salesystem.customer.model.Customer;
 import org.project.salesystem.customer.session.Session;
 
@@ -28,9 +30,16 @@ public class CustomerLoginFormListener implements ActionListener {
             JOptionPane.showMessageDialog(customerLoginForm, "Bienvenido, " + username);
             CustomerDAO customerDAO = new CustomerDAOImpl();
             Customer customer = customerDAO.findCustomerByUsernameAndPassword(username, new String(password));
-            Session.setCurrentCustomer(customer);
-            customerLoginForm.dispose();
-            openTabbedPane();
+            if (customer != null) {
+                Session.setCurrentCustomer(customer);
+                CartDAOImpl cartDAO = new CartDAOImpl();
+                Cart cart = cartDAO.getOrCreateCartForCustomer(customer);
+                System.out.println("Carrito asignado al cliente: " + cart.getCartId());
+                customerLoginForm.dispose();
+                openTabbedPane();
+            } else {
+                customerLoginForm.showMessage("Usuario o contraseña incorrectos");
+            }
         } else {
             customerLoginForm.showMessage("Usuario o contraseña incorrectos");
         }

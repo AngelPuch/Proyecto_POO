@@ -53,7 +53,7 @@ public class CustomerPanelController{
             customerPanel.getTableModel().updateProductAt(selectedRow, product);
             Customer currentCustomer = Session.getCurrentCustomer();
             CartDAOImpl cartDAO = new CartDAOImpl();
-            Cart cart = cartDAO.getCartByCustomerId(currentCustomer);  // Usando getCustomerId desde el cliente
+            Cart cart = cartDAO.getCartByCustomerId(currentCustomer);
 
             if (cart == null) {
                 // Si no se encuentra el carrito, lo creamos
