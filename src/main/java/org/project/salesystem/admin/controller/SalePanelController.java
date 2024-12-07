@@ -7,6 +7,11 @@ import org.project.salesystem.customer.model.Sale;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller class to handle business logic for the {@link SalePanel}
+ * It manages the filtering and printing of sales details
+ */
+
 public class SalePanelController {
     private SaleTableModel saleTableModel;
     private SalePanel salePanel;
@@ -22,6 +27,9 @@ public class SalePanelController {
         System.out.println("Detalle");
     }
 
+    /**
+     * Filters the sales list based on the search text entered by the user
+     */
     public void filterSaleListAction() {
         String searchText = salePanel.getSearchField().getText().trim();
         List<Sale> filteredSaleList = new ArrayList<>();

@@ -6,6 +6,11 @@ import org.project.salesystem.admin.controller.SaleTableModel;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the panel for displaying and managing sales information
+ * It includes a table for listing sales, a search bar, and controls for performing actions
+ */
+
 public class SalePanel extends JPanel {
     private SaleTableModel saleTableModel;
     private JTable table;
@@ -23,10 +28,17 @@ public class SalePanel extends JPanel {
 
     public JTextField getSearchField() { return searchField; }
 
+    /**
+     * Sets a message to be displayed to the user.
+     * @param message the message to display.
+     */
     public void setMessage(String message) {
         this.messageLabel.setText(message);
     }
 
+    /**
+     * Initializes the components of the panel, including the table, buttons, and layout
+     */
     private void initComponents() {
         saleTableModel = new SaleTableModel();
         table = new JTable(saleTableModel);

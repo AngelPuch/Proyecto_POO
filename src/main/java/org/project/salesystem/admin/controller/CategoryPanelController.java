@@ -5,6 +5,11 @@ import org.project.salesystem.admin.model.Category;
 
 import javax.swing.*;
 
+/**
+ * Controller for handling actions in the {@link CategoryPanel}
+ * It interacts with the {@link CategoryTableModel} to add and delete categories from the database
+ */
+
 public class CategoryPanelController {
     private CategoryPanel categoryPanel;
     private CategoryTableModel categoryTableModel;
@@ -14,6 +19,10 @@ public class CategoryPanelController {
         this.categoryTableModel = categoryTableModel;
     }
 
+    /**
+     * Handles the action of adding a new category to the database
+     * Validates the name field before adding the category
+     */
     public void addCategoryAction() {
         if (!categoryPanel.getNameField().getText().isEmpty()) {
             Category category = new Category();
@@ -26,6 +35,9 @@ public class CategoryPanelController {
         }
     }
 
+    /**
+     * Handles the action of deleting a selected category from the database
+     */
     public void deleteCategoryAction() {
         int selectedRow = categoryPanel.getTable().getSelectedRow();
         if (selectedRow != -1) {
@@ -35,6 +47,9 @@ public class CategoryPanelController {
         }
     }
 
+    /**
+     * Clears the name and description fields after adding a category
+     */
     private void clearField() {
         categoryPanel.getNameField().setText("");
         categoryPanel.getDescriptionField().setText("");

@@ -6,6 +6,10 @@ import org.project.salesystem.admin.model.Supplier;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * Represents the table model for displaying and managing supplier data
+ */
+
 public class SupplierTableModel extends AbstractTableModel {
     private final String[] columnNames = {"Nombre", "Numero de teléfono"};
     private SupplierDAOImpl supplierDAO;
@@ -61,28 +65,39 @@ public class SupplierTableModel extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
+    /**
+     * Adds a new supplier to the table and updates the underlying data
+     * @param supplier the {@link Supplier} object to be added
+     */
     public void addSupplier(Supplier supplier) {
         supplierDAO.create(supplier);
         refreshSupplierList();
         fireTableRowsInserted(supplierList.size() - 1, supplierList.size() - 1);
     }
 
+    /**
+     * Removes a supplier from the table and updates the underlying data
+     * @param rowIndex the index of the supplier to be removed from the table
+     */
     public void removeSupplier(int rowIndex) {
         supplierDAO.delete(supplierList.get(rowIndex).getId());
         refreshSupplierList();
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    public Supplier getSupplierAt(int rowIndex) {
-        return supplierList.get(rowIndex);
-    }
-
+    /**
+     * Updates the table to display a filtered list of suppliers
+     * @param filteredSupplierList the list of {@link Supplier} objects to be displayed
+     */
     public void showFilteredList(List<Supplier> filteredSupplierList){
         supplierList = filteredSupplierList;
         fireTableDataChanged();
 
     }
 
+    /**
+     * Refreshes the supplier list from the database
+     */
     private void refreshSupplierList() {
         supplierList = supplierDAO.readAll();
     }

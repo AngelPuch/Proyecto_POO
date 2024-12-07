@@ -9,6 +9,11 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * ProductTableModel is a table model used to represent the list of products in the product management table
+ * It interacts with the database to fetch product data and displays it in a table
+ */
+
 public class ProductTableModel extends AbstractTableModel {
     private final String[] columnNames = {"Nombre", "Precio", "Stock", "Proveedor", "Categoría"};
     private ProductDAOImpl productDAO;
@@ -85,28 +90,39 @@ public class ProductTableModel extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
+    /**
+     * Adds a new product to the list and updates the table
+     * @param product the {@link Product} to add
+     */
     public void addProduct(Product product) {
         productDAO.create(product);
         refreshProductList();
         fireTableRowsInserted(productList.size() - 1, productList.size() - 1);
     }
 
+    /**
+     * Removes the selected product from the list and updates the table
+     * @param rowIndex the index of the row to remove
+     */
     public void removeProduct(int rowIndex) {
         productDAO.delete(productList.get(rowIndex).getId());
         refreshProductList();
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    public Product getProductAt(int rowIndex) {
-        return productList.get(rowIndex);
-    }
-
+    /**
+     * Updates the displayed product list after filtering
+     * @param filteredProductList the filtered list of products
+     */
     public void showFilteredList(List<Product> filteredProductList){
         productList = filteredProductList;
         fireTableDataChanged();
 
     }
 
+    /**
+     * Refreshes the list of products by reloading data from the database
+     */
     private void refreshProductList() {
         productList = productDAO.readAll();
     }

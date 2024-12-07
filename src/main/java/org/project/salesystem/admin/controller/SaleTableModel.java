@@ -7,6 +7,11 @@ import javax.swing.table.AbstractTableModel;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * Table model for displaying sales data in a table
+ * It provides column names and data for each row and column
+ */
+
 public class SaleTableModel extends AbstractTableModel {
     private final String[] columnNames = {"Nombre cliente", "Fecha compra", "Precio Total"};
     private SaleDAOImpl saleDAO;
@@ -49,6 +54,10 @@ public class SaleTableModel extends AbstractTableModel {
         return columnIndex >= 0;
     }
 
+    /**
+     * Updates the table with a filtered list of sales
+     * @param filteredSaleList the list of sales to display
+     */
     public void showFilteredList(List<Sale> filteredSaleList){
         saleList = filteredSaleList;
         fireTableDataChanged();
