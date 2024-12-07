@@ -46,6 +46,12 @@ public class TabbedPaneManager {
         tabbedPane.addTab("Categorías", new CategoryPanel());
         tabbedPane.addTab("Ventas", new SalePanel());
         tabbedPane.addTab("Acerca de", new InformationPanel());
+
+        tabbedPane.addChangeListener(e ->{
+            if (tabbedPane.getSelectedIndex() == 0) {
+                tabbedPane.setComponentAt(0, new ProductPanel());
+            }
+        });
         return tabbedPane;
     }
 }
