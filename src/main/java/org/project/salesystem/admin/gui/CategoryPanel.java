@@ -6,6 +6,11 @@ import org.project.salesystem.admin.controller.CategoryTableModel;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the panel where categories are managed
+ * Allows adding and deleting categories and displays them in a table
+ */
+
 public class CategoryPanel extends JPanel {
     private CategoryTableModel categoryTableModel;
     private JTable table;
@@ -24,6 +29,9 @@ public class CategoryPanel extends JPanel {
     public JTextField getNameField() { return nameField; }
     public JTextArea getDescriptionField() { return descriptionField; }
 
+    /**
+     * Initializes the components of the CategoryPanel
+     */
     private void initComponents() {
         categoryTableModel = new CategoryTableModel();
         table = new JTable(categoryTableModel);

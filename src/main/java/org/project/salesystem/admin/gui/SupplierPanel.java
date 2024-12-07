@@ -6,6 +6,11 @@ import org.project.salesystem.admin.controller.SupplierTableModel;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the GUI panel for managing suppliers
+ * This panel allows adding, deleting, and filtering suppliers through a table and input fields
+ */
+
 public class SupplierPanel extends JPanel {
     private SupplierTableModel supplierTableModel;
     private JTable table;
@@ -26,10 +31,19 @@ public class SupplierPanel extends JPanel {
     public JTextField getNumberField() { return numberField; }
     public JTextField getSearchField() { return searchField; }
     public JTable getTable() { return table; }
+
+    /**
+     * Sets the message label to display a message
+     * @param message the message to display
+     */
     public void setMessage(String message) {
         this.messageLabel.setText(message);
     }
 
+    /**
+     * Initializes all components of the panel
+     * Sets up the layout, input fields, table, and buttons
+     */
     private void initComponents() {
         supplierTableModel = new SupplierTableModel();
         table = new JTable(supplierTableModel);

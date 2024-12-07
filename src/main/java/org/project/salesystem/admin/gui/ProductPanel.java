@@ -10,6 +10,12 @@ import javax.swing.*;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 
+/**
+ * This class is a GUI component that represents the product management interface in the admin section of the sales system
+ * It contains various input fields for managing product details like name, price, stock, supplier, and category
+ * It also includes buttons for adding and removing products, as well as a table to display product information
+ */
+
 public class ProductPanel extends JPanel {
     private ProductTableModel productTableModel;
     private JTable table;
@@ -34,12 +40,20 @@ public class ProductPanel extends JPanel {
     public JTextField getPriceField() { return priceField; }
     public JTextField getStockField() { return stockField; }
     public JTextField getSearchField() { return searchField; }
+
+    /**
+     * ets a message to be displayed
+     * @param message the message to display
+     */
     public void setMessage(String message) {
         this.messageLabel.setText(message);
     }
     public JComboBox<Supplier> getComboTypeSupplier() { return comboTypeSupplier; }
     public JComboBox<Category> getComboTypeCategory() { return comboTypeCategory; }
 
+    /**
+     * Initializes the GUI components and sets up event listeners for product actions
+     */
     private void initComponents() {
         productTableModel = new ProductTableModel();
         table = new JTable(productTableModel);

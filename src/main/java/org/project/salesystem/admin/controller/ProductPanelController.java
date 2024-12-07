@@ -10,6 +10,11 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ProductPanelController handles the user actions related to managing products in the inventory
+ * It processes the add, delete, and search actions, updating the product list and interacting with the DAO layer
+ */
+
 public class ProductPanelController {
     private ProductPanel inventarioPanel;
     private ProductTableModel productTableModel;
@@ -21,6 +26,10 @@ public class ProductPanelController {
         productDAO = new ProductDAOImpl();
     }
 
+    /**
+     * Handles the action to add a new {@link Product} to the inventory
+     * It validates the input fields, creates a product, and updates the table model
+     */
     public void addProductAction(){
         if (validateNonEmptyField()){
             Product product = createProduct();
@@ -31,6 +40,10 @@ public class ProductPanelController {
         }
     }
 
+    /**
+     * Handles the action to delete a selected {@link Product} from the inventory
+     * It removes the selected {@link Product} from the table model
+     */
     public void deleteProductAction() {
         int selectedRow = inventarioPanel.getTable().getSelectedRow();
         if (selectedRow != -1){
@@ -40,6 +53,10 @@ public class ProductPanelController {
         }
     }
 
+    /**
+     * Handles the action to filter the {@link List} of {@link Product} based on the search input
+     * The {@link Product} {@link List} is filtered based on the name of the product
+     */
     public void filterProductListAction(){
         String searchText = inventarioPanel.getSearchField().getText().trim();
         List<Product> filteredProductList = new ArrayList<>();
@@ -58,12 +75,20 @@ public class ProductPanelController {
         }
     }
 
+    /**
+     * Validates that all the necessary fields are filled out
+     * @return {@code true} if all fields are filled, {@code false} otherwise
+     */
     private boolean validateNonEmptyField(){
         return !inventarioPanel.getNameField().getText().isEmpty() &&
                 !inventarioPanel.getPriceField().getText().isEmpty() &&
                 !inventarioPanel.getStockField().getText().isEmpty();
     }
 
+    /**
+     * Creates a {@link Product} object from the data entered in the input fields
+     * @return the created {@link Product} instance
+     */
     private Product createProduct(){
         Product product = new Product();
         product.setName(inventarioPanel.getNameField().getText());
@@ -74,6 +99,9 @@ public class ProductPanelController {
         return product;
     }
 
+    /**
+     * Clears the input fields for product data
+     */
     private void clearFields() {
         inventarioPanel.getNameField().setText("");
         inventarioPanel.getPriceField().setText("");

@@ -6,11 +6,21 @@ import org.project.salesystem.admin.model.Category;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * Table model for displaying categories in a JTable
+ * Categories are stored and managed in a database
+ * Manages adding, removing, and updating categories in the database
+ */
+
 public class CategoryTableModel extends AbstractTableModel {
     private final String[] columnNames = {"Nombre", "Descripción"};
     private CategoryDAOImpl categoryDAO;
     private List<Category> categoryList;
 
+    /**
+     * Constructs the CategoryTableModel and loads categories from the database
+     * Initializes the {@link CategoryDAOImpl} to interact with the database
+     */
     public CategoryTableModel() {
         this.categoryDAO = new CategoryDAOImpl();
         categoryList = categoryDAO.readAll();
@@ -61,18 +71,29 @@ public class CategoryTableModel extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
+    /**
+     * Adds a new {@link Category} to the database and updates the table view
+     * @param category the {@link Category} to add
+     */
     public void addCategory(Category category) {
         categoryDAO.create(category);
         refreshCategoryList();
         fireTableRowsInserted(categoryList.size() - 1, categoryList.size() - 1);
     }
 
+    /**
+     * Removes the category at the specified row from the database and updates the table
+     * @param rowIndex the index of the {@link Category} to remove
+     */
     public void removeCategory(int rowIndex) {
         categoryDAO.delete(categoryList.get(rowIndex).getId());
         refreshCategoryList();
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
+    /**
+     * Refreshes the list of categories by reloading data from the database
+     */
     private void refreshCategoryList() {
         categoryList = categoryDAO.readAll();
     }
