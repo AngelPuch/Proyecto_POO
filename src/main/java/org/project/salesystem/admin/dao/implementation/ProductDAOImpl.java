@@ -131,5 +131,37 @@ public class ProductDAOImpl implements DAO<Product> {
         return product;
     }
 
+    public Product readInItemCart(int id) {
+        Product product = null;
+        String query = "SELECT product_id, name, price, stock FROM product WHERE product_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            // Asignar el parámetro del ID
+            ps.setInt(1, id);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = ps.executeQuery()) {
+                // Si hay resultados, convertir el ResultSet a un objeto Product
+                if (rs.next()) {
+                    int productId = rs.getInt("product_id");
+                    String name = rs.getString("name");
+                    double price = rs.getDouble("price");
+                    int stock = rs.getInt("stock");
+
+                    product = new Product(productId, name, price, stock); // Suponiendo que Product tiene un constructor que acepta estos valores
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener el producto con ID: " + id);
+            e.printStackTrace();
+        }
+
+        return product;
+    }
+
+
 
 }

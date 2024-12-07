@@ -14,12 +14,19 @@ public class CartDAOImpl implements CartDAO<Cart>{
 
     @Override
     public void create(Cart cart) {
-        String query = "insert into cart values (null, ?)";
+        String query = "INSERT INTO cart (customer_id) VALUES (?)";
 
-        try(Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
             ps.setInt(1, cart.getCustomer().getCustomerId());
             ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    cart.setCartId(rs.getInt(1)); // Asigna el ID generado al carrito
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error al crear el carrito", e);
         }
@@ -47,6 +54,18 @@ public class CartDAOImpl implements CartDAO<Cart>{
     @Override
     public void deleteCart(Cart cart) {
 
+    }
+
+    public Cart getOrCreateCartForCustomer(Customer customer) {
+        Cart cart = getCartByCustomerId(customer);  // Intenta obtener el carrito existente
+        if (cart == null) {
+            cart = new Cart(customer);  // Crea un nuevo carrito si no existe
+            create(cart);  // Guarda el carrito en la base de datos
+            System.out.println("Nuevo carrito creado para el cliente: " + customer.getUsername());
+        } else {
+            System.out.println("Carrito existente cargado para el cliente: " + customer.getUsername());
+        }
+        return cart;
     }
 
 }
