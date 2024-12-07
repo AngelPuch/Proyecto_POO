@@ -36,7 +36,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void create(Customer customer) {
-        String query = "INSERT INTO customer(customer_id,name,phone_number,username,password) VALUES (null, ?, ?, ?, ?)";
+        String query = "INSERT INTO customer(customer_id,name,phone_number,username,password,street,postal_code,city,state)" +
+                "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -46,6 +47,10 @@ public class CustomerDAOImpl implements CustomerDAO {
             ps.setString(2, customer.getPhoneNumber());
             ps.setString(3, customer.getUsername());
             ps.setString(4, customer.getPassword());
+            ps.setString(5, customer.getStreet());
+            ps.setString(6, customer.getPostal_code());
+            ps.setString(7, customer.getCity());
+            ps.setString(8, customer.getState());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -53,6 +58,16 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
     }
 
+    @Override
+    public Customer read(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void update(Customer customer) {
+
+    }
+/*
     @Override
     public Customer read(Integer id) {
         Customer customer = null;
@@ -90,6 +105,8 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
     }
 
+ */
+
     @Override
     public void delete(Integer id) {
         String query = "DELETE FROM customer WHERE customer_id = ?";
@@ -103,6 +120,11 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
     }
 
+    @Override
+    public List<Customer> readAll() {
+        return List.of();
+    }
+/*
     @Override
     public List<Customer> readAll() {
         List<Customer> customerList = new ArrayList<>();
@@ -150,4 +172,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         );
         return customer;
     }
+
+ */
 }

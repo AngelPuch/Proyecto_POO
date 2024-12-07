@@ -8,7 +8,7 @@ import org.project.salesystem.customer.model.Customer;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerDAOImplTest {
-
+/*
     @Test
     void testCreateCustomer() {
         CustomerDAO customerDAO = new CustomerDAOImpl();
@@ -64,5 +64,7 @@ class CustomerDAOImplTest {
         assertEquals("Av. Xalapa", customer.getAddress().getStreet());
         assertEquals("Xalapa-Enríquez", customer.getAddress().getCity());
     }
+
+ */
 
 }

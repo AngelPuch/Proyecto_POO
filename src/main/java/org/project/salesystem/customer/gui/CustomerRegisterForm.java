@@ -8,19 +8,19 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CustomerRegisterForm extends JFrame{
-    private JTextField nameField, phoneField, usernameFlied;
+    private JTextField nameField, phoneField, usernameFlied, streetField, postal_codeField, cityField, stateField;
     private JPasswordField passwordField;
 
     public CustomerRegisterForm(){
         setTitle("Registro de Cliente");
-        setSize(400,400);
+        setSize(400,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         initComponents();
     }
 
     private void initComponents(){
-            JPanel panel = new JPanel(new GridLayout(8,2,10,10));
+            JPanel panel = new JPanel(new GridLayout(10,2,15,15));
 
             panel.add(new JLabel("Nombre:"));
             nameField = new JTextField();
@@ -38,6 +38,22 @@ public class CustomerRegisterForm extends JFrame{
             phoneField = new JTextField();
             panel.add(phoneField);
 
+            panel.add(new JLabel("Calle:"));
+            streetField = new JTextField();
+            panel.add(streetField);
+
+            panel.add(new JLabel("Codigo Postal:"));
+            postal_codeField = new JTextField();
+            panel.add(postal_codeField);
+
+            panel.add(new JLabel("Ciudad:"));
+            cityField = new JTextField();
+            panel.add(cityField);
+
+            panel.add(new JLabel("Estado:"));
+            stateField = new JTextField();
+            panel.add(stateField);
+
 
             JButton registerButton = new JButton("Registrarse");
             registerButton.addActionListener(e -> registerCustomer());
@@ -53,6 +69,10 @@ public class CustomerRegisterForm extends JFrame{
         customer.setPhoneNumber(phoneField.getText());
         customer.setUsername(usernameFlied.getText());
         customer.setPassword(new String(passwordField.getPassword()));
+        customer.setStreet(streetField.getText());
+        customer.setPostal_code(postal_codeField.getText());
+        customer.setCity(cityField.getText());
+        customer.setState(stateField.getText());
 
         CustomerDAO customerDAO = new CustomerDAOImpl();
         customerDAO.create(customer);
