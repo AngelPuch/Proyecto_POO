@@ -1,5 +1,7 @@
 package org.project.salesystem.customer.gui;
 
+import org.project.salesystem.customer.controller.CartPanelController;
+import org.project.salesystem.customer.controller.CustomerPanelController;
 import org.project.salesystem.customer.dao.implementation.CartDAOImpl;
 import org.project.salesystem.customer.dao.implementation.CartItemDAOImpl;
 import org.project.salesystem.customer.model.Cart;
@@ -11,20 +13,23 @@ import java.awt.*;
 import java.util.List;
 
 public class CartPanel extends JPanel {
+    private CartPanel cartPanel;
     private JTable cartTable;
     private CartProductTableModel tableModel;
     private JButton btnDeleteItem, btnClearCart, btnPurchase;
     private Cart currentCart;
+    private CartPanelController controller;
 
     public CartPanel() {
         setLayout(new BorderLayout());
         initComponents();
+        controller = new CartPanelController(this);
         add(new JScrollPane(cartTable), BorderLayout.CENTER);
         add(createButtonPanel(), BorderLayout.SOUTH);
     }
 
     private void initComponents() {
-        // Obtener el carrito asociado al cliente actual
+
         int customerId = Session.getCurrentCustomer().getCustomerId();
         System.out.println("Customer ID obtenido: " + customerId);
 
@@ -41,7 +46,6 @@ public class CartPanel extends JPanel {
 
         System.out.println("Cart ID obtenido: " + currentCart.getCartId());
 
-        // Obtener los productos del carrito
         CartItemDAOImpl cartItemDAO = new CartItemDAOImpl();
         List<CartItem> cartItems = cartItemDAO.getCartItems(currentCart.getCartId());
 
@@ -51,13 +55,15 @@ public class CartPanel extends JPanel {
             System.out.println("Items encontrados en el carrito: " + cartItems.size());
         }
 
-        // Crear el modelo de tabla y componentes
         tableModel = new CartProductTableModel(cartItems);
         cartTable = new JTable(tableModel);
 
         btnDeleteItem = new JButton("Eliminar producto");
+        btnDeleteItem.addActionListener(e -> controller.deleteSelectedItem());
         btnClearCart = new JButton("Vaciar carrito");
+        btnClearCart.addActionListener(e -> controller.clearCart());
         btnPurchase = new JButton("Comprar");
+        btnPurchase.addActionListener(e -> controller.generateSale());
     }
 
     private JPanel createButtonPanel() {
@@ -71,6 +77,9 @@ public class CartPanel extends JPanel {
 
     public CartProductTableModel getTableModel() {
         return tableModel;
+    }
+    public CartPanel getCartPanel() {
+        return cartPanel;
     }
 
     public JTable getCartTable() {
@@ -87,6 +96,10 @@ public class CartPanel extends JPanel {
 
     public JButton getBtnPurchase() {
         return btnPurchase;
+    }
+
+    public Cart getCurrentCart() {
+        return currentCart;
     }
 }
 

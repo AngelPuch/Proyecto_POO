@@ -52,6 +52,23 @@ public class CartProductTableModel extends AbstractTableModel {
         return false;  // La tabla no es editable
     }
 
+    // Metodo para eliminar un CartItem en una fila específica
+    public void removeCartItem(int rowIndex) {
+        cartItems.remove(rowIndex);
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    }
+
+    // Metodo para obtener todos los elementos del carrito
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    // Metodo para vaciar todos los elementos del carrito
+    public void clearCartItems() {
+        cartItems.clear();
+        fireTableDataChanged();
+    }
+
     public void updateCartItems(List<CartItem> updatedCartItems) {
         this.cartItems = updatedCartItems;
         fireTableDataChanged();  // Notifica que la tabla necesita ser actualizada

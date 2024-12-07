@@ -1,7 +1,9 @@
 package org.project.salesystem.customer.dao.implementation;
 
+import org.project.salesystem.admin.model.Product;
 import org.project.salesystem.customer.model.Customer;
 import org.project.salesystem.customer.model.Sale;
+import org.project.salesystem.customer.model.SaleDetail;
 import org.project.salesystem.database.DatabaseConnection;
 import org.project.salesystem.database.dao.DAO;
 
@@ -10,20 +12,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SaleDAOImpl implements DAO<Sale> {
 
     @Override
     public void create(Sale sale) {
-        String query = "INSERT INTO sale VALUES (null, ?, ?, ?)";
-
-        try(Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)) {
+        String query = "INSERT INTO sale (date, customer_id, total) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setDate(1, convertUtilDateTOsqlDate(sale));
             ps.setInt(2, sale.getCustomer().getCustomerId());
             ps.setDouble(3, sale.getTotal());
             ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    int saleId = rs.getInt(1); // El ID generado
+                    sale.setSaleId(saleId);   // Asignarlo al objeto Sale
+                    System.out.println("Nueva venta creada con ID: " + saleId);
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error al insertar la nueva venta", e);
         }
@@ -110,5 +121,54 @@ public class SaleDAOImpl implements DAO<Sale> {
         java.util.Date utilDate = sale.getDateOfSale();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         return sqlDate;
+    }
+
+    public List<Sale> getSalesByCustomerId(int customerId) {
+        List<Sale> sales = new ArrayList<>();
+        String query = "SELECT s.sale_id, s.date, s.total, sd.product_id, p.name AS product_name, sd.quantity, sd.product_total " +
+                "FROM sale s " +
+                "JOIN saledetail sd ON s.sale_id = sd.sale_id " +
+                "JOIN product p ON sd.product_id = p.product_id " +
+                "WHERE s.customer_id = ? " +
+                "ORDER BY s.date DESC";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, customerId);
+            ResultSet rs = ps.executeQuery();
+
+            Map<Integer, Sale> saleMap = new HashMap<>();
+
+            while (rs.next()) {
+                int saleId = rs.getInt("sale_id");
+                Sale sale = saleMap.getOrDefault(saleId, new Sale());
+
+                if (!saleMap.containsKey(saleId)) {
+                    sale.setSaleId(saleId);
+                    sale.setDateOfSale(rs.getDate("date"));
+                    sale.setTotal(rs.getDouble("total"));
+                    sale.setDetails(new ArrayList<>());
+                    saleMap.put(saleId, sale);
+                    sales.add(sale);
+                }
+
+                // Crear SaleDetail
+                SaleDetail saleDetail = new SaleDetail();
+                saleDetail.setProduct(new Product(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name")
+                ));
+                saleDetail.setQuantity(rs.getInt("quantity"));
+                saleDetail.setProductTotal(rs.getDouble("product_total"));
+
+                sale.getDetails().add(saleDetail);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener las compras del cliente.", e);
+        }
+
+        return sales;
     }
 }

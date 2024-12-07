@@ -46,6 +46,10 @@ public class Product implements Serializable {
         this.price = price;
         this.stock = stock;
     }
+    public Product(int id, String name) {
+        this.productId = id;
+        this.name = name;
+    }
 
     public int getId() { return productId; }
 
