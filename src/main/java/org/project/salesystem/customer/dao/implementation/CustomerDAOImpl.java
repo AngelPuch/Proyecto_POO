@@ -1,12 +1,10 @@
 package org.project.salesystem.customer.dao.implementation;
 
 import org.project.salesystem.customer.dao.CustomerDAO;
-import org.project.salesystem.customer.model.Address;
 import org.project.salesystem.customer.model.Customer;
 import org.project.salesystem.database.DatabaseConnection;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
@@ -150,7 +148,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         ps.setString(2, customer.getPhoneNumber());
         ps.setString(3, customer.getUsername());
         ps.setString(4, customer.getPassword());
-        ps.setInt(5, customer.getAddress().getAddressId());
     }
 
     private Customer convertToCustomer(ResultSet rs) throws SQLException {
@@ -160,15 +157,6 @@ public class CustomerDAOImpl implements CustomerDAO {
                 rs.getString("phone_number"),
                 rs.getString("username"),
                 rs.getString("password"),
-                new Address(
-                        rs.getInt("addres_id"),
-                        rs.getString("postal_code"),
-                        rs.getString("street"),
-                        rs.getInt("number"),
-                        rs.getString("city"),
-                        rs.getString("state"),
-                        rs.getString("country")
-                )
         );
         return customer;
     }

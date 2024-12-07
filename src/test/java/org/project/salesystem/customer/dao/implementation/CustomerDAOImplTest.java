@@ -2,7 +2,6 @@ package org.project.salesystem.customer.dao.implementation;
 
 import org.junit.jupiter.api.Test;
 import org.project.salesystem.customer.dao.CustomerDAO;
-import org.project.salesystem.customer.model.Address;
 import org.project.salesystem.customer.model.Customer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,8 +11,8 @@ class CustomerDAOImplTest {
     @Test
     void testCreateCustomer() {
         CustomerDAO customerDAO = new CustomerDAOImpl();
-        Address address = new Address(1, "91020", "Av. Xalapa", 14155, "Xalapa-Enríquez", "Veracruz", "Mexico");
-        Customer customer = new Customer(1, "Angel Puch", "7661134536", "angel", "12345", address);
+
+        Customer customer = new Customer(1, "Angel Puch", "7661134536", "angel", "12345");
 
         customerDAO.create(customer);
         Customer retrievedCustomer = customerDAO.read(1);
@@ -23,11 +22,6 @@ class CustomerDAOImplTest {
         assertEquals("7661134536", retrievedCustomer.getPhoneNumber());
         assertEquals("angel", retrievedCustomer.getUsername());
         assertEquals("12345", retrievedCustomer.getPassword());
-        assertEquals("91020", retrievedCustomer.getAddress().getPostalCode());
-        assertEquals("Av. Xalapa", retrievedCustomer.getAddress().getStreet());
-        assertEquals("Xalapa-Enríquez", retrievedCustomer.getAddress().getCity());
-        assertEquals("Veracruz", retrievedCustomer.getAddress().getState());
-        assertEquals("Mexico", retrievedCustomer.getAddress().getCountry());
     }
 
     @Test
@@ -45,9 +39,6 @@ class CustomerDAOImplTest {
         assertEquals("1234567890", updatedCustomer.getPhoneNumber());
         assertEquals("josel", updatedCustomer.getUsername());
         assertEquals("12345", updatedCustomer.getPassword());
-        assertEquals("91020", updatedCustomer.getAddress().getPostalCode());
-        assertEquals("Av. Xalapa", updatedCustomer.getAddress().getStreet());
-        assertEquals("Xalapa-Enríquez", updatedCustomer.getAddress().getCity());
     }
 
     @Test
@@ -60,9 +51,6 @@ class CustomerDAOImplTest {
         assertEquals("1234567890", customer.getPhoneNumber());
         assertEquals("josel", customer.getUsername());
         assertEquals("12345", customer.getPassword());
-        assertEquals("91020", customer.getAddress().getPostalCode());
-        assertEquals("Av. Xalapa", customer.getAddress().getStreet());
-        assertEquals("Xalapa-Enríquez", customer.getAddress().getCity());
     }
 
  */
