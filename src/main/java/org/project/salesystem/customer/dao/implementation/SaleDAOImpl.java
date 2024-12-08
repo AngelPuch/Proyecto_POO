@@ -1,13 +1,11 @@
 package org.project.salesystem.customer.dao.implementation;
 
-import org.project.salesystem.admin.model.Admin;
 import org.project.salesystem.admin.model.Product;
 import org.project.salesystem.customer.dao.SaleDAO;
 import org.project.salesystem.customer.model.Customer;
 import org.project.salesystem.customer.model.Sale;
 import org.project.salesystem.customer.model.SaleDetail;
 import org.project.salesystem.database.DatabaseConnection;
-import org.project.salesystem.database.dao.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
