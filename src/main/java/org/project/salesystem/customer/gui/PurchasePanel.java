@@ -5,9 +5,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class PurchasesPanel extends JPanel {
+public class PurchasePanel extends JPanel {
 
-    public PurchasesPanel(List<Sale> sales) {
+    public PurchasePanel(List<Sale> sales) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Color.WHITE);
 

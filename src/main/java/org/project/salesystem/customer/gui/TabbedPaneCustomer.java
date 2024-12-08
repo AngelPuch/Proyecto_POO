@@ -26,12 +26,29 @@ public class TabbedPaneCustomer{
 
     private static JTabbedPane createTabbedPane(){
         JTabbedPane tabbedPane = new JTabbedPane();
-        CustomerPanel customerPanel = new CustomerPanel();
-        CartPanel cartPanel = new CartPanel();
-        JPanel purchasesPanel = createPurchasesPanel();
-        tabbedPane.addTab("Productos", customerPanel);
-        tabbedPane.addTab("Carrito de compras", cartPanel);
-        tabbedPane.addTab("Compras", new JScrollPane(purchasesPanel));
+
+        int[] lastSelectedIndex = {-1};
+
+        tabbedPane.addTab("Productos", new CustomerPanel());
+        tabbedPane.addTab("Carrito de compras", null);
+        tabbedPane.addTab("Compras", null);
+
+        tabbedPane.addChangeListener(e ->{
+            if (lastSelectedIndex[0] != -1) {
+                tabbedPane.setComponentAt(lastSelectedIndex[0], null);
+            }
+            int selectedIndex = tabbedPane.getSelectedIndex();
+
+            if (tabbedPane.getComponentAt(selectedIndex) == null) {
+                switch (selectedIndex) {
+                    case 0 -> tabbedPane.setComponentAt(0, new CustomerPanel());
+                    case 1 -> tabbedPane.setComponentAt(1, new CartPanel());
+                    case 2 -> tabbedPane.setComponentAt(2, new JScrollPane(createPurchasesPanel()));
+                }
+            }
+            lastSelectedIndex[0] = selectedIndex;
+        });
+
         return tabbedPane;
     }
 
@@ -44,6 +61,6 @@ public class TabbedPaneCustomer{
         List<Sale> sales = saleDAO.getSalesByCustomerId(customerId);
 
         // Crear el panel de compras
-        return new PurchasesPanel(sales);
+        return new PurchasePanel(sales);
     }
 }
