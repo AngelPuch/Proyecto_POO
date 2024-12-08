@@ -16,8 +16,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Implementation of the DAO interface for managing sales in the database.
+ * Provides CRUD operations for the Sale entity.
+ */
 public class SaleDAOImpl implements DAO<Sale> {
 
+    /**
+     * Inserts a new Sale record into the database.
+     *
+     * @param sale the Sale object containing the data to be inserted.
+     * @throws RuntimeException if a SQL exception occurs during the process.
+     */
     @Override
     public void create(Sale sale) {
         String query = "INSERT INTO sale (date, customer_id, total) VALUES (?, ?, ?)";
@@ -30,26 +40,31 @@ public class SaleDAOImpl implements DAO<Sale> {
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    int saleId = rs.getInt(1); // El ID generado
-                    sale.setSaleId(saleId);   // Asignarlo al objeto Sale
-                    System.out.println("Nueva venta creada con ID: " + saleId);
+                    sale.setSaleId(rs.getInt(1)); // Sets the generated ID
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al insertar la nueva venta", e);
+            throw new RuntimeException("Error while inserting the new sale", e);
         }
     }
 
+    /**
+     * Reads a Sale record by its ID.
+     *
+     * @param id the ID of the sale to be read.
+     * @return a Sale object or null if not found.
+     * @throws RuntimeException if a SQL exception occurs during the process.
+     */
     @Override
     public Sale read(Integer id) {
         Sale sale = null;
         String query = "SELECT name, date, total FROM sale INNER JOIN customer " +
                 "WHERE sale.customer_id = customer.customer_id AND sale_id = ?";
 
-        try(Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
-            try(ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     sale = new Sale();
                     Customer customer = new Customer();
@@ -60,47 +75,65 @@ public class SaleDAOImpl implements DAO<Sale> {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al consultar la venta con el ID: " + id, e);
+            throw new RuntimeException("Error reading sale with ID: " + id, e);
         }
-        return null;
+        return sale;
     }
 
+    /**
+     * Updates an existing Sale record in the database.
+     *
+     * @param sale the Sale object containing updated data.
+     * @throws RuntimeException if a SQL exception occurs during the process.
+     */
     @Override
     public void update(Sale sale) {
         String query = "UPDATE sale SET date = ?, total = ? WHERE sale_id = ?";
 
-        try(Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setDate(1, convertUtilDateTOsqlDate(sale));
             ps.setDouble(2, sale.getTotal());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar el registro", e);
+            throw new RuntimeException("Error updating the sale record", e);
         }
     }
 
+    /**
+     * Deletes a Sale record by its ID.
+     *
+     * @param id the ID of the sale to be deleted.
+     * @throws RuntimeException if a SQL exception occurs during the process.
+     */
     @Override
     public void delete(Integer id) {
         String query = "DELETE FROM sale WHERE sale_id = ?";
 
-        try(Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar la venta con el ID: " + id, e);
+            throw new RuntimeException("Error deleting sale with ID: " + id, e);
         }
     }
 
+    /**
+     * Reads all Sale records from the database.
+     *
+     * @return a List of Sale objects.
+     * @throws RuntimeException if a SQL exception occurs during the process.
+     */
     @Override
     public List<Sale> readAll() {
         List<Sale> saleList = new ArrayList<>();
         String query = "SELECT name, date, total FROM sale INNER JOIN customer " +
                 "WHERE sale.customer_id = customer.customer_id";
 
-        try(Connection conn = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Sale sale = new Sale();
                 Customer customer = new Customer();
@@ -111,18 +144,29 @@ public class SaleDAOImpl implements DAO<Sale> {
                 saleList.add(sale);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al consultar el registro de todas las ventas", e);
+            throw new RuntimeException("Error retrieving all sales records", e);
         }
         return saleList;
     }
 
-    //Convierte java.util.Date a un tipo java.sql.Date
-    private java.sql.Date convertUtilDateTOsqlDate(Sale sale){
+    /**
+     * Converts a java.util.Date to java.sql.Date.
+     *
+     * @param sale the Sale object containing the date to convert.
+     * @return a java.sql.Date object.
+     */
+    private java.sql.Date convertUtilDateTOsqlDate(Sale sale) {
         java.util.Date utilDate = sale.getDateOfSale();
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        return sqlDate;
+        return new java.sql.Date(utilDate.getTime());
     }
 
+    /**
+     * Retrieves a list of sales made by a specific customer, including their details.
+     *
+     * @param customerId the ID of the customer whose sales are to be retrieved.
+     * @return a List of Sale objects with SaleDetail data included.
+     * @throws RuntimeException if a SQL exception occurs during the process.
+     */
     public List<Sale> getSalesByCustomerId(int customerId) {
         List<Sale> sales = new ArrayList<>();
         String query = "SELECT s.sale_id, s.date, s.total, sd.product_id, p.name AS product_name, sd.quantity, sd.product_total " +
@@ -153,7 +197,7 @@ public class SaleDAOImpl implements DAO<Sale> {
                     sales.add(sale);
                 }
 
-                // Crear SaleDetail
+                // Create SaleDetail
                 SaleDetail saleDetail = new SaleDetail();
                 saleDetail.setProduct(new Product(
                         rs.getInt("product_id"),
@@ -166,7 +210,7 @@ public class SaleDAOImpl implements DAO<Sale> {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al obtener las compras del cliente.", e);
+            throw new RuntimeException("Error retrieving customer sales", e);
         }
 
         return sales;

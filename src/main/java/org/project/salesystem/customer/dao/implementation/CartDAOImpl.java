@@ -10,8 +10,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CartDAOImpl implements CartDAO<Cart>{
+/**
+ * Implementation of the CartDAO interface to manage Cart objects in the database.
+ * Provides methods for creating a cart, retrieving a cart by customer ID,
+ * and ensuring a cart exists for a given customer.
+ */
+public class CartDAOImpl implements CartDAO<Cart> {
 
+    /**
+     * Creates a new cart in the database for the specified customer.
+     *
+     * @param cart the Cart object to be created, with the associated customer.
+     * @throws RuntimeException if an SQL exception occurs during the process.
+     */
     @Override
     public void create(Cart cart) {
         String query = "INSERT INTO cart (customer_id) VALUES (?)";
@@ -22,16 +33,24 @@ public class CartDAOImpl implements CartDAO<Cart>{
             ps.setInt(1, cart.getCustomer().getCustomerId());
             ps.executeUpdate();
 
+            // Retrieve and set the generated cart ID
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    cart.setCartId(rs.getInt(1)); // Asigna el ID generado al carrito
+                    cart.setCartId(rs.getInt(1)); // Assigns the generated ID to the Cart object
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al crear el carrito", e);
+            throw new RuntimeException("Error creating the cart", e);
         }
     }
 
+    /**
+     * Retrieves the cart associated with a specific customer ID from the database.
+     *
+     * @param customer the Customer whose cart is to be retrieved.
+     * @return the Cart object if found, or null if no cart exists for the customer.
+     * @throws RuntimeException if an SQL exception occurs during the process.
+     */
     @Override
     public Cart getCartByCustomerId(Customer customer) {
         Cart cart = null;
@@ -42,23 +61,29 @@ public class CartDAOImpl implements CartDAO<Cart>{
             ps.setInt(1, customer.getCustomerId());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    cart = new Cart(rs.getInt("cart_id"), customer);
+                    cart = new Cart(rs.getInt("cart_id"), customer); // Create a Cart object with retrieved data
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al obtener el carrito", e);
+            throw new RuntimeException("Error retrieving the cart", e);
         }
         return cart;
     }
 
+    /**
+     * Ensures a cart exists for the given customer. If no cart exists, creates a new one.
+     *
+     * @param customer the Customer for whom the cart is to be ensured.
+     * @return the existing or newly created Cart object.
+     * @throws RuntimeException if an SQL exception occurs during the process.
+     */
     public Cart getOrCreateCartForCustomer(Customer customer) {
-        Cart cart = getCartByCustomerId(customer);  // Intenta obtener el carrito existente
+        Cart cart = getCartByCustomerId(customer);  // Attempt to retrieve the existing cart
         if (cart == null) {
-            cart = new Cart(customer);  // Crea un nuevo carrito si no existe
-            create(cart);  // Guarda el carrito en la base de datos
-        } else {
+            cart = new Cart(customer);  // Create a new cart if none exists
+            create(cart);  // Save the cart in the database
         }
         return cart;
     }
-
 }
+
