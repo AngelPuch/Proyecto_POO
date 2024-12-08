@@ -7,7 +7,15 @@ import org.project.salesystem.customer.session.Session;
 import javax.swing.*;
 import java.util.List;
 
-public class TabbedPaneCustomer{
+/**
+ * This class is responsible for managing the main customer window with a tabbed interface.
+ * It provides tabs for products, shopping cart, and customer purchases.
+ */
+public class TabbedPaneCustomer {
+
+    /**
+     * Opens the main customer window with a tabbed interface.
+     */
     public static void openTabbedPane() {
         JFrame frame = createMainFrame();
         JTabbedPane tabbedPane = createTabbedPane();
@@ -16,7 +24,12 @@ public class TabbedPaneCustomer{
         frame.setVisible(true);
     }
 
-    private static JFrame createMainFrame(){
+    /**
+     * Creates the main JFrame that contains the tabbed pane.
+     *
+     * @return The JFrame instance.
+     */
+    private static JFrame createMainFrame() {
         JFrame frame = new JFrame("Venta Online");
         frame.setSize(1200, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,19 +37,31 @@ public class TabbedPaneCustomer{
         return frame;
     }
 
-    private static JTabbedPane createTabbedPane(){
+    /**
+     * Creates and configures the tabbed pane, which contains three tabs:
+     * - Products
+     * - Shopping Cart
+     * - Purchases
+     *
+     * @return The JTabbedPane instance.
+     */
+    private static JTabbedPane createTabbedPane() {
         JTabbedPane tabbedPane = new JTabbedPane();
 
+        // This array holds the last selected tab index to prevent unnecessary replacements.
         int[] lastSelectedIndex = {-1};
 
+        // Adding tabs with corresponding panels
         tabbedPane.addTab("Productos", new CustomerPanel());
         tabbedPane.addTab("Carrito de compras", null);
         tabbedPane.addTab("Compras", null);
 
-        tabbedPane.addChangeListener(e ->{
+        // Adding a ChangeListener to dynamically populate the panels when tabs are selected
+        tabbedPane.addChangeListener(e -> {
             if (lastSelectedIndex[0] != -1) {
-                tabbedPane.setComponentAt(lastSelectedIndex[0], null);
+                tabbedPane.setComponentAt(lastSelectedIndex[0], null);  // Remove the previous component
             }
+
             int selectedIndex = tabbedPane.getSelectedIndex();
 
             if (tabbedPane.getComponentAt(selectedIndex) == null) {
@@ -52,15 +77,20 @@ public class TabbedPaneCustomer{
         return tabbedPane;
     }
 
+    /**
+     * Creates the Purchases panel by retrieving the customer's previous purchase data.
+     *
+     * @return The JPanel instance containing the list of purchases.
+     */
     private static JPanel createPurchasesPanel() {
-        // Obtener el ID del usuario actual desde la sesión
+        // Get the current customer's ID from the session
         int customerId = Session.getCurrentCustomer().getCustomerId();
 
-        // Obtener las compras del usuario desde la base de datos
+        // Get the list of sales made by the customer from the database
         SaleDAOImpl saleDAO = new SaleDAOImpl();
         List<Sale> sales = saleDAO.getSalesByCustomerId(customerId);
 
-        // Crear el panel de compras
+        // Create and return the PurchasePanel with the retrieved sales data
         return new PurchasePanel(sales);
     }
 }

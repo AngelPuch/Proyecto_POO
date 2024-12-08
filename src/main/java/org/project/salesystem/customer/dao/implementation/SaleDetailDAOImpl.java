@@ -12,8 +12,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Provides methods for managing SaleDetail records in the database.
+ */
 public class SaleDetailDAOImpl {
 
+    /**
+     * Inserts a new SaleDetail record into the database.
+     *
+     * @param saleDetail the SaleDetail object to be inserted.
+     * @throws RuntimeException if a SQL exception occurs during the process.
+     */
     public void create(SaleDetail saleDetail) {
         String query = "INSERT INTO saledetail (sale_id, product_id, quantity, product_total) VALUES (?, ?, ?, ?)";
 
@@ -24,12 +33,18 @@ public class SaleDetailDAOImpl {
             ps.setInt(3, saleDetail.getQuantity());
             ps.setDouble(4, saleDetail.getProductTotal());
             ps.executeUpdate();
-            System.out.println("Detalle de venta creado para sale_id: " + saleDetail.getSale().getSaleId());
         } catch (SQLException e) {
-            throw new RuntimeException("Error al insertar el detalle de venta", e);
+            throw new RuntimeException("Error while inserting the sale detail", e);
         }
     }
 
+    /**
+     * Retrieves a list of SaleDetail records associated with a specific Sale ID.
+     *
+     * @param saleId the ID of the Sale whose details are to be retrieved.
+     * @return a List of SaleDetail objects.
+     * @throws RuntimeException if a SQL exception occurs during the process.
+     */
     public List<SaleDetail> getSaleDetailsBySaleId(int saleId) {
         List<SaleDetail> saleDetails = new ArrayList<>();
         String query = "SELECT sd.sale_detail_id, sd.quantity, sd.product_total, sd.sale_id, sd.product_id, " +
@@ -44,26 +59,27 @@ public class SaleDetailDAOImpl {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     SaleDetail saleDetail = new SaleDetail();
+
+                    // Populate SaleDetail fields
                     saleDetail.setSale(new Sale(rs.getInt("sale_id")));
                     saleDetail.setSaleDetailId(rs.getInt("sale_detail_id"));
                     saleDetail.setQuantity(rs.getInt("quantity"));
                     saleDetail.setProductTotal(rs.getDouble("product_total"));
 
-                    // Cargar el producto
+                    // Populate Product fields
                     Product product = new Product();
                     product.setId(rs.getInt("product_id"));
                     product.setName(rs.getString("product_name"));
                     product.setPrice(rs.getDouble("product_price"));
                     saleDetail.setProduct(product);
 
+                    // Add to the list
                     saleDetails.add(saleDetail);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al obtener los detalles de la venta", e);
+            throw new RuntimeException("Error while retrieving sale details", e);
         }
         return saleDetails;
     }
-
 }
-

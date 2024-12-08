@@ -170,18 +170,4 @@ public class ProductDAOImpl implements DAO<Product> {
         return product;
     }
 
-    public boolean updateStock(int productId, int newStock) {
-        String query = "UPDATE product SET stock = ? WHERE product_id = ?";
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, newStock);
-            statement.setInt(2, productId);
-            int rowsUpdated = statement.executeUpdate();
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
 }
