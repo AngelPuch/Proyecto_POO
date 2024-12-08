@@ -1,6 +1,8 @@
 package org.project.salesystem.customer.dao.implementation;
 
+import org.project.salesystem.admin.model.Admin;
 import org.project.salesystem.admin.model.Product;
+import org.project.salesystem.customer.dao.SaleDAO;
 import org.project.salesystem.customer.model.Customer;
 import org.project.salesystem.customer.model.Sale;
 import org.project.salesystem.customer.model.SaleDetail;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SaleDAOImpl implements DAO<Sale> {
+public class SaleDAOImpl implements SaleDAO {
 
     @Override
     public void create(Sale sale) {
@@ -43,8 +45,9 @@ public class SaleDAOImpl implements DAO<Sale> {
     @Override
     public Sale read(Integer id) {
         Sale sale = null;
-        String query = "SELECT name, date, total FROM sale INNER JOIN customer " +
-                "WHERE sale.customer_id = customer.customer_id AND sale_id = ?";
+        String query = "SELECT sale_id, date, total, name, phone_number, postal_code, street, city, state " +
+                "FROM sale INNER JOIN customer ON sale.customer_id = customer.customer_id " +
+                "WHERE sale_id = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -52,17 +55,24 @@ public class SaleDAOImpl implements DAO<Sale> {
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     sale = new Sale();
-                    Customer customer = new Customer();
+                    sale.setSaleId(rs.getInt("sale_id"));
                     sale.setDateOfSale(rs.getDate("date"));
                     sale.setTotal(rs.getDouble("total"));
+
+                    Customer customer = new Customer();
                     customer.setName(rs.getString("name"));
+                    customer.setPhoneNumber(rs.getString("phone_number"));
+                    customer.setPostal_code(rs.getString("postal_code"));
+                    customer.setStreet(rs.getString("street"));
+                    customer.setCity(rs.getString("city"));
+                    customer.setState(rs.getString("state"));
                     sale.setCustomer(customer);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error al consultar la venta con el ID: " + id, e);
         }
-        return null;
+        return sale;
     }
 
     @Override
@@ -95,7 +105,7 @@ public class SaleDAOImpl implements DAO<Sale> {
     @Override
     public List<Sale> readAll() {
         List<Sale> saleList = new ArrayList<>();
-        String query = "SELECT name, date, total FROM sale INNER JOIN customer " +
+        String query = "SELECT sale_id, name, date, total FROM sale INNER JOIN customer " +
                 "WHERE sale.customer_id = customer.customer_id";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -104,6 +114,7 @@ public class SaleDAOImpl implements DAO<Sale> {
             while (rs.next()) {
                 Sale sale = new Sale();
                 Customer customer = new Customer();
+                sale.setSaleId(rs.getInt("sale_id"));
                 sale.setDateOfSale(rs.getDate("date"));
                 sale.setTotal(rs.getDouble("total"));
                 customer.setName(rs.getString("name"));
@@ -116,13 +127,7 @@ public class SaleDAOImpl implements DAO<Sale> {
         return saleList;
     }
 
-    //Convierte java.util.Date a un tipo java.sql.Date
-    private java.sql.Date convertUtilDateTOsqlDate(Sale sale){
-        java.util.Date utilDate = sale.getDateOfSale();
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        return sqlDate;
-    }
-
+    @Override
     public List<Sale> getSalesByCustomerId(int customerId) {
         List<Sale> sales = new ArrayList<>();
         String query = "SELECT s.sale_id, s.date, s.total, sd.product_id, p.name AS product_name, sd.quantity, sd.product_total " +
@@ -134,12 +139,9 @@ public class SaleDAOImpl implements DAO<Sale> {
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-
             ps.setInt(1, customerId);
             ResultSet rs = ps.executeQuery();
-
             Map<Integer, Sale> saleMap = new HashMap<>();
-
             while (rs.next()) {
                 int saleId = rs.getInt("sale_id");
                 Sale sale = saleMap.getOrDefault(saleId, new Sale());
@@ -164,11 +166,19 @@ public class SaleDAOImpl implements DAO<Sale> {
 
                 sale.getDetails().add(saleDetail);
             }
-
         } catch (SQLException e) {
             throw new RuntimeException("Error al obtener las compras del cliente.", e);
         }
 
         return sales;
     }
+
+    //Convierte java.util.Date a un tipo java.sql.Date
+    private java.sql.Date convertUtilDateTOsqlDate(Sale sale){
+        java.util.Date utilDate = sale.getDateOfSale();
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        return sqlDate;
+    }
+
+
 }

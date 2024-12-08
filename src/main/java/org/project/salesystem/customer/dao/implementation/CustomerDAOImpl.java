@@ -5,6 +5,7 @@ import org.project.salesystem.customer.model.Customer;
 import org.project.salesystem.database.DatabaseConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
@@ -34,22 +35,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void create(Customer customer) {
-        String query = "INSERT INTO customer(customer_id,name,phone_number,username,password,street,postal_code,city,state)" +
-                "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO customer VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
-
-
-            ps.setString(1, customer.getName());
-            ps.setString(2, customer.getPhoneNumber());
-            ps.setString(3, customer.getUsername());
-            ps.setString(4, customer.getPassword());
-            ps.setString(5, customer.getStreet());
-            ps.setString(6, customer.getPostal_code());
-            ps.setString(7, customer.getCity());
-            ps.setString(8, customer.getState());
-
+            setCustomerValues(customer, ps);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al insertar el nuevo cliente", e);
@@ -58,21 +48,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public Customer read(Integer id) {
-        return null;
-    }
-
-    @Override
-    public void update(Customer customer) {
-
-    }
-/*
-    @Override
-    public Customer read(Integer id) {
         Customer customer = null;
-        String query = "SELECT customer.customer_id, name, phone_number, username, password, customer.addres_id, " +
-                "postal_code, street, number, city, state, country " +
-                "FROM customer " +
-                "INNER JOIN address ON customer.addres_id = address.addres_id WHERE customer_id = ?";
+        String query = "SELECT * FROM customer WHERE customer_id = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -83,27 +60,25 @@ public class CustomerDAOImpl implements CustomerDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al consultar al cliente con el ID: " + id, e);
+            throw new RuntimeException(e);
         }
         return customer;
     }
 
     @Override
     public void update(Customer customer) {
-        String query = "UPDATE customer SET name = ?, phone_number = ?, username = ?, " +
-                "password = ?, addres_id = ? WHERE customer_id = ?";
+        String query = "UPDATE customer SET name = ?, phone_number = ?, username = ?, password = ?, " +
+                "postal_code = ?, street = ?, city = ?, state = ? WHERE customer_id = ?";
 
-        try(Connection conn  = DatabaseConnection.getInstance().getConnection();
+        try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
             setCustomerValues(customer, ps);
-            ps.setInt(6, customer.getCustomerId());
+            ps.setInt(9, customer.getCustomerId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar el registro", e);
         }
     }
-
- */
 
     @Override
     public void delete(Integer id) {
@@ -120,16 +95,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public List<Customer> readAll() {
-        return List.of();
-    }
-/*
-    @Override
-    public List<Customer> readAll() {
         List<Customer> customerList = new ArrayList<>();
-        String query = "SELECT customer.customer_id, name, phone_number, username, password, customer.addres_id, " +
-                "postal_code, street, number, city, state, country " +
-                "from customer " +
-                "INNER JOIN address ON customer.addres_id = address.addres_id";
+        String query = "SELECT * FROM customer";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
@@ -148,8 +115,12 @@ public class CustomerDAOImpl implements CustomerDAO {
         ps.setString(2, customer.getPhoneNumber());
         ps.setString(3, customer.getUsername());
         ps.setString(4, customer.getPassword());
-    }
+        ps.setString(5, customer.getPostal_code());
+        ps.setString(6, customer.getStreet());
+        ps.setString(7, customer.getCity());
+        ps.setString(8, customer.getState());
 
+    }
     private Customer convertToCustomer(ResultSet rs) throws SQLException {
         Customer customer = new Customer(
                 rs.getInt("customer_id"),
@@ -157,9 +128,13 @@ public class CustomerDAOImpl implements CustomerDAO {
                 rs.getString("phone_number"),
                 rs.getString("username"),
                 rs.getString("password"),
+                rs.getString("postal_code"),
+                rs.getString("street"),
+                rs.getString("city"),
+                rs.getString("state")
         );
         return customer;
-    }
 
- */
+}
+
 }

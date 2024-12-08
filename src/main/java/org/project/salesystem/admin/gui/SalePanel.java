@@ -27,6 +27,7 @@ public class SalePanel extends JPanel {
     }
 
     public JTextField getSearchField() { return searchField; }
+    public JTable getTable() { return table; }
 
     /**
      * Sets a message to be displayed to the user.
@@ -55,7 +56,8 @@ public class SalePanel extends JPanel {
         inputPanel.add(printDetailButton);
 
         searchField.addActionListener(e -> controller.filterSaleListAction());
-        printDetailButton.addActionListener(e -> controller.printSaleDetail());
+
+        printDetailButton.addActionListener(e -> controller.printSaleDetailAction());
 
         setLayout(new BorderLayout());
         add(messageLabel, BorderLayout.SOUTH);

@@ -1,5 +1,7 @@
 package org.project.salesystem.admin.controller;
 
+import org.project.salesystem.admin.gui.SaleDetailReportView;
+import org.project.salesystem.customer.dao.SaleDAO;
 import org.project.salesystem.customer.dao.implementation.SaleDAOImpl;
 import org.project.salesystem.customer.model.Sale;
 
@@ -61,5 +63,10 @@ public class SaleTableModel extends AbstractTableModel {
     public void showFilteredList(List<Sale> filteredSaleList){
         saleList = filteredSaleList;
         fireTableDataChanged();
+    }
+
+    public void printSaleDetail(int rowIndex) {
+        Sale sale = saleDAO.read(saleList.get(rowIndex).getSaleId());
+        new SaleDetailReportView(sale.getSaleId());
     }
 }

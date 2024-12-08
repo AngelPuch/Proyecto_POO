@@ -4,6 +4,7 @@ import org.project.salesystem.admin.gui.SalePanel;
 import org.project.salesystem.customer.dao.implementation.SaleDAOImpl;
 import org.project.salesystem.customer.model.Sale;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,13 @@ public class SalePanelController {
         this.saleDAO = new SaleDAOImpl();
     }
 
-    public void printSaleDetail() {
-        System.out.println("Detalle");
+    public void printSaleDetailAction() {
+        int selectedRow = salePanel.getTable().getSelectedRow();
+        if (selectedRow != -1) {
+            saleTableModel.printSaleDetail(selectedRow);
+        }else {
+            JOptionPane.showMessageDialog(salePanel, "Seleccione una venta para mostrar los detalles");
+        }
     }
 
     /**

@@ -32,7 +32,8 @@ public class SaleDetailDAOImpl {
 
     public List<SaleDetail> getSaleDetailsBySaleId(int saleId) {
         List<SaleDetail> saleDetails = new ArrayList<>();
-        String query = "SELECT sd.sale_detail_id, sd.sale_id, sd.product_id, p.name AS product_name, sd.quantity, sd.product_total " +
+        String query = "SELECT sd.sale_detail_id, sd.quantity, sd.product_total, sd.sale_id, sd.product_id, " +
+                "p.name AS product_name, p.price AS product_price " +
                 "FROM saledetail sd " +
                 "JOIN product p ON sd.product_id = p.product_id " +
                 "WHERE sd.sale_id = ?";
@@ -52,6 +53,7 @@ public class SaleDetailDAOImpl {
                     Product product = new Product();
                     product.setId(rs.getInt("product_id"));
                     product.setName(rs.getString("product_name"));
+                    product.setPrice(rs.getDouble("product_price"));
                     saleDetail.setProduct(product);
 
                     saleDetails.add(saleDetail);

@@ -92,7 +92,6 @@ public class SupplierTableModel extends AbstractTableModel {
     public void showFilteredList(List<Supplier> filteredSupplierList){
         supplierList = filteredSupplierList;
         fireTableDataChanged();
-
     }
 
     /**

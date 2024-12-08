@@ -1,5 +1,6 @@
 package org.project.salesystem.customer.model;
 
+import org.project.salesystem.admin.model.Admin;
 import org.project.salesystem.admin.model.Product;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ public class SaleDetail implements Serializable {
     private double productTotal;
     private Sale sale;
     private Product product;
+    private Admin admin;
 
     public SaleDetail() {
     }
@@ -32,6 +34,9 @@ public class SaleDetail implements Serializable {
 
     public Product getProduct() { return product; }
 
+    public Admin getAdmin() { return admin; }
+
+    public void setAdmin(Admin admin) { this.admin = admin; }
 
     public void setSaleDetailId(int SaleDetailId) {
         this.SaleDetailId = SaleDetailId;
