@@ -13,7 +13,6 @@ import java.awt.*;
 import java.util.List;
 
 public class CartPanel extends JPanel {
-    private CartPanel cartPanel;
     private JTable cartTable;
     private CartProductTableModel tableModel;
     private JButton btnDeleteItem, btnClearCart, btnPurchase;
@@ -78,24 +77,10 @@ public class CartPanel extends JPanel {
     public CartProductTableModel getTableModel() {
         return tableModel;
     }
-    public CartPanel getCartPanel() {
-        return cartPanel;
-    }
+
 
     public JTable getCartTable() {
         return cartTable;
-    }
-
-    public JButton getBtnDeleteItem() {
-        return btnDeleteItem;
-    }
-
-    public JButton getBtnClearCart() {
-        return btnClearCart;
-    }
-
-    public JButton getBtnPurchase() {
-        return btnPurchase;
     }
 
     public Cart getCurrentCart() {

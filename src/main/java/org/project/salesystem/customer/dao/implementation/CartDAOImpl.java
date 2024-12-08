@@ -51,19 +51,12 @@ public class CartDAOImpl implements CartDAO<Cart>{
         return cart;
     }
 
-    @Override
-    public void deleteCart(Cart cart) {
-
-    }
-
     public Cart getOrCreateCartForCustomer(Customer customer) {
         Cart cart = getCartByCustomerId(customer);  // Intenta obtener el carrito existente
         if (cart == null) {
             cart = new Cart(customer);  // Crea un nuevo carrito si no existe
             create(cart);  // Guarda el carrito en la base de datos
-            System.out.println("Nuevo carrito creado para el cliente: " + customer.getUsername());
         } else {
-            System.out.println("Carrito existente cargado para el cliente: " + customer.getUsername());
         }
         return cart;
     }

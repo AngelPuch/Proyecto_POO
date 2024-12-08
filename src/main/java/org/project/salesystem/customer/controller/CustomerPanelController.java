@@ -16,17 +16,6 @@ import javax.swing.*;
 
 public class CustomerPanelController{
     private CustomerPanel customerPanel;
-    private CustomerProductTableModel customerProductTableModel;
-    private JTable table;
-    private CartDAOImpl cartDAO;
-
-
-    public CustomerPanelController(CustomerPanel customerPanel, CustomerProductTableModel customerProductTableModel, JTable table, CartDAOImpl cartDAO) {
-        this.customerPanel = customerPanel;
-        this.customerProductTableModel = customerProductTableModel;
-        this.table = table;
-        this.cartDAO = cartDAO;
-    }
 
     public CustomerPanelController(CustomerPanel customerPanel) {
         this.customerPanel = customerPanel;
@@ -52,21 +41,26 @@ public class CustomerPanelController{
         if (quantity > product.getStock()) {
             JOptionPane.showMessageDialog(customerPanel, "No hay suficiente stock para la cantidad solicitada.");
         } else {
-            Customer currentCustomer = Session.getCurrentCustomer();
-            CartDAOImpl cartDAO = new CartDAOImpl();
-            Cart cart = cartDAO.getCartByCustomerId(currentCustomer);
-
-            if (cart == null) {
-                // Si no se encuentra el carrito, lo creamos
-                cart = new Cart(currentCustomer);  // Creamos un nuevo carrito para el cliente
-                cartDAO.create(cart);  // Guardamos el carrito en la base de datos
-            }
-            CartItem cartItem = new CartItem(quantity, cart, product);
+            CartItem cartItem = getCartItem(quantity, product);
             CartItemDAOImpl cartItemDAO = new CartItemDAOImpl();
             cartItemDAO.addCartItem(cartItem);
 
             JOptionPane.showMessageDialog(customerPanel, "Producto añadido al carrito.");
         }
+    }
+
+    private static CartItem getCartItem(int quantity, Product product) {
+        Customer currentCustomer = Session.getCurrentCustomer();
+        CartDAOImpl cartDAO = new CartDAOImpl();
+        Cart cart = cartDAO.getCartByCustomerId(currentCustomer);
+
+        if (cart == null) {
+            // Si no se encuentra el carrito, lo creamos
+            cart = new Cart(currentCustomer);  // Creamos un nuevo carrito para el cliente
+            cartDAO.create(cart);  // Guardamos el carrito en la base de datos
+        }
+        CartItem cartItem = new CartItem(quantity, cart, product);
+        return cartItem;
     }
 
 }

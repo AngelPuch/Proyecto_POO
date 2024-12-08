@@ -20,7 +20,6 @@ public class CartItemDAOImpl implements CartItemDAO {
     @Override
     public void addCartItem(CartItem cartItem) {
         int cartId = cartItem.getCart().getCartId();
-        System.out.println("Intentando agregar un item al carrito con cart_id: " + cartId);
 
         String query = "INSERT INTO cart_item (cart_id, product_id, quantity) VALUES (?, ?, ?)";
 
@@ -30,15 +29,12 @@ public class CartItemDAOImpl implements CartItemDAO {
             ps.setInt(2, cartItem.getProduct().getId());
             ps.setInt(3, cartItem.getQuantity());
             ps.executeUpdate();
-            System.out.println("Producto agregado al carrito correctamente.");
         } catch (SQLException e) {
-            System.err.println("Error al agregar el CartItem: " + e.getMessage());
             throw new RuntimeException("Error al agregar el CartItem", e);
         }
     }
     @Override
     public List<CartItem> getCartItems(int cartId) {
-        System.out.println("Entrando al método getCartItems con cartId: " + cartId);
         List<CartItem> cartItems = new ArrayList<>();
         String query = "SELECT c.cart_item_id, c.product_id, c.quantity, p.name, p.price, p.stock " +
                 "FROM cart_item c " +
@@ -48,7 +44,6 @@ public class CartItemDAOImpl implements CartItemDAO {
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, cartId);
-            System.out.println("Ejecutando consulta para obtener items del carrito.");
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -69,47 +64,11 @@ public class CartItemDAOImpl implements CartItemDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error SQL en getCartItems: " + e.getMessage());
             throw new RuntimeException("Error al obtener los items del carrito", e);
         }
 
         return cartItems;
     }
-
-/*
-    @Override
-    public List<CartItem> getCartItems(int cartId) {
-        System.out.println("Entrando al método getCartItems con cartId: " + cartId);
-        List<CartItem> cartItems = new ArrayList<>();
-        String query = "SELECT c.product_id, quantity, name, price, stock  FROM cart_item c INNER JOIN product p WHERE c.product_id = p.product_id AND cart_id = ?";
-
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, cartId);
-            System.out.println("Ejecutando consulta para obtener items del carrito.");
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Product product = new Product();
-                    int productId = rs.getInt("product_id");
-                    int quantity = rs.getInt("quantity");
-                    product.setName(rs.getString("name"));
-                    product.setPrice(rs.getDouble("price"));
-                    product.setStock(rs.getInt("stock"));
-                    CartItem cartItem = new CartItem(quantity, new Cart(cartId), product);
-                    cartItems.add(cartItem);
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error SQL en getCartItems: " + e.getMessage());
-            throw new RuntimeException("Error al obtener los items del carrito", e);
-        }
-
-        return cartItems;
-    }
-
- */
-
 
     @Override
     public void updateCartItem(int cartItemId, int quantity) {
@@ -131,9 +90,7 @@ public class CartItemDAOImpl implements CartItemDAO {
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, cartItemId);
             ps.executeUpdate();
-            System.out.println("Producto eliminado del carrito con ID: " + cartItemId);
         } catch (SQLException e) {
-            System.err.println("Error al eliminar el CartItem: " + e.getMessage());
             throw new RuntimeException("Error al eliminar el CartItem", e);
         }
     }
