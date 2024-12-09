@@ -195,10 +195,11 @@ public class SaleDAOImpl implements SaleDAO {
 
                 // Create SaleDetail
                 SaleDetail saleDetail = new SaleDetail();
-                saleDetail.setProduct(new Product(
-                        rs.getInt("product_id"),
-                        rs.getString("product_name")
-                ));
+                Product product = new Product();
+                product.setId(rs.getInt("product_id"));
+                product.setName(rs.getString("product_name"));
+
+                saleDetail.setProduct(product);
                 saleDetail.setQuantity(rs.getInt("quantity"));
                 saleDetail.setProductTotal(rs.getDouble("product_total"));
 

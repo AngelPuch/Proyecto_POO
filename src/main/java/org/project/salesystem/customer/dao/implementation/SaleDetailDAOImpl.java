@@ -1,6 +1,7 @@
 package org.project.salesystem.customer.dao.implementation;
 
 import org.project.salesystem.admin.model.Product;
+import org.project.salesystem.customer.dao.SaleDetailDAO;
 import org.project.salesystem.customer.model.Sale;
 import org.project.salesystem.customer.model.SaleDetail;
 import org.project.salesystem.database.DatabaseConnection;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Provides methods for managing SaleDetail records in the database.
  */
-public class SaleDetailDAOImpl {
+public class SaleDetailDAOImpl implements SaleDetailDAO {
 
     /**
      * Inserts a new SaleDetail record into the database.
@@ -36,6 +37,26 @@ public class SaleDetailDAOImpl {
         } catch (SQLException e) {
             throw new RuntimeException("Error while inserting the sale detail", e);
         }
+    }
+
+    @Override
+    public SaleDetail read(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void update(SaleDetail saleDetail) {
+
+    }
+
+    @Override
+    public void delete(Integer id) {
+
+    }
+
+    @Override
+    public List<SaleDetail> readAll() {
+        return List.of();
     }
 
     /**
@@ -81,5 +102,23 @@ public class SaleDetailDAOImpl {
             throw new RuntimeException("Error while retrieving sale details", e);
         }
         return saleDetails;
+    }
+
+    @Override
+    public boolean hasSaleDetailsAssociatedWithProducts(int productId) {
+        String query = "SELECT COUNT(*) FROM saledetail WHERE product_id = ?";
+
+        try(Connection conn = DatabaseConnection.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, productId);
+            try(ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 }

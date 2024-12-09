@@ -47,6 +47,10 @@ public class TabbedPaneManager {
         tabbedPane.addTab("Ventas", new SalePanel());
         tabbedPane.addTab("Acerca de", new InformationPanel());
 
+        /*
+         * If the products window is selected, a new instance is created to load
+         * all the data again in case new providers or categories have been added.
+         */
         tabbedPane.addChangeListener(e ->{
             if (tabbedPane.getSelectedIndex() == 0) {
                 tabbedPane.setComponentAt(0, new ProductPanel());

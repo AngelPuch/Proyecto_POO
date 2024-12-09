@@ -13,6 +13,7 @@ public class Sale implements Serializable {
     private Date dateOfSale;
     private double total;
     private Customer customer;
+
     private List<SaleDetail> details;
 
     /**

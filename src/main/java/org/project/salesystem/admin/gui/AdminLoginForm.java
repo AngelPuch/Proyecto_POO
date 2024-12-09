@@ -23,7 +23,6 @@ public class AdminLoginForm extends JFrame {
     }
 
     public String getUsernameText() { return usernameField.getText(); }
-
     public char[] getPasswordText() { return passwordField.getPassword(); }
 
     public void showMessage(String message) {
@@ -42,13 +41,13 @@ public class AdminLoginForm extends JFrame {
         messageLabel = new JLabel("", SwingConstants.CENTER);
         messageLabel.setForeground(Color.red);
 
-        JButton logginButton = new JButton("Iniciar Sesión");
-        logginButton.addActionListener(new AdminLoginFormListener(this));
-
         panel.add(new JLabel("Username: ", SwingConstants.CENTER));
         panel.add(usernameField);
         panel.add(new JLabel("Password: ", SwingConstants.CENTER));
         panel.add(passwordField);
+
+        JButton logginButton = new JButton("Iniciar Sesión");
+        logginButton.addActionListener(new AdminLoginFormListener(this));
 
         add(messageLabel, BorderLayout.NORTH);
         add(panel, BorderLayout.CENTER);

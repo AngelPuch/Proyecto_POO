@@ -25,7 +25,7 @@ public class CategoryDAOImpl implements DAO<Category> {
      */
     @Override
     public void create(Category category) {
-        String query = "INSERT INTO category VALUES (null, ?, ? )";
+        String query = "INSERT INTO category (name, description) VALUES (?, ? )";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -33,7 +33,7 @@ public class CategoryDAOImpl implements DAO<Category> {
             ps.setString(2, category.getDescription());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al insertar la nueva categoria", e);
+            throw new RuntimeException("Error al insertar la nueva categoría", e);
         }
     }
 
@@ -45,7 +45,7 @@ public class CategoryDAOImpl implements DAO<Category> {
     @Override
     public Category read(Integer id) {
         Category category = null;
-        String query = "SELECT * FROM category WHERE category_id = ?";
+        String query = "SELECT category_id, name, description FROM category WHERE category_id = ?";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -59,7 +59,7 @@ public class CategoryDAOImpl implements DAO<Category> {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al consultar la categoria con el id " + id, e);
+            throw new RuntimeException("Error al consultar la categoría con el id " + id, e);
         }
         return category;
     }
@@ -96,7 +96,7 @@ public class CategoryDAOImpl implements DAO<Category> {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar la categoria con ID: " + id, e);
+            throw new RuntimeException("Error al eliminar la categoría con ID: " + id, e);
         }
     }
 
@@ -107,7 +107,7 @@ public class CategoryDAOImpl implements DAO<Category> {
     @Override
     public List<Category> readAll() {
         List<Category> categoryList = new ArrayList<>();
-        String query = "SELECT * FROM category";
+        String query = "SELECT category_id, name, description FROM category";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
@@ -120,7 +120,7 @@ public class CategoryDAOImpl implements DAO<Category> {
                 );
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al consultar el registro de todas las categorias", e);
+            throw new RuntimeException("Error al consultar el registro de todas las categorías", e);
         }
         return categoryList;
     }

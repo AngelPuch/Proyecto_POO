@@ -72,8 +72,8 @@ public class SupplierPanel extends JPanel {
         searchField.addActionListener(e -> controller.filterSupplierListAction());
 
         setLayout(new BorderLayout());
-        add(messageLabel, BorderLayout.SOUTH);
         add(inputPanel, BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
+        add(messageLabel, BorderLayout.SOUTH);
     }
 }

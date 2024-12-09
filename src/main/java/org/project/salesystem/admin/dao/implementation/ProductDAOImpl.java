@@ -1,5 +1,6 @@
 package org.project.salesystem.admin.dao.implementation;
 
+import org.project.salesystem.admin.dao.ProductDAO;
 import org.project.salesystem.admin.model.Category;
 import org.project.salesystem.admin.model.Product;
 import org.project.salesystem.admin.model.Supplier;
@@ -18,7 +19,7 @@ import java.util.List;
  * Provides CRUD operations for interacting with the database to handle products
  */
 
-public class ProductDAOImpl implements DAO<Product> {
+public class ProductDAOImpl implements ProductDAO {
 
     /**
      * Inserts a new product record into the database
@@ -26,7 +27,8 @@ public class ProductDAOImpl implements DAO<Product> {
      */
     @Override
     public void create(Product product) {
-        String query = "INSERT INTO product VALUES(null, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO product (name, price, stock, supplier_id, category_id) " +
+                "VALUES (?, ?, ?, ?, ?)";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -45,13 +47,13 @@ public class ProductDAOImpl implements DAO<Product> {
     @Override
     public Product read(Integer id) {
         Product product = null;
-        String query = "SELECT product.product_id, product.name, product.price, product.stock, " +
-                "product.supplier_id, supplier.name AS supplier_name, supplier.phone_number, " +
-                "product.category_id, category.name AS category_name, category.description " +
-                "FROM product " +
-                "JOIN supplier ON product.supplier_id = supplier.supplier_id " +
-                "JOIN category ON product.category_id = category.category_id " +
-                "WHERE product.product_id = ?";
+        String query = "SELECT p.product_id, p.name, p.price, p.stock, " +
+                "p.supplier_id, s.name AS supplier_name, s.phone_number, " +
+                "p.category_id, c.name AS category_name, c.description " +
+                "FROM product p " +
+                "JOIN supplier s ON p.supplier_id = s.supplier_id " +
+                "JOIN category c ON p.category_id = c.category_id " +
+                "WHERE p.product_id = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -110,12 +112,12 @@ public class ProductDAOImpl implements DAO<Product> {
     @Override
     public List<Product> readAll() {
         List<Product> productList = new ArrayList<>();
-        String query = "SELECT product.product_id, product.name, product.price, product.stock, " +
-                "product.supplier_id, supplier.name AS supplier_name, supplier.phone_number, " +
-                "product.category_id, category.name AS category_name, category.description " +
-                "FROM product " +
-                "JOIN supplier ON product.supplier_id = supplier.supplier_id " +
-                "JOIN category ON product.category_id = category.category_id";
+        String query = "SELECT p.product_id, p.name, p.price, p.stock, " +
+                "p.supplier_id, s.name AS supplier_name, s.phone_number, " +
+                "p.category_id, c.name AS category_name, c.description " +
+                "FROM product p " +
+                "JOIN supplier s ON p.supplier_id = s.supplier_id " +
+                "JOIN category c ON p.category_id = c.category_id ";
 
         try(Connection conn  = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
@@ -126,7 +128,6 @@ public class ProductDAOImpl implements DAO<Product> {
         } catch (SQLException e) {
             throw new RuntimeException("Error al consultar el registro de todos los productos", e);
         }
-
         return productList;
     }
 
@@ -151,23 +152,61 @@ public class ProductDAOImpl implements DAO<Product> {
      * @throws SQLException if an error occurs during the process
      */
     private Product convertToProduct(ResultSet rs) throws SQLException {
+        Category category = new Category(
+                rs.getInt("category_id"),
+                rs.getString("category_name"),
+                rs.getString("description")
+        );
+        Supplier supplier = new Supplier(
+                rs.getInt("supplier_id"),
+                rs.getString("supplier_name"),
+                rs.getString("phone_number")
+        );
         Product product = new Product(
                 rs.getInt("product_id"),
                 rs.getString("name"),
                 rs.getDouble("price"),
                 rs.getInt("stock"),
-                new Category(
-                        rs.getInt("category_id"),
-                        rs.getString("category_name"),
-                        rs.getString("description")
-                ),
-                new Supplier(
-                        rs.getInt("supplier_id"),
-                        rs.getString("supplier_name"),
-                        rs.getString("phone_number")
-                )
+                category,
+                supplier
         );
+
         return product;
     }
 
+    @Override
+    public boolean hasProductsAssociatedWithSupplier(int supplierId) {
+        String query = "SELECT COUNT(*) FROM product WHERE supplier_id = ?";
+
+        try(Connection conn = DatabaseConnection.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, supplierId);
+            try(ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasProductsAssociatedWithCategory(int categoryID) {
+        String query = "SELECT COUNT(*) FROM product WHERE category_id = ?";
+
+        try(Connection conn = DatabaseConnection.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, categoryID);
+            try(ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }

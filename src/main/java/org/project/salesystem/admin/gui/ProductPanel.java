@@ -101,9 +101,9 @@ public class ProductPanel extends JPanel {
         searchField.addActionListener(e ->controller.filterProductListAction());
 
         setLayout(new BorderLayout());
-        add(messageLabel, BorderLayout.SOUTH);
         add(inputPanel, BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
+        add(messageLabel, BorderLayout.SOUTH);
 
     }
 }

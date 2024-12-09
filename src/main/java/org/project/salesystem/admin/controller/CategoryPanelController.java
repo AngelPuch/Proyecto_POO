@@ -1,5 +1,7 @@
 package org.project.salesystem.admin.controller;
 
+import org.project.salesystem.admin.dao.ProductDAO;
+import org.project.salesystem.admin.dao.implementation.ProductDAOImpl;
 import org.project.salesystem.admin.gui.CategoryPanel;
 import org.project.salesystem.admin.model.Category;
 
@@ -41,7 +43,14 @@ public class CategoryPanelController {
     public void deleteCategoryAction() {
         int selectedRow = categoryPanel.getTable().getSelectedRow();
         if (selectedRow != -1) {
-            categoryTableModel.removeCategory(selectedRow);
+            int categoryID = categoryTableModel.getCategoryList().get(selectedRow).getId();
+            ProductDAO productDAO = new ProductDAOImpl();
+            if (productDAO.hasProductsAssociatedWithCategory(categoryID)) {
+                JOptionPane.showMessageDialog(categoryPanel,
+                        "No se puede eliminar la categoría porque esta asociado a un producto");
+            }else {
+                categoryTableModel.removeCategory(selectedRow);
+            }
         }else {
             JOptionPane.showMessageDialog(categoryPanel, "Selecciona una fila para eliminar");
         }

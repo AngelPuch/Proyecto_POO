@@ -26,7 +26,7 @@ public class AdminDAOImpl implements AdminDAO {
      */
     @Override
     public void create(Admin admin) {
-        String query = "INSERT INTO admin VALUES (null, ?, ?)";
+        String query = "INSERT INTO admin (username, password) VALUES (?, ?)";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)){
@@ -46,7 +46,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public Admin read(Integer id) {
         Admin admin = null;
-        String query = "SELECT * FROM admin WHERE admin_id = ?";
+        String query = "SELECT admin_id, username, password FROM admin WHERE admin_id = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -109,7 +109,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public List<Admin> readAll() {
         List<Admin> adminList = new ArrayList<>();
-        String query = "SELECT * FROM admin";
+        String query = "SELECT admin_id, username, password FROM admin";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
@@ -136,7 +136,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public Admin findAdminByUsernameAndPassword(String username, String password) {
         Admin admin = null;
-        String query = "SELECT * FROM admin WHERE username = ? AND password = ?";
+        String query = "SELECT admin_id, username, password FROM admin WHERE username = ? AND password = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {

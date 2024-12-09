@@ -5,6 +5,8 @@ import org.project.salesystem.admin.gui.ProductPanel;
 import org.project.salesystem.admin.model.Category;
 import org.project.salesystem.admin.model.Product;
 import org.project.salesystem.admin.model.Supplier;
+import org.project.salesystem.customer.dao.SaleDetailDAO;
+import org.project.salesystem.customer.dao.implementation.SaleDetailDAOImpl;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -32,9 +34,11 @@ public class ProductPanelController {
      */
     public void addProductAction(){
         if (validateNonEmptyField()){
-            Product product = createProduct();
-            productTableModel.addProduct(product);
-            clearFields();
+            if (areValidInputs()) {
+                Product product = createProduct();
+                productTableModel.addProduct(product);
+                clearFields();
+            }
         }else{
             JOptionPane.showMessageDialog(inventarioPanel, "Todos los campos son obligatorios");
         }
@@ -47,7 +51,14 @@ public class ProductPanelController {
     public void deleteProductAction() {
         int selectedRow = inventarioPanel.getTable().getSelectedRow();
         if (selectedRow != -1){
-            productTableModel.removeProduct(selectedRow);
+            int productID = productTableModel.getProductList().get(selectedRow).getId();
+            SaleDetailDAO saleDetailDAO = new SaleDetailDAOImpl();
+            if (saleDetailDAO.hasSaleDetailsAssociatedWithProducts(productID)) {
+                JOptionPane.showMessageDialog(inventarioPanel,
+                        "No se puede eliminar el producto porque esta asociado a otras tablas");
+            }else {
+                productTableModel.removeProduct(selectedRow);
+            }
         }else{
             JOptionPane.showMessageDialog(inventarioPanel, "Selecciona una fila para eliminar");
         }
@@ -97,6 +108,28 @@ public class ProductPanelController {
         product.setSupplier((Supplier) inventarioPanel.getComboTypeSupplier().getSelectedItem());
         product.setCategory((Category) inventarioPanel.getComboTypeCategory().getSelectedItem());
         return product;
+    }
+
+    /**
+     * Validates that the price and stock input fields contain valid numerical values.
+     * @return {@code true} if both price and stock are valid positive numbers,
+     *         {@code false} otherwise.
+     */
+    private boolean areValidInputs() {
+        try {
+            double price = Double.parseDouble(inventarioPanel.getPriceField().getText());
+            int stock = Integer.parseInt(inventarioPanel.getStockField().getText());
+            if (price < 0 || stock < 0) {
+                JOptionPane.showMessageDialog(inventarioPanel,
+                        "Los valores del precio y del stock deben ser números positivos");
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(inventarioPanel,
+                    "Por favor, ingresa un valor numérico valido para los campos de precio y stock");
+            return false;
+        }
     }
 
     /**

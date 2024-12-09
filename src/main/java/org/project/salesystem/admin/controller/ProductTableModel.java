@@ -30,6 +30,7 @@ public class ProductTableModel extends AbstractTableModel {
         fillComboBoxCategory(comboTypeCategory);
     }
 
+    public List<Product> getProductList() { return productList; }
     public JComboBox<Supplier> getComboTypeSupplier() { return comboTypeSupplier; }
     public JComboBox<Category> getComboTypeCategory() { return comboTypeCategory; }
 

@@ -24,7 +24,7 @@ public class SupplierDAOImpl implements DAO<Supplier> {
      */
     @Override
     public void create(Supplier supplier) {
-        String query = "INSERT INTO supplier VALUES (null, ?, ?)";
+        String query = "INSERT INTO supplier (name, phone_number) VALUES (?, ?)";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -44,7 +44,7 @@ public class SupplierDAOImpl implements DAO<Supplier> {
     @Override
     public Supplier read(Integer id) {
         Supplier supplier = null;
-        String query = "SELECT * FROM supplier WHERE supplier_id = ?";
+        String query = "SELECT supplier_id, name, phone_number FROM supplier WHERE supplier_id = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -106,7 +106,7 @@ public class SupplierDAOImpl implements DAO<Supplier> {
     @Override
     public List<Supplier> readAll() {
         List<Supplier> supplierList = new ArrayList<>();
-        String query = "SELECT * FROM supplier";
+        String query = "SELECT supplier_id, name, phone_number FROM supplier";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);

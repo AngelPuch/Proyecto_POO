@@ -26,6 +26,10 @@ public class CategoryTableModel extends AbstractTableModel {
         categoryList = categoryDAO.readAll();
     }
 
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
     @Override
     public int getRowCount() {
         return categoryList.size();

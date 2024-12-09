@@ -20,6 +20,10 @@ public class SupplierTableModel extends AbstractTableModel {
         supplierList = supplierDAO.readAll();
     }
 
+    public List<Supplier> getSupplierList() {
+        return supplierList;
+    }
+
     @Override
     public int getRowCount() {
         return supplierList.size();
