@@ -45,7 +45,7 @@ public class CustomerRegisterFormController {
         return customer;
     }
 
-    private boolean validateNonEmptyField() {
+    public boolean validateNonEmptyField() {
         return !customerRegisterForm.getNameField().getText().trim().isEmpty() &&
                 !customerRegisterForm.getPhoneField().getText().trim().isEmpty() &&
                 !customerRegisterForm.getUsernameFlied().getText().trim().isEmpty() &&
