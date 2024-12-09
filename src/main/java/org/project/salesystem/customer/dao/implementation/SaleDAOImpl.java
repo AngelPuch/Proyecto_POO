@@ -44,7 +44,7 @@ public class SaleDAOImpl implements SaleDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error while inserting the new sale", e);
+            throw new RuntimeException("Error al insertar la nueva venta", e);
         }
     }
 
@@ -67,23 +67,11 @@ public class SaleDAOImpl implements SaleDAO {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    sale = new Sale();
-                    sale.setSaleId(rs.getInt("sale_id"));
-                    sale.setDateOfSale(rs.getDate("date"));
-                    sale.setTotal(rs.getDouble("total"));
-
-                    Customer customer = new Customer();
-                    customer.setName(rs.getString("name"));
-                    customer.setPhoneNumber(rs.getString("phone_number"));
-                    customer.setPostal_code(rs.getString("postal_code"));
-                    customer.setStreet(rs.getString("street"));
-                    customer.setCity(rs.getString("city"));
-                    customer.setState(rs.getString("state"));
-                    sale.setCustomer(customer);
+                    sale = convertToSale(rs);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error reading sale with ID: " + id, e);
+            throw new RuntimeException("Error ala leer la venta con el ID: " + id, e);
         }
         return sale;
     }
@@ -104,7 +92,7 @@ public class SaleDAOImpl implements SaleDAO {
             ps.setDouble(2, sale.getTotal());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error updating the sale record", e);
+            throw new RuntimeException("Error al actualizar el registro de la venta", e);
         }
     }
 
@@ -123,7 +111,7 @@ public class SaleDAOImpl implements SaleDAO {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting sale with ID: " + id, e);
+            throw new RuntimeException("Error al eliminar la venta con el ID: " + id, e);
         }
     }
 
@@ -136,24 +124,17 @@ public class SaleDAOImpl implements SaleDAO {
     @Override
     public List<Sale> readAll() {
         List<Sale> saleList = new ArrayList<>();
-        String query = "SELECT sale_id, name, date, total FROM sale INNER JOIN customer " +
-                "WHERE sale.customer_id = customer.customer_id";
+        String query = "SELECT sale_id, date, total, name, phone_number, postal_code, street, city, state " +
+                "FROM sale INNER JOIN customer ON sale.customer_id = customer.customer_id ";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Sale sale = new Sale();
-                Customer customer = new Customer();
-                sale.setSaleId(rs.getInt("sale_id"));
-                sale.setDateOfSale(rs.getDate("date"));
-                sale.setTotal(rs.getDouble("total"));
-                customer.setName(rs.getString("name"));
-                sale.setCustomer(customer);
-                saleList.add(sale);
+                saleList.add(convertToSale(rs));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving all sales records", e);
+            throw new RuntimeException("Error al obtener todos los registros de venta", e);
         }
         return saleList;
     }
@@ -198,7 +179,6 @@ public class SaleDAOImpl implements SaleDAO {
                 Product product = new Product();
                 product.setId(rs.getInt("product_id"));
                 product.setName(rs.getString("product_name"));
-
                 saleDetail.setProduct(product);
                 saleDetail.setQuantity(rs.getInt("quantity"));
                 saleDetail.setProductTotal(rs.getDouble("product_total"));
@@ -206,9 +186,8 @@ public class SaleDAOImpl implements SaleDAO {
                 sale.getDetails().add(saleDetail);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving customer sales", e);
+            throw new RuntimeException("Error al recuperar la compra del cliente", e);
         }
-
         return sales;
     }
 
@@ -221,6 +200,24 @@ public class SaleDAOImpl implements SaleDAO {
     private java.sql.Date convertUtilDateTOsqlDate(Sale sale) {
         java.util.Date utilDate = sale.getDateOfSale();
         return new java.sql.Date(utilDate.getTime());
+    }
+
+    private Sale convertToSale(ResultSet rs) throws SQLException {
+        Sale sale = new Sale();
+        sale.setSaleId(rs.getInt("sale_id"));
+        sale.setDateOfSale(rs.getDate("date"));
+        sale.setTotal(rs.getDouble("total"));
+
+        Customer customer = new Customer();
+        customer.setName(rs.getString("name"));
+        customer.setPhoneNumber(rs.getString("phone_number"));
+        customer.setPostal_code(rs.getString("postal_code"));
+        customer.setStreet(rs.getString("street"));
+        customer.setCity(rs.getString("city"));
+        customer.setState(rs.getString("state"));
+        sale.setCustomer(customer);
+
+        return sale;
     }
 
 }

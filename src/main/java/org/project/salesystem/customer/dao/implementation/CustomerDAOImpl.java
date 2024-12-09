@@ -12,7 +12,9 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public Customer findCustomerByUsernameAndPassword(String username, String password) {
         Customer customer = null;
-        String query = "SELECT * FROM customer WHERE username = ? AND password = ?";
+        String query = "SELECT customer_id, name, phone_number, username, password, " +
+                "postal_code, street, city, state " +
+                "FROM customer WHERE username = ? AND password = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -20,10 +22,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             ps.setString(2, password);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    customer = new Customer();
-                    customer.setCustomerId(rs.getInt("customer_id"));
-                    customer.setUsername(rs.getString("username"));
-                    customer.setPassword(rs.getString("password"));
+                    customer = convertToCustomer(rs);
                 }
             }
         } catch (SQLException e) {
@@ -35,7 +34,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void create(Customer customer) {
-        String query = "INSERT INTO customer VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO customer (name, phone_number, username, password, " +
+                "postal_code, street, city, state) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -49,7 +50,9 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public Customer read(Integer id) {
         Customer customer = null;
-        String query = "SELECT * FROM customer WHERE customer_id = ?";
+        String query = "SELECT customer_id, name, phone_number, username, password, " +
+                "postal_code, street, city, state " +
+                "FROM customer WHERE customer_id = ?";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query)) {
@@ -96,7 +99,8 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public List<Customer> readAll() {
         List<Customer> customerList = new ArrayList<>();
-        String query = "SELECT * FROM customer";
+        String query = "SELECT customer_id, name, phone_number, username, password, " +
+                "postal_code, street, city, state FROM customer";
 
         try(Connection conn = DatabaseConnection.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
