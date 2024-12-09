@@ -1,5 +1,7 @@
 package org.project.salesystem.customer.controller;
 
+import org.project.salesystem.admin.dao.ProductDAO;
+import org.project.salesystem.admin.dao.implementation.ProductDAOImpl;
 import org.project.salesystem.customer.dao.implementation.CartItemDAOImpl;
 import org.project.salesystem.customer.dao.implementation.SaleDAOImpl;
 import org.project.salesystem.customer.dao.implementation.SaleDetailDAOImpl;
@@ -49,15 +51,15 @@ public class CartPanelController {
     public void deleteSelectedItem() {
         int selectedRow = cartPanel.getCartTable().getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(cartPanel, "Please select a product to delete.");
+            JOptionPane.showMessageDialog(cartPanel, "Seleccione un producto para eliminar.");
             return;
         }
 
         CartItem selectedItem = cartPanel.getTableModel().getCartItemAt(selectedRow);
-        cartItemDAO.deleteCartItem(selectedItem.getCartItemId());
+        cartItemDAO.delete(selectedItem.getCartItemId());
         cartPanel.getTableModel().removeCartItem(selectedRow);
-        JOptionPane.showMessageDialog(cartPanel, "Product removed from the cart.");
-        System.out.println("Selected row: " + selectedRow);
+        JOptionPane.showMessageDialog(cartPanel, "Producto eliminado del carrito.");
+        System.out.println("Fila seleccionada: " + selectedRow);
         System.out.println("CartItem ID: " + selectedItem.getCartItemId());
     }
 
@@ -66,12 +68,12 @@ public class CartPanelController {
      * Shows a message if the cart has been cleared successfully.
      */
     public void clearCart() {
-        int confirmation = JOptionPane.showConfirmDialog(cartPanel, "Are you sure you want to empty the cart?", "Confirm", JOptionPane.YES_NO_OPTION);
+        int confirmation = JOptionPane.showConfirmDialog(cartPanel, "¿Estás seguro de que quieres vaciar el carrito?", "Confirmar", JOptionPane.YES_NO_OPTION);
         if (confirmation == JOptionPane.YES_OPTION) {
             int cartId = cartPanel.getCurrentCart().getCartId();
             cartItemDAO.clearCart(cartId);
             cartPanel.getTableModel().clearCartItems();
-            JOptionPane.showMessageDialog(cartPanel, "The cart has been cleared.");
+            JOptionPane.showMessageDialog(cartPanel, "El carrito ha sido vaciado.");
         }
     }
 
@@ -81,9 +83,10 @@ public class CartPanelController {
      * Shows a message upon successful purchase.
      */
     public void generateSale() {
+        ProductDAO productDAO = new ProductDAOImpl();
         List<CartItem> cartItems = cartPanel.getTableModel().getCartItems();
         if (cartItems.isEmpty()) {
-            JOptionPane.showMessageDialog(cartPanel, "The cart is empty.");
+            JOptionPane.showMessageDialog(cartPanel, "El carro esta vacío.");
             return;
         }
 
@@ -103,10 +106,10 @@ public class CartPanelController {
             saleDetail.setProductTotal(item.getQuantity() * item.getProduct().getPrice());
             saleDetailDAO.create(saleDetail);
 
-            updateProductStock(item.getProduct().getId(), item.getQuantity());
+            productDAO.updateProductStock(item.getProduct().getId(), item.getQuantity());
         }
 
-        JOptionPane.showMessageDialog(cartPanel, "Purchase successfully generated.");
+        JOptionPane.showMessageDialog(cartPanel, "Compra generada exitosamente.");
         cartItemDAO.clearCart(cartPanel.getCurrentCart().getCartId());
         cartPanel.getTableModel().clearCartItems();
 
@@ -116,25 +119,6 @@ public class CartPanelController {
         saleDetailDialog.setVisible(true);
     }
 
-    /**
-     * Updates the stock of a product after a sale.
-     *
-     * @param productId The ID of the product whose stock will be updated.
-     * @param quantitySold The quantity sold to be deducted from the stock.
-     */
-    private void updateProductStock(int productId, int quantitySold) {
-        String query = "UPDATE product SET stock = stock - ? WHERE product_id = ?";
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
-            ps.setInt(1, quantitySold);
-            ps.setInt(2, productId);
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error updating stock", e);
-        }
-    }
 }
 
 

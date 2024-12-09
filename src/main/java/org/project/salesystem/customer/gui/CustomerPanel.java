@@ -1,6 +1,7 @@
 package org.project.salesystem.customer.gui;
 
 import org.project.salesystem.customer.controller.CustomerPanelController;
+import org.project.salesystem.customer.controller.CustomerProductTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,29 +33,14 @@ public class CustomerPanel extends JPanel {
         setVisible(true);
     }
 
-    /**
-     * Returns the product table.
-     *
-     * @return The JTable that displays the products.
-     */
     public JTable getProductTable() {
         return productTable;
     }
 
-    /**
-     * Returns the text field for entering product quantity.
-     *
-     * @return The JTextField for quantity input.
-     */
     public JTextField getTextField() {
         return textField;
     }
 
-    /**
-     * Returns the table model of the customer product table.
-     *
-     * @return The CustomerProductTableModel used by the JTable.
-     */
     public CustomerProductTableModel getTableModel() {
         return tableModel;
     }
@@ -68,9 +54,9 @@ public class CustomerPanel extends JPanel {
         productTable = new JTable(tableModel);
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         textField = new JTextField(5);
-        label = new JLabel("Quantity of products: ");
+        label = new JLabel("Cantidad de productos: ");
 
-        btnAddToCart = new JButton("Add to Cart");
+        btnAddToCart = new JButton("Añadir al carrito");
         btnAddToCart.addActionListener(e -> controller.addToCartAction());
         buttonPanel.add(label);
         buttonPanel.add(textField);

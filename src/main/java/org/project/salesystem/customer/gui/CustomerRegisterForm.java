@@ -1,5 +1,6 @@
 package org.project.salesystem.customer.gui;
 
+import org.project.salesystem.customer.controller.CustomerRegisterFormController;
 import org.project.salesystem.customer.dao.CustomerDAO;
 import org.project.salesystem.customer.dao.implementation.CustomerDAOImpl;
 import org.project.salesystem.customer.model.Customer;
@@ -15,6 +16,7 @@ public class CustomerRegisterForm extends JFrame {
 
     private JTextField nameField, phoneField, usernameFlied, streetField, postal_codeField, cityField, stateField;
     private JPasswordField passwordField;
+    CustomerRegisterFormController controller;
 
     /**
      * Constructor that sets up the registration form.
@@ -25,7 +27,17 @@ public class CustomerRegisterForm extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         initComponents();
+        this.controller = new CustomerRegisterFormController(this);
     }
+
+    public JTextField getNameField() { return nameField; }
+    public JTextField getPhoneField() { return phoneField; }
+    public JTextField getUsernameFlied() { return usernameFlied; }
+    public JTextField getStreetField() { return streetField; }
+    public JTextField getPostal_codeField() { return postal_codeField; }
+    public JTextField getCityField() { return cityField; }
+    public JTextField getStateField() { return stateField; }
+    public JPasswordField getPasswordField() { return passwordField; }
 
     /**
      * Initializes the components of the registration form.
@@ -33,7 +45,7 @@ public class CustomerRegisterForm extends JFrame {
     private void initComponents() {
         JPanel panel = new JPanel(new GridLayout(10, 2, 15, 15));
 
-        panel.add(new JLabel("Name:"));
+        panel.add(new JLabel("Nombre:"));
         nameField = new JTextField();
         panel.add(nameField);
 
@@ -45,54 +57,33 @@ public class CustomerRegisterForm extends JFrame {
         passwordField = new JPasswordField();
         panel.add(passwordField);
 
-        panel.add(new JLabel("Phone:"));
+        panel.add(new JLabel("Número de teléfono:"));
         phoneField = new JTextField();
         panel.add(phoneField);
 
-        panel.add(new JLabel("Street:"));
+        panel.add(new JLabel("Calle y número:"));
         streetField = new JTextField();
         panel.add(streetField);
 
-        panel.add(new JLabel("Postal Code:"));
+        panel.add(new JLabel("Código postal:"));
         postal_codeField = new JTextField();
         panel.add(postal_codeField);
 
-        panel.add(new JLabel("City:"));
+        panel.add(new JLabel("Ciudad:"));
         cityField = new JTextField();
         panel.add(cityField);
 
-        panel.add(new JLabel("State:"));
+        panel.add(new JLabel("Estado:"));
         stateField = new JTextField();
         panel.add(stateField);
 
-        JButton registerButton = new JButton("Register");
-        registerButton.addActionListener(e -> registerCustomer());
+        JButton registerButton = new JButton("Registrarme");
+        registerButton.addActionListener(e -> controller.registerCustomer());
 
         panel.add(new JLabel());
         panel.add(registerButton);
         add(panel, BorderLayout.CENTER);
     }
 
-    /**
-     * Registers the new customer by collecting the data from the form and saving it in the database.
-     * After successful registration, it shows a confirmation message and closes the registration form.
-     */
-    private void registerCustomer() {
-        Customer customer = new Customer();
-        customer.setName(nameField.getText());
-        customer.setPhoneNumber(phoneField.getText());
-        customer.setUsername(usernameFlied.getText());
-        customer.setPassword(new String(passwordField.getPassword()));
-        customer.setStreet(streetField.getText());
-        customer.setPostal_code(postal_codeField.getText());
-        customer.setCity(cityField.getText());
-        customer.setState(stateField.getText());
 
-        CustomerDAO customerDAO = new CustomerDAOImpl();
-        customerDAO.create(customer);
-
-        JOptionPane.showMessageDialog(this, "Customer registered successfully!");
-        this.dispose();
-        new MainCustomerWindow().setVisible(true);
-    }
 }

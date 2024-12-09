@@ -1,6 +1,7 @@
 package org.project.salesystem.customer.gui;
 
 import org.project.salesystem.customer.controller.CartPanelController;
+import org.project.salesystem.customer.controller.CartProductTableModel;
 import org.project.salesystem.customer.dao.implementation.CartDAOImpl;
 import org.project.salesystem.customer.dao.implementation.CartItemDAOImpl;
 import org.project.salesystem.customer.model.Cart;
@@ -54,11 +55,11 @@ public class CartPanel extends JPanel {
         tableModel = new CartProductTableModel(cartItems);
         cartTable = new JTable(tableModel);
 
-        btnDeleteItem = new JButton("Delete Item");
+        btnDeleteItem = new JButton("Eliminar artículo");
         btnDeleteItem.addActionListener(e -> controller.deleteSelectedItem());
-        btnClearCart = new JButton("Clear Cart");
+        btnClearCart = new JButton("Borrar carrito\n");
         btnClearCart.addActionListener(e -> controller.clearCart());
-        btnPurchase = new JButton("Purchase");
+        btnPurchase = new JButton("Comprar");
         btnPurchase.addActionListener(e -> controller.generateSale());
     }
 
@@ -76,29 +77,13 @@ public class CartPanel extends JPanel {
         return panel;
     }
 
-    /**
-     * Returns the table model used by the cart table.
-     *
-     * @return CartProductTableModel for the cart table.
-     */
     public CartProductTableModel getTableModel() {
         return tableModel;
     }
-
-    /**
-     * Returns the cart table component.
-     *
-     * @return JTable representing the cart table.
-     */
     public JTable getCartTable() {
         return cartTable;
     }
 
-    /**
-     * Returns the current cart being used by the customer.
-     *
-     * @return Cart object representing the current cart.
-     */
     public Cart getCurrentCart() {
         return currentCart;
     }

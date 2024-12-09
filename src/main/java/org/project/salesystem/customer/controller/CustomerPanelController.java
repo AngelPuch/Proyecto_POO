@@ -37,13 +37,13 @@ public class CustomerPanelController {
     public void addToCartAction() {
         int selectedRow = customerPanel.getProductTable().getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(customerPanel, "Please select a product.");
+            JOptionPane.showMessageDialog(customerPanel, "Por favor selecciona un producto.");
             return;
         }
 
         String input = customerPanel.getTextField().getText();
         if (input.isEmpty() || !input.matches("\\d+")) {
-            JOptionPane.showMessageDialog(customerPanel, "Please enter a valid quantity.");
+            JOptionPane.showMessageDialog(customerPanel, "Por favor ingresa una cantidad valida.");
             return;
         }
 
@@ -51,13 +51,13 @@ public class CustomerPanelController {
         Product product = customerPanel.getTableModel().getProductAt(selectedRow);
 
         if (quantity > product.getStock()) {
-            JOptionPane.showMessageDialog(customerPanel, "Not enough stock for the requested quantity.");
+            JOptionPane.showMessageDialog(customerPanel, "No hay suficiente stock para la cantidad solicitada.");
         } else {
             CartItem cartItem = getCartItem(quantity, product);
             CartItemDAOImpl cartItemDAO = new CartItemDAOImpl();
-            cartItemDAO.addCartItem(cartItem);
-
-            JOptionPane.showMessageDialog(customerPanel, "Product added to cart.");
+            cartItemDAO.create(cartItem);
+            customerPanel.getTextField().setText("");
+            JOptionPane.showMessageDialog(customerPanel, "Producto agregado al carrito\n.");
         }
     }
 

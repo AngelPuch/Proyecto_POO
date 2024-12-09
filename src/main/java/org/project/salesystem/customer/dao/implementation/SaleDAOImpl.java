@@ -1,26 +1,23 @@
 package org.project.salesystem.customer.dao.implementation;
 
-import org.project.salesystem.admin.model.Product;
-import org.project.salesystem.customer.dao.SaleDAO;
+
 import org.project.salesystem.customer.model.Customer;
 import org.project.salesystem.customer.model.Sale;
-import org.project.salesystem.customer.model.SaleDetail;
 import org.project.salesystem.database.DatabaseConnection;
+import org.project.salesystem.database.dao.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Implementation of the SaleDAO interface for managing sales in the database.
+ * Implementation of the DAO interface for managing sales in the database.
  * Provides CRUD operations for the Sale entity.
  */
-public class SaleDAOImpl implements SaleDAO {
+public class SaleDAOImpl implements DAO<Sale> {
 
     /**
      * Inserts a new Sale record into the database.
@@ -140,58 +137,6 @@ public class SaleDAOImpl implements SaleDAO {
     }
 
     /**
-     * Retrieves a list of sales made by a specific customer, including their details.
-     *
-     * @param customerId the ID of the customer whose sales are to be retrieved.
-     * @return a List of Sale objects with SaleDetail data included.
-     * @throws RuntimeException if a SQL exception occurs during the process.
-     */
-    @Override
-    public List<Sale> getSalesByCustomerId(int customerId) {
-        List<Sale> sales = new ArrayList<>();
-        String query = "SELECT s.sale_id, s.date, s.total, sd.product_id, p.name AS product_name, sd.quantity, sd.product_total " +
-                "FROM sale s " +
-                "JOIN saledetail sd ON s.sale_id = sd.sale_id " +
-                "JOIN product p ON sd.product_id = p.product_id " +
-                "WHERE s.customer_id = ? " +
-                "ORDER BY s.date DESC";
-
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, customerId);
-            ResultSet rs = ps.executeQuery();
-            Map<Integer, Sale> saleMap = new HashMap<>();
-            while (rs.next()) {
-                int saleId = rs.getInt("sale_id");
-                Sale sale = saleMap.getOrDefault(saleId, new Sale());
-
-                if (!saleMap.containsKey(saleId)) {
-                    sale.setSaleId(saleId);
-                    sale.setDateOfSale(rs.getDate("date"));
-                    sale.setTotal(rs.getDouble("total"));
-                    sale.setDetails(new ArrayList<>());
-                    saleMap.put(saleId, sale);
-                    sales.add(sale);
-                }
-
-                // Create SaleDetail
-                SaleDetail saleDetail = new SaleDetail();
-                Product product = new Product();
-                product.setId(rs.getInt("product_id"));
-                product.setName(rs.getString("product_name"));
-                saleDetail.setProduct(product);
-                saleDetail.setQuantity(rs.getInt("quantity"));
-                saleDetail.setProductTotal(rs.getDouble("product_total"));
-
-                sale.getDetails().add(saleDetail);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al recuperar la compra del cliente", e);
-        }
-        return sales;
-    }
-
-    /**
      * Converts a java.util.Date to java.sql.Date.
      *
      * @param sale the Sale object containing the date to convert.
@@ -201,6 +146,7 @@ public class SaleDAOImpl implements SaleDAO {
         java.util.Date utilDate = sale.getDateOfSale();
         return new java.sql.Date(utilDate.getTime());
     }
+
 
     private Sale convertToSale(ResultSet rs) throws SQLException {
         Sale sale = new Sale();

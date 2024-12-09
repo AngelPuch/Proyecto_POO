@@ -1,21 +1,16 @@
 package org.project.salesystem.customer.dao;
 
+import org.project.salesystem.customer.model.Cart;
 import org.project.salesystem.customer.model.Customer;
+import org.project.salesystem.database.dao.DAO;
 
 /**
  * Interface defining basic operations related to shopping carts in the system.
  *
- * @param <Cart> Generic type representing the shopping cart.
+ *
  */
-public interface CartDAO<Cart> {
+public interface CartDAO extends DAO<Cart> {
 
-    /**
-     * Creates a new cart in the database.
-     *
-     * @param c the cart to be created. This object must contain at least
-     *          the reference to the associated customer.
-     */
-    void create(Cart c);
 
     /**
      * Retrieves a cart associated with a specific customer.

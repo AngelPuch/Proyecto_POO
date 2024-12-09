@@ -9,13 +9,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Implementation of the CartDAO interface to manage Cart objects in the database.
  * Provides methods for creating a cart, retrieving a cart by customer ID,
  * and ensuring a cart exists for a given customer.
  */
-public class CartDAOImpl implements CartDAO<Cart> {
+public class CartDAOImpl implements CartDAO {
 
     /**
      * Creates a new cart in the database for the specified customer.
@@ -44,6 +45,26 @@ public class CartDAOImpl implements CartDAO<Cart> {
         }
     }
 
+    @Override
+    public Cart read(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void update(Cart cart) {
+
+    }
+
+    @Override
+    public void delete(Integer id) {
+
+    }
+
+    @Override
+    public List<Cart> readAll() {
+        return List.of();
+    }
+
     /**
      * Retrieves the cart associated with a specific customer ID from the database.
      *
@@ -70,20 +91,5 @@ public class CartDAOImpl implements CartDAO<Cart> {
         return cart;
     }
 
-    /**
-     * Ensures a cart exists for the given customer. If no cart exists, creates a new one.
-     *
-     * @param customer the Customer for whom the cart is to be ensured.
-     * @return the existing or newly created Cart object.
-     * @throws RuntimeException if an SQL exception occurs during the process.
-     */
-    public Cart getOrCreateCartForCustomer(Customer customer) {
-        Cart cart = getCartByCustomerId(customer);  // Attempt to retrieve the existing cart
-        if (cart == null) {
-            cart = new Cart(customer);  // Create a new cart if none exists
-            create(cart);  // Save the cart in the database
-        }
-        return cart;
-    }
 }
 

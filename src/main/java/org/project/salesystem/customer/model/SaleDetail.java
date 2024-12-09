@@ -18,9 +18,6 @@ public class SaleDetail implements Serializable {
     private Product product;
     private Admin admin;
 
-    /**
-     * Default constructor for SaleDetail.
-     */
     public SaleDetail() {
     }
 

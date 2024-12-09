@@ -1,13 +1,12 @@
 package org.project.salesystem.admin.controller;
 
 import org.project.salesystem.admin.gui.SaleDetailReportView;
-import org.project.salesystem.customer.dao.SaleDAO;
 import org.project.salesystem.customer.dao.implementation.SaleDAOImpl;
 import org.project.salesystem.customer.model.Sale;
 
 public class SaleDetailReportViewController {
     SaleDetailReportView saleDetailReportView;
-    SaleDAO saleDAO;
+    SaleDAOImpl saleDAO;
 
     public SaleDetailReportViewController(SaleDetailReportView saleDetailReportView) {
         this.saleDetailReportView = saleDetailReportView;

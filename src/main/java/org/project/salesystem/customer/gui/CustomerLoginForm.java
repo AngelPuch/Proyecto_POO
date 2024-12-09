@@ -26,20 +26,9 @@ public class CustomerLoginForm extends JFrame {
         initComponents();
     }
 
-    /**
-     * Returns the text entered in the username field.
-     *
-     * @return The username entered by the user.
-     */
     public String getUsernameText() {
         return usernameField.getText();
     }
-
-    /**
-     * Returns the password entered in the password field.
-     *
-     * @return The password entered by the user as a character array.
-     */
     public char[] getPasswordText() {
         return passwordField.getPassword();
     }
@@ -64,7 +53,7 @@ public class CustomerLoginForm extends JFrame {
         messageLabel = new JLabel("", SwingConstants.CENTER);
         messageLabel.setForeground(Color.RED);
 
-        JButton logginButton = new JButton("Log In");
+        JButton logginButton = new JButton("Iniciar sesión");
         logginButton.addActionListener(new CustomerLoginFormListener(this));
 
         panel.add(new JLabel("Username:", SwingConstants.CENTER));

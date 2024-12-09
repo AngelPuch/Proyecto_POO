@@ -91,9 +91,9 @@ public class ProductPanelController {
      * @return {@code true} if all fields are filled, {@code false} otherwise
      */
     private boolean validateNonEmptyField(){
-        return !inventarioPanel.getNameField().getText().isEmpty() &&
-                !inventarioPanel.getPriceField().getText().isEmpty() &&
-                !inventarioPanel.getStockField().getText().isEmpty();
+        return !inventarioPanel.getNameField().getText().trim().isEmpty() &&
+                !inventarioPanel.getPriceField().getText().trim().isEmpty() &&
+                !inventarioPanel.getStockField().getText().trim().isEmpty();
     }
 
     /**

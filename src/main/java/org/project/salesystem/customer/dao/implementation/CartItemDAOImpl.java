@@ -26,7 +26,7 @@ public class CartItemDAOImpl implements CartItemDAO {
      * @throws RuntimeException if an SQL exception occurs during the process.
      */
     @Override
-    public void addCartItem(CartItem cartItem) {
+    public void create(CartItem cartItem) {
         int cartId = cartItem.getCart().getCartId();
 
         String query = "INSERT INTO cart_item (cart_id, product_id, quantity) VALUES (?, ?, ?)";
@@ -38,9 +38,43 @@ public class CartItemDAOImpl implements CartItemDAO {
             ps.setInt(3, cartItem.getQuantity());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error adding the CartItem", e);
+            throw new RuntimeException("Error al añadir el CartItem", e);
         }
     }
+
+    @Override
+    public CartItem read(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void update(CartItem cartItem) {
+
+    }
+
+
+    /**
+     * Deletes a specific cart item from the database.
+     *
+     * @param cartItemId the ID of the cart item to delete.
+     * @throws RuntimeException if an SQL exception occurs during the process.
+     */
+    public void delete(Integer cartItemId) {
+        String query = "DELETE FROM cart_item WHERE cart_item_id = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, cartItemId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al eliminar el CartItem", e);
+        }
+    }
+
+    @Override
+    public List<CartItem> readAll() {
+        return List.of();
+    }
+
 
     /**
      * Retrieves all cart items for a specific cart ID.
@@ -80,29 +114,12 @@ public class CartItemDAOImpl implements CartItemDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving cart items", e);
+            throw new RuntimeException("Error al recuperar el CartItem", e);
         }
 
         return cartItems;
     }
 
-    /**
-     * Deletes a specific cart item from the database.
-     *
-     * @param cartItemId the ID of the cart item to delete.
-     * @throws RuntimeException if an SQL exception occurs during the process.
-     */
-    @Override
-    public void deleteCartItem(int cartItemId) {
-        String query = "DELETE FROM cart_item WHERE cart_item_id = ?";
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, cartItemId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error deleting the CartItem", e);
-        }
-    }
 
     /**
      * Clears all items from a specific cart.
@@ -118,7 +135,7 @@ public class CartItemDAOImpl implements CartItemDAO {
             ps.setInt(1, cartId);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error clearing the cart", e);
+            throw new RuntimeException("Error al limiar el cart", e);
         }
     }
 }

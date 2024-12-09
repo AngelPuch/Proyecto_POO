@@ -23,11 +23,11 @@ public class SaleDetailDialog extends JDialog {
      * @param saleDetails A list of SaleDetail objects that contain the details of the sale.
      */
     public SaleDetailDialog(Frame owner, List<SaleDetail> saleDetails) {
-        super(owner, "Sale Details", true); // Modal window
+        super(owner, "Detalle de la venta", true); // Modal window
         setLayout(new BorderLayout());
 
         // Create the table model
-        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Product", "Quantity", "Total"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Producto", "Cantidad", "Total"}, 0);
         for (SaleDetail detail : saleDetails) {
             tableModel.addRow(new Object[]{
                     detail.getProduct().getName(),

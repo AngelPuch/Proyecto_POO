@@ -105,8 +105,8 @@ public class SupplierPanelController {
      * @return {@code true} if all fields are filled, {@code false} otherwise
      */
     private boolean validateNonEmptyField() {
-        return !supplierPanel.getNameField().getText().isEmpty() &&
-                !supplierPanel.getNumberField().getText().isEmpty();
+        return !supplierPanel.getNameField().getText().trim().isEmpty() &&
+                !supplierPanel.getNumberField().getText().trim().isEmpty();
     }
 
     /**

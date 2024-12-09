@@ -1,4 +1,4 @@
-package org.project.salesystem.customer.gui;
+package org.project.salesystem.customer.controller;
 
 import org.project.salesystem.admin.dao.implementation.ProductDAOImpl;
 import org.project.salesystem.admin.model.Product;

@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides methods for managing SaleDetail records in the database.
@@ -35,7 +37,7 @@ public class SaleDetailDAOImpl implements SaleDetailDAO {
             ps.setDouble(4, saleDetail.getProductTotal());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error while inserting the sale detail", e);
+            throw new RuntimeException("Error al insertar el nuevo detall venta", e);
         }
     }
 
@@ -99,9 +101,51 @@ public class SaleDetailDAOImpl implements SaleDetailDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error while retrieving sale details", e);
+            throw new RuntimeException("Error al recuperar los detalle de venta", e);
         }
         return saleDetails;
+    }
+
+    @Override
+    public List<SaleDetail> getSaleDetailByCustomerId(int customerId) {
+        List<SaleDetail> saleDetailList = new ArrayList<>();
+        String query = "SELECT s.sale_id, s.date, s.total, sd.product_id, " +
+                "p.name AS product_name, sd.quantity, sd.product_total " +
+                "FROM saledetail sd " +
+                "JOIN sale s ON s.sale_id = sd.sale_id " +
+                "JOIN product p ON sd.product_id = p.product_id " +
+                "WHERE s.customer_id = ? " +
+                "ORDER BY s.date DESC";
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, customerId);
+            try(ResultSet rs = ps.executeQuery()) {
+                Map<Integer, Sale> saleMap = new HashMap<>();
+                while (rs.next()) {
+                    Product product = new Product();
+                    product.setId(rs.getInt("product_id"));
+                    product.setName(rs.getString("product_name"));
+
+                    Sale sale = new Sale();
+                    sale.setSaleId(rs.getInt("sale_id"));
+                    sale.setDateOfSale(rs.getDate("date"));
+                    sale.setTotal(rs.getDouble("total"));
+
+                    SaleDetail saleDetail = new SaleDetail();
+                    saleDetail.setQuantity(rs.getInt("quantity"));
+                    saleDetail.setProductTotal(rs.getDouble("product_total"));
+                    saleDetail.setProduct(product);
+                    saleDetail.setSale(sale);
+
+                    saleDetailList.add(saleDetail);
+
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al recuperar la compra del cliente", e);
+        }
+        return saleDetailList;
     }
 
     @Override

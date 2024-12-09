@@ -29,4 +29,12 @@ public interface ProductDAO extends DAO<Product> {
      *         {@code false} otherwise.
      */
     boolean hasProductsAssociatedWithCategory(int categoryId);
+
+    /**
+     * Updates the stock of a product after a sale.
+     *
+     * @param productId The ID of the product whose stock will be updated.
+     * @param quantitySold The quantity sold to be deducted from the stock.
+     */
+    void updateProductStock(int productId, int quantitySold);
 }

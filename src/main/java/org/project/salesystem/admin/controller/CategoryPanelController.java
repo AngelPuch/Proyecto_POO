@@ -26,7 +26,7 @@ public class CategoryPanelController {
      * Validates the name field before adding the category
      */
     public void addCategoryAction() {
-        if (!categoryPanel.getNameField().getText().isEmpty()) {
+        if (!categoryPanel.getNameField().getText().trim().isEmpty()) {
             Category category = new Category();
             category.setName(categoryPanel.getNameField().getText());
             category.setDescription(categoryPanel.getDescriptionField().getText());

@@ -209,4 +209,19 @@ public class ProductDAOImpl implements ProductDAO {
         }
         return false;
     }
+
+    @Override
+    public void updateProductStock(int productId, int quantitySold) {
+        String query = "UPDATE product SET stock = stock - ? WHERE product_id = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, quantitySold);
+            ps.setInt(2, productId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar el stock", e);
+        }
+    }
 }

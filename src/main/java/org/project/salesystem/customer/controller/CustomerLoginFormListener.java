@@ -45,7 +45,7 @@ public class CustomerLoginFormListener implements ActionListener {
         char[] password = customerLoginForm.getPasswordText();
 
         if (authenticate(username, password)) {
-            JOptionPane.showMessageDialog(customerLoginForm, "Welcome, " + username);
+            JOptionPane.showMessageDialog(customerLoginForm, "Bienvenido, " + username);
             CustomerDAO customerDAO = new CustomerDAOImpl();
             Customer customer = customerDAO.findCustomerByUsernameAndPassword(username, new String(password));
             if (customer != null) {
@@ -53,10 +53,10 @@ public class CustomerLoginFormListener implements ActionListener {
                 customerLoginForm.dispose();
                 openTabbedPane();
             } else {
-                customerLoginForm.showMessage("Invalid username or password.");
+                customerLoginForm.showMessage("Usuario o contraseña incorrectos.");
             }
         } else {
-            customerLoginForm.showMessage("Invalid username or password.");
+            customerLoginForm.showMessage("Usuario o contraseña incorrectos.");
         }
     }
 

@@ -1,4 +1,4 @@
-package org.project.salesystem.customer.gui;
+package org.project.salesystem.customer.controller;
 
 import org.project.salesystem.customer.model.CartItem;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class CartProductTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = {"Name", "Price", "Quantity", "Subtotal"};
+    private final String[] columnNames = {"Nombre", "Precio", "Cantidad", "Subtotal"};
     private List<CartItem> cartItems;  // List of CartItem objects
 
     /**

@@ -19,6 +19,8 @@ public interface SaleDetailDAO extends DAO<SaleDetail> {
      */
     List<SaleDetail> getSaleDetailsBySaleId(int saleId);
 
+    List<SaleDetail> getSaleDetailByCustomerId(int customerId);
+
     /**
      * Checks if there are sale details associated with a specific product.
      * This is useful for validating whether a product can be safely deleted from the system.

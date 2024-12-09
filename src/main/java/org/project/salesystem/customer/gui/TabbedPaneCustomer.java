@@ -83,14 +83,7 @@ public class TabbedPaneCustomer {
      * @return The JPanel instance containing the list of purchases.
      */
     private static JPanel createPurchasesPanel() {
-        // Get the current customer's ID from the session
         int customerId = Session.getCurrentCustomer().getCustomerId();
-
-        // Get the list of sales made by the customer from the database
-        SaleDAOImpl saleDAO = new SaleDAOImpl();
-        List<Sale> sales = saleDAO.getSalesByCustomerId(customerId);
-
-        // Create and return the PurchasePanel with the retrieved sales data
-        return new PurchasePanel(sales);
+        return new PurchasePanel(customerId);
     }
 }
