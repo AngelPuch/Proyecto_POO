@@ -12,25 +12,28 @@ class ProductDAOImplTest {
     @Test
     void testCreateProduct() {
         ProductDAOImpl productDAO = new ProductDAOImpl();
+        CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
+        SupplierDAOImpl supplierDAO = new SupplierDAOImpl();
         Product product = new Product();
-        product.setId(3);
-        product.setName("FIFA 24");
+        product.setId(9);
+        product.setName("Ejemplo Crear");
         product.setPrice(59.99);
         product.setStock(120);
-        Category category = new Category(3, "Acción", "Juegos que se centran en combates, desafíos rápidos y reacciones rápidas.");
+
+        Category category = categoryDAO.read(1);
         product.setCategory(category);
-        Supplier supplier = new Supplier(2, "GameWorld Distribution", "5551234567");
+        Supplier supplier = supplierDAO.read(1);
         product.setSupplier(supplier);
 
         productDAO.create(product);
-        Product retrievedProducto = productDAO.read(3);
+        Product retrievedProducto = productDAO.read(9);
 
         assertNotNull(retrievedProducto);
-        assertEquals("FIFA 24", retrievedProducto.getName());
+        assertEquals("Ejemplo Crear", retrievedProducto.getName());
         assertEquals(59.99, retrievedProducto.getPrice());
         assertEquals(120, retrievedProducto.getStock());
         assertEquals("Acción", retrievedProducto.getCategory().getName());
-        assertEquals("GameWorld Distribution", retrievedProducto.getSupplier().getName());
+        assertEquals("PixelTech", retrievedProducto.getSupplier().getName());
     }
 
     @Test
@@ -44,23 +47,24 @@ class ProductDAOImplTest {
     @Test
     void testUpdateProduct() {
         ProductDAOImpl productDAO = new ProductDAOImpl();
-        Product product = productDAO.read(3);
+        CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
+        Product product = productDAO.read(9);
 
-        product.setName("GTA V");
-        product.setCategory(new Category(2, "Aventura", "Juegos de exploración y resolución de acertijos en mundos inmersivos."));
+        product.setName("Prueba Actualizar");
+        product.setCategory(categoryDAO.read(5));
         productDAO.update(product);
 
         Product updatedProduct = productDAO.read(3);
-        assertEquals("GTA V", updatedProduct.getName());
-        assertEquals("Aventura", updatedProduct.getCategory().getName());
+        assertEquals("Prueba Actualizar", updatedProduct.getName());
+        assertEquals("Terror", updatedProduct.getCategory().getName());
     }
 
     @Test
     void testDeleteProduct() {
         ProductDAOImpl productDAO = new ProductDAOImpl();
-        productDAO.delete(3);
+        productDAO.delete(9);
 
-        Product deletedProduct = productDAO.read(3);
+        Product deletedProduct = productDAO.read(9);
         assertNull(deletedProduct);
 
     }

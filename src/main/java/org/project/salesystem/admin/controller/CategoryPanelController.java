@@ -14,11 +14,9 @@ import javax.swing.*;
 
 public class CategoryPanelController {
     private CategoryPanel categoryPanel;
-    private CategoryTableModel categoryTableModel;
 
-    public CategoryPanelController(CategoryPanel categoryPanel, CategoryTableModel categoryTableModel) {
+    public CategoryPanelController(CategoryPanel categoryPanel) {
         this.categoryPanel = categoryPanel;
-        this.categoryTableModel = categoryTableModel;
     }
 
     /**
@@ -30,7 +28,7 @@ public class CategoryPanelController {
             Category category = new Category();
             category.setName(categoryPanel.getNameField().getText());
             category.setDescription(categoryPanel.getDescriptionField().getText());
-            categoryTableModel.addCategory(category);
+            categoryPanel.getCategoryTableModel().addCategory(category);
             clearField();
         }else {
             JOptionPane.showMessageDialog(categoryPanel, "El campo nombre es obligatorio");
@@ -43,13 +41,13 @@ public class CategoryPanelController {
     public void deleteCategoryAction() {
         int selectedRow = categoryPanel.getTable().getSelectedRow();
         if (selectedRow != -1) {
-            int categoryID = categoryTableModel.getCategoryList().get(selectedRow).getId();
+            int categoryID = categoryPanel.getCategoryTableModel().getCategoryList().get(selectedRow).getId();
             ProductDAO productDAO = new ProductDAOImpl();
             if (productDAO.hasProductsAssociatedWithCategory(categoryID)) {
                 JOptionPane.showMessageDialog(categoryPanel,
                         "No se puede eliminar la categoría porque esta asociado a un producto");
             }else {
-                categoryTableModel.removeCategory(selectedRow);
+                categoryPanel.getCategoryTableModel().removeCategory(selectedRow);
             }
         }else {
             JOptionPane.showMessageDialog(categoryPanel, "Selecciona una fila para eliminar");

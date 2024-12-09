@@ -8,7 +8,7 @@ import javax.swing.*;
  * Entry point for the Customer module of the Sales System.
  * Initializes and displays the main window for the customer interface.
  */
-public class EjemploCustomer {
+public class customerMain {
 
     /**
      * Main method to launch the customer application.

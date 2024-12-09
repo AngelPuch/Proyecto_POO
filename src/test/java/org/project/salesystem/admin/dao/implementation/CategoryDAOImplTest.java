@@ -10,37 +10,37 @@ class CategoryDAOImplTest {
     @Test
     void testCreateCategory() {
         CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
-        Category category = new Category(3, "Acción", "Juegos que se centran en combates, desafíos rápidos y reacciones rápidas.");
+        Category category = new Category(8, "Prueba Crear", "Descripción crear");
 
         categoryDAO.create(category);
-        Category retrievedCategory = categoryDAO.read(3);
+        Category retrievedCategory = categoryDAO.read(8);
 
         assertNotNull(retrievedCategory);
-        assertEquals("Acción", retrievedCategory.getName());
-        assertEquals("Juegos que se centran en combates, desafíos rápidos y reacciones rápidas.", retrievedCategory.getDescription());
+        assertEquals("Prueba Crear", retrievedCategory.getName());
+        assertEquals("Descripción crear", retrievedCategory.getDescription());
     }
 
     @Test
     void testUpdateCategory() {
         CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
-        Category category = categoryDAO.read(2);
+        Category category = categoryDAO.read(8);
 
-        category.setName("Aventura");
-        category.setDescription("Juegos de exploración y resolución de acertijos en mundos inmersivos.");
+        category.setName("Prueba Actualizar");
+        category.setDescription("Descripción actualizada");
         categoryDAO.update(category);
 
-        Category updatedCategory = categoryDAO.read(2);
-        assertEquals("Aventura", updatedCategory.getName());
-        assertEquals("Juegos de exploración y resolución de acertijos en mundos inmersivos.", updatedCategory.getDescription());
+        Category updatedCategory = categoryDAO.read(8);
+        assertEquals("Prueba Actualizar", updatedCategory.getName());
+        assertEquals("Descripción actualizada", updatedCategory.getDescription());
 
     }
 
     @Test
     void testDeleteCategory() {
         CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
-        categoryDAO.delete(2);
+        categoryDAO.delete(8);
 
-        Category deletedCategory = categoryDAO.read(2);
+        Category deletedCategory = categoryDAO.read(8);
 
         assertNull(deletedCategory);
     }

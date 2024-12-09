@@ -22,12 +22,13 @@ public class SalePanel extends JPanel {
 
     public SalePanel() {
         initComponents();
-        this.controller = new SalePanelController(this, saleTableModel);
+        this.controller = new SalePanelController(this);
         setVisible(true);
     }
 
     public JTextField getSearchField() { return searchField; }
     public JTable getTable() { return table; }
+    public SaleTableModel getSaleTableModel() { return saleTableModel; }
 
     /**
      * Sets a message to be displayed to the user.

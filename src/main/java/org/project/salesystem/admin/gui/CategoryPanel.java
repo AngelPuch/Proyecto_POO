@@ -21,13 +21,14 @@ public class CategoryPanel extends JPanel {
 
     public CategoryPanel() {
         initComponents();
-        this.controller = new CategoryPanelController(this, categoryTableModel);
+        this.controller = new CategoryPanelController(this);
         setVisible(true);
     }
 
     public JTable getTable() { return table; }
     public JTextField getNameField() { return nameField; }
     public JTextArea getDescriptionField() { return descriptionField; }
+    public CategoryTableModel getCategoryTableModel() { return categoryTableModel; }
 
     /**
      * Initializes the components of the CategoryPanel

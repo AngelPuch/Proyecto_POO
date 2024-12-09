@@ -16,7 +16,6 @@ public class SaleDetail implements Serializable {
     private double productTotal;
     private Sale sale;
     private Product product;
-    private Admin admin;
 
     public SaleDetail() {
     }
@@ -59,7 +58,6 @@ public class SaleDetail implements Serializable {
         return product;
     }
 
-    public Admin getAdmin() { return admin; }
 
 
     public void setSaleDetailId(int SaleDetailId) {
@@ -81,7 +79,5 @@ public class SaleDetail implements Serializable {
     public void setProduct(Product product) {
         this.product = product;
     }
-
-    public void setAdmin(Admin admin) { this.admin = admin; }
 }
 

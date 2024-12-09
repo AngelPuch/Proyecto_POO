@@ -31,7 +31,7 @@ public class ProductPanel extends JPanel {
 
     public ProductPanel() {
         initComponents();
-        this.controller = new ProductPanelController(this, productTableModel);
+        this.controller = new ProductPanelController(this);
         setVisible(true);
     }
 
@@ -40,6 +40,7 @@ public class ProductPanel extends JPanel {
     public JTextField getPriceField() { return priceField; }
     public JTextField getStockField() { return stockField; }
     public JTextField getSearchField() { return searchField; }
+    public ProductTableModel getProductTableModel() { return productTableModel; }
 
     /**
      * ets a message to be displayed

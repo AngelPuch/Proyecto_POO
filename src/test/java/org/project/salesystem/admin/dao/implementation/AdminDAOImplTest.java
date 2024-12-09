@@ -7,27 +7,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AdminDAOImplTest {
     @Test
-    void testCreateAdmin(){
+    void testFindAdminByUsernameAndPasswordSucces(){
         AdminDAO adminDAO = new AdminDAOImpl();
-        Admin admin = new Admin(3, "admin", "12345");
+        Admin admin = adminDAO.findAdminByUsernameAndPassword("administrador", "12345");
 
-        adminDAO.create(admin);
-        Admin retrievedAdmin = adminDAO.read(3);
-
-        assertNotNull(retrievedAdmin);
-        assertEquals("admin", retrievedAdmin.getUsername());
-        assertEquals("12345", retrievedAdmin.getPassword());
+        assertNotNull(admin);
+        assertEquals("administrador", admin.getUsername());
+        assertEquals("12345", admin.getPassword());
     }
 
     @Test
-    void testFindAdminByUsernameAndPassword(){
+    void testFindAdminByUsernameAndPasswordFailure(){
         AdminDAO adminDAO = new AdminDAOImpl();
         Admin admin = adminDAO.findAdminByUsernameAndPassword("admin", "12345");
 
-        assertNotNull(admin);
-        assertEquals(3, admin.getId());
-        assertEquals("admin", admin.getUsername());
-        assertEquals("12345", admin.getPassword());
+        assertNull(admin);
     }
 
 }

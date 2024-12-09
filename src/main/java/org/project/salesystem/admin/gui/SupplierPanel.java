@@ -23,10 +23,11 @@ public class SupplierPanel extends JPanel {
 
     public SupplierPanel (){
         initComponents();
-        this.controller = new SupplierPanelController(this, supplierTableModel);
+        this.controller = new SupplierPanelController(this);
         setVisible(true);
     }
 
+    public SupplierTableModel getSupplierTableModel() { return supplierTableModel; }
     public JTextField getNameField() { return nameField; }
     public JTextField getNumberField() { return numberField; }
     public JTextField getSearchField() { return searchField; }

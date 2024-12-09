@@ -14,20 +14,18 @@ import java.util.List;
  */
 
 public class SalePanelController {
-    private SaleTableModel saleTableModel;
     private SalePanel salePanel;
     private SaleDAOImpl saleDAO;
 
-    public SalePanelController(SalePanel salePanel, SaleTableModel saleTableModel) {
+    public SalePanelController(SalePanel salePanel) {
         this.salePanel = salePanel;
-        this.saleTableModel = saleTableModel;
         this.saleDAO = new SaleDAOImpl();
     }
 
     public void printSaleDetailAction() {
         int selectedRow = salePanel.getTable().getSelectedRow();
         if (selectedRow != -1) {
-            saleTableModel.printSaleDetail(selectedRow);
+            salePanel.getSaleTableModel().printSaleDetail(selectedRow);
         }else {
             JOptionPane.showMessageDialog(salePanel, "Seleccione una venta para mostrar los detalles");
         }
@@ -47,10 +45,10 @@ public class SalePanelController {
 
         if (filteredSaleList.isEmpty()){
             salePanel.setMessage("No se encontraron coincidencias");
-            saleTableModel.showFilteredList(new ArrayList<>());
+            salePanel.getSaleTableModel().showFilteredList(new ArrayList<>());
         }else{
             salePanel.setMessage("");
-            saleTableModel.showFilteredList(filteredSaleList);
+            salePanel.getSaleTableModel().showFilteredList(filteredSaleList);
         }
     }
 

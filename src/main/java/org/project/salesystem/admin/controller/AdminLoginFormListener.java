@@ -44,7 +44,7 @@ public class AdminLoginFormListener implements ActionListener {
      * @param password the password entered by the user
      * @return {@code true} if authentication is successful, {@code false} otherwise
      */
-    private boolean authenticate(String username, char[] password) {
+    public boolean authenticate(String username, char[] password) {
         AdminDAO adminDAO = new AdminDAOImpl();
         return adminDAO.findAdminByUsernameAndPassword(username, new String(password)) != null;
     }

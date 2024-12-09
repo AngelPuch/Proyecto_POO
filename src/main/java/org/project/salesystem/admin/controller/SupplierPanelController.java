@@ -17,12 +17,10 @@ import java.util.List;
 
 public class SupplierPanelController {
     private SupplierPanel supplierPanel;
-    private SupplierTableModel supplierTableModel;
     private SupplierDAOImpl supplierDAO;
 
-    public SupplierPanelController(SupplierPanel supplierPanel, SupplierTableModel supplierTableModel) {
+    public SupplierPanelController(SupplierPanel supplierPanel) {
         this.supplierPanel = supplierPanel;
-        this.supplierTableModel = supplierTableModel;
         this.supplierDAO = new SupplierDAOImpl();
     }
 
@@ -36,7 +34,7 @@ public class SupplierPanelController {
                 Supplier supplier = new Supplier();
                 supplier.setName(supplierPanel.getNameField().getText());
                 supplier.setPhone(supplierPanel.getNumberField().getText());
-                supplierTableModel.addSupplier(supplier);
+                supplierPanel.getSupplierTableModel().addSupplier(supplier);
                 clearField();
             }
         }else{
@@ -51,13 +49,13 @@ public class SupplierPanelController {
     public void deleteSupplierAction() {
         int selectedRow = supplierPanel.getTable().getSelectedRow();
         if (selectedRow != -1){
-            int supplierID = supplierTableModel.getSupplierList().get(selectedRow).getId();
+            int supplierID = supplierPanel.getSupplierTableModel().getSupplierList().get(selectedRow).getId();
             ProductDAO productDAO = new ProductDAOImpl();
             if (productDAO.hasProductsAssociatedWithSupplier(supplierID)) {
                 JOptionPane.showMessageDialog(supplierPanel,
                         "No se puede eliminar al proveedor porque esta asociado a un producto");
             }else{
-                supplierTableModel.removeSupplier(selectedRow);
+                supplierPanel.getSupplierTableModel().removeSupplier(selectedRow);
             }
         }else{
             JOptionPane.showMessageDialog(supplierPanel, "Selecciona una fila para eliminar");
@@ -79,10 +77,10 @@ public class SupplierPanelController {
 
         if (filteredSupplierList.isEmpty()) {
             supplierPanel.setMessage("No se encontraron coincidencias");
-            supplierTableModel.showFilteredList(new ArrayList<>());
+            supplierPanel.getSupplierTableModel().showFilteredList(new ArrayList<>());
         }else {
             supplierPanel.setMessage("");
-            supplierTableModel.showFilteredList(filteredSupplierList);
+            supplierPanel.getSupplierTableModel().showFilteredList(filteredSupplierList);
         }
     }
 
@@ -91,7 +89,7 @@ public class SupplierPanelController {
      * @return {@code true} if the phone number is valid (10 digits and numeric),
      *         {@code false} otherwise.
      */
-    private boolean isValidPhoneNumber() {
+    public boolean isValidPhoneNumber() {
         String phoneNumber = supplierPanel.getNumberField().getText();
         if (phoneNumber.length() != 10 || !phoneNumber.matches("[0-9]+")) {
             JOptionPane.showMessageDialog(supplierPanel, "Debe ingresar un número de teléfono valido");
@@ -104,7 +102,7 @@ public class SupplierPanelController {
      * Validates non-empty input fields
      * @return {@code true} if all fields are filled, {@code false} otherwise
      */
-    private boolean validateNonEmptyField() {
+    public boolean validateNonEmptyField() {
         return !supplierPanel.getNameField().getText().trim().isEmpty() &&
                 !supplierPanel.getNumberField().getText().trim().isEmpty();
     }

@@ -18,13 +18,11 @@ import java.util.List;
  */
 
 public class ProductPanelController {
-    private ProductPanel inventarioPanel;
-    private ProductTableModel productTableModel;
+    private ProductPanel inventarioPanel;;
     private ProductDAOImpl productDAO;
 
-    public ProductPanelController(ProductPanel inventarioPanel, ProductTableModel productTableModel) {
+    public ProductPanelController(ProductPanel inventarioPanel) {
         this.inventarioPanel = inventarioPanel;
-        this.productTableModel = productTableModel;
         productDAO = new ProductDAOImpl();
     }
 
@@ -36,7 +34,7 @@ public class ProductPanelController {
         if (validateNonEmptyField()){
             if (areValidInputs()) {
                 Product product = createProduct();
-                productTableModel.addProduct(product);
+                inventarioPanel.getProductTableModel().addProduct(product);
                 clearFields();
             }
         }else{
@@ -51,13 +49,13 @@ public class ProductPanelController {
     public void deleteProductAction() {
         int selectedRow = inventarioPanel.getTable().getSelectedRow();
         if (selectedRow != -1){
-            int productID = productTableModel.getProductList().get(selectedRow).getId();
+            int productID = inventarioPanel.getProductTableModel().getProductList().get(selectedRow).getId();
             SaleDetailDAO saleDetailDAO = new SaleDetailDAOImpl();
             if (saleDetailDAO.hasSaleDetailsAssociatedWithProducts(productID)) {
                 JOptionPane.showMessageDialog(inventarioPanel,
                         "No se puede eliminar el producto porque esta asociado a otras tablas");
             }else {
-                productTableModel.removeProduct(selectedRow);
+                inventarioPanel.getProductTableModel().removeProduct(selectedRow);
             }
         }else{
             JOptionPane.showMessageDialog(inventarioPanel, "Selecciona una fila para eliminar");
@@ -79,10 +77,10 @@ public class ProductPanelController {
 
         if (filteredProductList.isEmpty()) {
             inventarioPanel.setMessage("No se encontraron coincidencias");
-            productTableModel.showFilteredList(new ArrayList<>());
+            inventarioPanel.getProductTableModel().showFilteredList(new ArrayList<>());
         }else {
             inventarioPanel.setMessage("");
-            productTableModel.showFilteredList(filteredProductList);
+            inventarioPanel.getProductTableModel().showFilteredList(filteredProductList);
         }
     }
 
@@ -90,7 +88,7 @@ public class ProductPanelController {
      * Validates that all the necessary fields are filled out
      * @return {@code true} if all fields are filled, {@code false} otherwise
      */
-    private boolean validateNonEmptyField(){
+    public boolean validateNonEmptyField(){
         return !inventarioPanel.getNameField().getText().trim().isEmpty() &&
                 !inventarioPanel.getPriceField().getText().trim().isEmpty() &&
                 !inventarioPanel.getStockField().getText().trim().isEmpty();
@@ -115,7 +113,7 @@ public class ProductPanelController {
      * @return {@code true} if both price and stock are valid positive numbers,
      *         {@code false} otherwise.
      */
-    private boolean areValidInputs() {
+    public boolean areValidInputs() {
         try {
             double price = Double.parseDouble(inventarioPanel.getPriceField().getText());
             int stock = Integer.parseInt(inventarioPanel.getStockField().getText());
