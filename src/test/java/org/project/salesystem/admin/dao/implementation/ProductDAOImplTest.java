@@ -15,7 +15,7 @@ class ProductDAOImplTest {
         CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
         SupplierDAOImpl supplierDAO = new SupplierDAOImpl();
         Product product = new Product();
-        product.setId(9);
+        product.setId(12);
         product.setName("Ejemplo Crear");
         product.setPrice(59.99);
         product.setStock(120);
@@ -26,7 +26,7 @@ class ProductDAOImplTest {
         product.setSupplier(supplier);
 
         productDAO.create(product);
-        Product retrievedProducto = productDAO.read(9);
+        Product retrievedProducto = productDAO.read(12);
 
         assertNotNull(retrievedProducto);
         assertEquals("Ejemplo Crear", retrievedProducto.getName());
@@ -54,7 +54,7 @@ class ProductDAOImplTest {
         product.setCategory(categoryDAO.read(5));
         productDAO.update(product);
 
-        Product updatedProduct = productDAO.read(3);
+        Product updatedProduct = productDAO.read(9);
         assertEquals("Prueba Actualizar", updatedProduct.getName());
         assertEquals("Terror", updatedProduct.getCategory().getName());
     }
@@ -62,9 +62,9 @@ class ProductDAOImplTest {
     @Test
     void testDeleteProduct() {
         ProductDAOImpl productDAO = new ProductDAOImpl();
-        productDAO.delete(9);
+        productDAO.delete(12);
 
-        Product deletedProduct = productDAO.read(9);
+        Product deletedProduct = productDAO.read(12);
         assertNull(deletedProduct);
 
     }

@@ -10,10 +10,10 @@ class SupplierDAOImplTest {
     @Test
     void testCreateSupplier() {
         SupplierDAOImpl supplierDAO = new SupplierDAOImpl();
-        Supplier supplier = new Supplier(8, "EjemploPruebaCrear", "5578965478");
+        Supplier supplier = new Supplier(10, "EjemploPruebaCrear", "5578965478");
 
         supplierDAO.create(supplier);
-        Supplier retrievedSupplier = supplierDAO.read(8);
+        Supplier retrievedSupplier = supplierDAO.read(10);
 
         assertNotNull(retrievedSupplier);
         assertEquals("EjemploPruebaCrear", retrievedSupplier.getName());
@@ -23,21 +23,21 @@ class SupplierDAOImplTest {
     @Test
     void testUpdateSupplier() {
         SupplierDAOImpl supplierDAO = new SupplierDAOImpl();
-        Supplier supplier = supplierDAO.read(8);
+        Supplier supplier = supplierDAO.read(9);
 
         supplier.setName("EjemploPruebaActualizar");
         supplierDAO.update(supplier);
 
-        Supplier updatedSupplier = supplierDAO.read(8);
+        Supplier updatedSupplier = supplierDAO.read(9);
         assertEquals("EjemploPruebaActualizar", updatedSupplier.getName());
     }
 
     @Test
     void testDeleteSupplier() {
         SupplierDAOImpl supplierDAO = new SupplierDAOImpl();
-        supplierDAO.delete(8);
+        supplierDAO.delete(10);
 
-        Supplier deletedSupplier = supplierDAO.read(8);
+        Supplier deletedSupplier = supplierDAO.read(10);
 
         assertNull(deletedSupplier);
     }

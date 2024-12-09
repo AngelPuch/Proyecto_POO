@@ -32,7 +32,7 @@ public class CustomerRegisterFormController {
 
     }
 
-    private Customer createCustomer() {
+    public Customer createCustomer() {
         Customer customer = new Customer();
         customer.setName(customerRegisterForm.getNameField().getText());
         customer.setPhoneNumber(customerRegisterForm.getPhoneField().getText());

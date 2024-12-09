@@ -67,7 +67,7 @@ public class CustomerLoginFormListener implements ActionListener {
      * @param password The password entered by the user.
      * @return true if the username and password are correct, false otherwise.
      */
-    private boolean authenticate(String username, char[] password) {
+    public boolean authenticate(String username, char[] password) {
         CustomerDAO customerDAO = new CustomerDAOImpl();
         return customerDAO.findCustomerByUsernameAndPassword(username, new String(password)) != null;
     }

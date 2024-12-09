@@ -7,15 +7,15 @@ import org.project.salesystem.customer.model.Customer;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerDAOImplTest {
-/*
+
     @Test
     void testCreateCustomer() {
         CustomerDAO customerDAO = new CustomerDAOImpl();
 
-        Customer customer = new Customer(1, "Angel Puch", "7661134536", "angel", "12345");
+        Customer customer = new Customer(4, "Angel Puch", "7661134536", "angel", "12345", "91203", "Pregrinos", "Xalapa", "Veracruz");
 
         customerDAO.create(customer);
-        Customer retrievedCustomer = customerDAO.read(1);
+        Customer retrievedCustomer = customerDAO.read(4);
 
         assertNotNull(retrievedCustomer);
         assertEquals("Angel Puch", retrievedCustomer.getName());
@@ -27,7 +27,7 @@ class CustomerDAOImplTest {
     @Test
     void testUpdateCustomer() {
         CustomerDAO customerDAO = new CustomerDAOImpl();
-        Customer customer =customerDAO.read(1);
+        Customer customer =customerDAO.read(3);
 
         customer.setName("Jose Luis");
         customer.setPhoneNumber("1234567890");
@@ -53,6 +53,6 @@ class CustomerDAOImplTest {
         assertEquals("12345", customer.getPassword());
     }
 
- */
+
 
 }
