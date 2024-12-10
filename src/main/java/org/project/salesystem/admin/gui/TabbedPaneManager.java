@@ -54,6 +54,8 @@ public class TabbedPaneManager {
         tabbedPane.addChangeListener(e ->{
             if (tabbedPane.getSelectedIndex() == 0) {
                 tabbedPane.setComponentAt(0, new ProductPanel());
+            }else if (tabbedPane.getSelectedIndex() == 3) {
+                tabbedPane.setComponentAt(3, new SalePanel());
             }
         });
         return tabbedPane;
